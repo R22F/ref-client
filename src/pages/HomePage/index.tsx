@@ -1,8 +1,8 @@
 export const Homepage = () => {
-  const logo = require('./cookingman.png')
+  const logo = require('./cookingman.png');
   return (
     <>
-    <img src={logo} alt="logo"/>
+      <img src={logo} alt="logo" />
     </>
   );
 };
