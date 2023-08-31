@@ -1,3 +1,6 @@
+import {SignUpBox} from '../../components/auth/SignUpBox'
 export const SignUp = () => {
-  return <>회원가입 페이지</>;
+  return <>
+  <SignUpBox/>
+  </>;
 };
