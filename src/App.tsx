@@ -12,17 +12,17 @@ import { Settlement } from './pages/Settlement';
 
 function App() {
   return (
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path={RouteConst.HomePage} element={<Homepage />} />
-          <Route path={RouteConst.Signup} element={<SignUp />} />
-          <Route path={RouteConst.CookingDB} element={<CookingDB />} />
-          <Route path={RouteConst.settlement} element={<Settlement />} />
-          <Route path={RouteConst.Inventory} element={<Inventory />} />
-          <Route path={RouteConst.TotalReview} element={<TotalReview />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path={RouteConst.HomePage} element={<Homepage />} />
+        <Route path={RouteConst.Signup} element={<SignUp />} />
+        <Route path={RouteConst.CookingDB} element={<CookingDB />} />
+        <Route path={RouteConst.settlement} element={<Settlement />} />
+        <Route path={RouteConst.Inventory} element={<Inventory />} />
+        <Route path={RouteConst.TotalReview} element={<TotalReview />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
