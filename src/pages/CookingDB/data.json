@@ -1,0 +1,42 @@
+{
+  "data": [
+    {
+      "Food": {
+        "name": "Potato Pizza",
+        "fixedPrice": 18000,
+        "id": 1,
+        "Ingredients": [
+          {
+            "name": "potato",
+            "quantity": 220,
+            "unit": "g"
+          },
+          {
+            "name": "Pizza Dou",
+            "quantity": 1,
+            "unit": "ea"
+          }
+        ]
+      }
+    },
+    {
+      "Food": {
+        "name": "Bongole Pasta",
+        "fixedPrice": 20000,
+        "id": 2,
+        "Ingredients": [
+          {
+            "name": "pasta",
+            "quantity": 220,
+            "unit": "g"
+          },
+          {
+            "name": "Bongole",
+            "quantity": 150,
+            "unit": "g"
+          }
+        ]
+      }
+    }
+  ]
+}
