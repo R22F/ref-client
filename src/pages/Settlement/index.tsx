@@ -6,7 +6,7 @@ import { useState } from 'react';
 export const Settlement = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
 
-  const handleDateChange = (event: any) => {
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
   };
   return (
