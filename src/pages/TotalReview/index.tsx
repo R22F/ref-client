@@ -25,7 +25,7 @@ export const TotalReview = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col justify-between mt-28 items-center ">
+      <div className="flex flex-col justify-between mt-16 items-center ">
         <div className="flex justify-between items-center mb-4 w-full">
           <div>
             <button
@@ -67,42 +67,35 @@ export const TotalReview = () => {
             ></input>
           </div>
         </div>
-        <div className="flex justify-around pt-[1rem] pb-4 w-full">
-          <div className="flex w-[10rem] justify-around">
+        <div className="justify-around pt-[1rem] pb-4 w-full">
+          <div className="flex w-[10rem] justify-around ml-auto text-red-400 font-semibold ">
             <div>{text === "총계" ? "총" : text} 원가 :</div>
             <div>val</div>
+            <>원</>
           </div>
-          <div className="flex w-[10rem] justify-around">
+          <div className="flex w-[10rem] justify-around ml-auto text-red-400 font-semibold mb-4">
             <div>{text === "총계" ? "총" : text} 수익 :</div>
             <div>val</div>
+            <>원</>
           </div>
+
+          {text !== "일일" ? (
+            <>
+              <div className="flex my-1 py-1 justify-around  bg-red-400 shadow-md rounded-md text-red-100 font-semibold items-center">
+                <div className="w-[10rem]">BEST MENU!!</div>
+                <div className="w-[10rem]">
+                  우삼겹파스타 <>300</>개
+                </div>
+              </div>
+              <div className="flex my-1 py-1 justify-around  bg-gray-500 shadow-md rounded-md text-gray-200 font-semibold items-center">
+                <div className="w-[10rem]">WORST MENU..</div>
+                <div className="w-[10rem]">
+                  버섯전골 <>1</>개
+                </div>
+              </div>
+            </>
+          ) : null}
         </div>
-        {text !== "일일" ? (
-          <div>
-            <div className="flex my-1 py-1 justify-around border-double border-4 border-red-600">
-              <div className="w-[10rem]">BEST MENU!!</div>
-              <div className="w-[10rem]">메뉴 이름</div>
-              <div className="w-[10rem]">판매 수량 :</div>
-            </div>
-            <div className="flex my-1 py-1 justify-around border-double border-4 border-black">
-              <div className="w-[10rem]">WORST MENU..</div>
-              <div className="w-[10rem]">메뉴 이름</div>
-              <div className="w-[10rem]">판매 수량 :</div>
-            </div>
-          </div>
-        ) : null}
-        {/* <div>
-          <div className="flex my-1 py-1 justify-around border-double border-4 border-red-600">
-            <div className="w-[10rem]">BEST MENU!!</div>
-            <div className="w-[10rem]">메뉴 이름</div>
-            <div className="w-[10rem]">판매 수량 :</div>
-          </div>
-          <div className="flex my-1 py-1 justify-around border-double border-4 border-black">
-            <div className="w-[10rem]">WORST MENU..</div>
-            <div className="w-[10rem]">메뉴 이름</div>
-            <div className="w-[10rem]">판매 수량 :</div>
-          </div>
-        </div> */}
         <TotalData />
       </div>
     </div>
