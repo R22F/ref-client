@@ -19,7 +19,7 @@ export const TotalReview = () => {
 
   const buttonDesign = (_text: string) => {
     return text === _text
-      ? "bg-white bg-red-400 border-red-100 text-red-100 font-semibold py-2 px-4 border rounded shadow ml-4"
+      ? "bg-red-400 border-red-100 text-red-100 font-semibold py-2 px-4 border rounded shadow ml-4"
       : "bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4";
   };
 
