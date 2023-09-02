@@ -1,11 +1,10 @@
-import Button from '@mui/material/Button';
-import { useEffect, useState } from 'react';
-import { DayCount } from '../../components/databox/DayCount';
-import { TotalData } from '../../components/databox/TotalData';
+import { useEffect, useState } from "react";
+import { DayCount } from "../../components/databox/DayCount";
+import { TotalData } from "../../components/databox/TotalData";
 
 export const TotalReview = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
-  const [text, setText] = useState('일일');
+  const [text, setText] = useState("일일");
 
   const handleText = (e: any) => {
     const id = e.currentTarget.id;
@@ -18,48 +17,80 @@ export const TotalReview = () => {
     setSelectedDate(event.target.value);
   };
 
+  const buttonDesign = (_text: string) => {
+    return text === _text
+      ? "bg-white bg-red-400 border-red-100 text-red-100 font-semibold py-2 px-4 border rounded shadow ml-4"
+      : "bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4";
+  };
+
   return (
     <div className="flex justify-center">
-      <div className=" min-h-[40rem] w-[60rem] justify-center">
-        <div className="flex justify-between pt-12 p-2 border-double border-b-[8px] border-black">
+      <div className="flex flex-col justify-between mt-28 items-center ">
+        <div className="flex justify-between items-center mb-4 w-full">
           <div>
-            <Button variant="contained" id="일일" sx={{ mx: 2 }} onClick={handleText}>
+            <button
+              id="일일"
+              onClick={handleText}
+              className={buttonDesign("일일")}
+            >
               일일
-            </Button>
-            <Button variant="contained" id="월간" sx={{ mx: 2 }} onClick={handleText}>
+            </button>
+            <button
+              id="월간"
+              onClick={handleText}
+              className={buttonDesign("월간")}
+            >
               월간
-            </Button>
-            <Button variant="contained" id="연간" sx={{ mx: 2 }} onClick={handleText}>
+            </button>
+            <button
+              id="연간"
+              onClick={handleText}
+              className={buttonDesign("연간")}
+            >
               연간
-            </Button>
-            <Button variant="contained" id="총계" sx={{ mx: 2 }} onClick={handleText}>
+            </button>
+            <button
+              id="총계"
+              onClick={handleText}
+              className={buttonDesign("총계")}
+            >
               총계
-            </Button>
+            </button>
           </div>
-          <input type="date" value={selectedDate} onChange={handleDateChange}></input>
+
+          <div>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={handleDateChange}
+              className="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-red-400 flex-grow"
+            ></input>
+          </div>
         </div>
-        <div className="flex justify-around pt-[1rem] pb-4">
+        <div className="flex justify-around pt-[1rem] pb-4 w-full">
           <div className="flex w-[10rem] justify-around">
-            <div>{text==='총계'?'총':text} 원가 :</div>
+            <div>{text === "총계" ? "총" : text} 원가 :</div>
             <div>val</div>
           </div>
           <div className="flex w-[10rem] justify-around">
-            <div>{text==='총계'?'총':text} 수익 :</div>
+            <div>{text === "총계" ? "총" : text} 수익 :</div>
             <div>val</div>
           </div>
         </div>
-        {text!=='일일'?<div>
-          <div className="flex my-1 py-1 justify-around border-double border-4 border-red-600">
-            <div className="w-[10rem]">BEST MENU!!</div>
-            <div className="w-[10rem]">메뉴 이름</div>
-            <div className="w-[10rem]">판매 수량 :</div>
+        {text !== "일일" ? (
+          <div>
+            <div className="flex my-1 py-1 justify-around border-double border-4 border-red-600">
+              <div className="w-[10rem]">BEST MENU!!</div>
+              <div className="w-[10rem]">메뉴 이름</div>
+              <div className="w-[10rem]">판매 수량 :</div>
+            </div>
+            <div className="flex my-1 py-1 justify-around border-double border-4 border-black">
+              <div className="w-[10rem]">WORST MENU..</div>
+              <div className="w-[10rem]">메뉴 이름</div>
+              <div className="w-[10rem]">판매 수량 :</div>
+            </div>
           </div>
-          <div className="flex my-1 py-1 justify-around border-double border-4 border-black">
-            <div className="w-[10rem]">WORST MENU..</div>
-            <div className="w-[10rem]">메뉴 이름</div>
-            <div className="w-[10rem]">판매 수량 :</div>
-          </div>
-        </div>:null}
+        ) : null}
         {/* <div>
           <div className="flex my-1 py-1 justify-around border-double border-4 border-red-600">
             <div className="w-[10rem]">BEST MENU!!</div>
