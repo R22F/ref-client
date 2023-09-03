@@ -7,8 +7,8 @@ export const TotalGNB = () => {
 
   const getLinkClass = (path: string) => {
     return location.pathname === path
-      ? "bg-white inline-block border-b-4 border-gray-300 rounded-t py-2 px-4 text-red-500 font-semibold whitespace-nowrap"
-      : "bg-white inline-block py-2 px-4 text-gray-400 hover:text-red-800 font-semibold whitespace-nowrap";
+      ? "bg-white inline-block border-b-4 border-gray-300 rounded-t py-2 px-4 text-red-400 font-semibold whitespace-nowrap"
+      : "bg-white inline-block py-2 px-4 text-gray-400 hover:text-red-500 font-semibold whitespace-nowrap";
   };
   const getLiClass = (path: string) => {
     return location.pathname === path ? "-mb-px mr-1" : "mr-1";
