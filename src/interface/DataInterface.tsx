@@ -6,7 +6,8 @@ export interface SettlementData {
   count: number;
 }
 export interface Ingredient {
-  name: string;
+  id: number;
+  ingredientName: string;
   quantity: number;
   units: string;
 }
@@ -16,7 +17,7 @@ export interface FoodDto {
   name: string;
   fixedPrice: number;
   primePrice: number;
-  ingredients: Ingredient[];
+  recipes: Ingredient[];
 }
 
 export interface Data {
