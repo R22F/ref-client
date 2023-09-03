@@ -9,6 +9,13 @@ import {
   PwBox,
 } from "../inputBox/inputBox";
 
+export const submitButton = () => {
+  return "bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4 ml-auto";
+};
+export const cancleButton = () => {
+  return "bg-white hover:bg-gray-400 hover:border-gray-100 hover:text-gray-100 text-gray-400 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-auto";
+};
+
 /**
  * 회원가입 입력상자 컴포넌트
  * @returns
@@ -92,16 +99,10 @@ export const SignUpBox = () => {
           <div>{invalidReasonText}</div>
           <div className="flex flex-col mt-10">
             <div className="flex items-center">
-              <Link
-                to="/"
-                className="text-sm font-medium text-gray-900 whitespace-nowrap mr-2 mr-auto bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md border border-gray-400 border-2"
-              >
+              <Link to="/" className={cancleButton()}>
                 취소
               </Link>
-              <button
-                onClick={submitClick}
-                className="text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 whitespace-nowrap mr-2 ml-auto px-4 py-2 rounded-md border border-blue-600 border-2"
-              >
+              <button onClick={submitClick} className={submitButton()}>
                 등록
               </button>
             </div>

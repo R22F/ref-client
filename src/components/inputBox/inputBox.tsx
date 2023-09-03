@@ -88,6 +88,9 @@ export const inputcss = () => {
 export const errormsg = () => {
   return "flex block items-center ml-auto text-gray-700";
 };
+export const normalButton = () => {
+  return "bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4 ml-auto";
+};
 export interface Props {
   SetValue: Function;
   error: [ErrorClass, Function];
@@ -137,10 +140,7 @@ export const IdBox = ({ SetValue, error }: Props) => {
         <label htmlFor="id" className={labelfont()}>
           ID{" "}
         </label>
-        <button
-          onClick={CheckDuplicate}
-          className="bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4 ml-auto"
-        >
+        <button onClick={CheckDuplicate} className={normalButton()}>
           중복확인
         </button>
       </div>
