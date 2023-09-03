@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { TotalGNB } from "../GNB/TotalGNB";
+import { Modal } from "../modal/Modal";
+import { SignInBox } from "../auth/SignInBox";
 export const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleLogin = () => {
     setIsLogin(!isLogin);
+    setIsModalOpen(true);
   };
   useEffect(() => {}, [isLogin]);
   const logInButtonColor = (isLogin: boolean) => {
@@ -21,6 +26,13 @@ export const Header = () => {
           <button onClick={handleLogin} className={logInButtonColor(isLogin)}>
             {isLogin ? "LOG OUT" : "LOG IN"}
           </button>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => {
+              setIsModalOpen(false);
+            }}
+            children={<SignInBox />}
+          />
         </div>
       </div>
       {/* <Button variant="contained" style={{"background":"red"}}>test button</Button> */}
