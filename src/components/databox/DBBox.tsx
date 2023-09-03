@@ -1,71 +1,39 @@
-import { useState } from 'react';
 import { IngredientBox } from './IngredientBox';
-import { useRecoilValue } from 'recoil';
-import { DBAtom } from '../../recoil/DBAtom';
-import { FoodDto } from '../../interface/DataInterface';
 
 interface DBBoxProps {
   editMode: boolean;
 }
 
-export const DBBox: React.FC<DBBoxProps> = ({ editMode }) => {
-  const foodList = useRecoilValue(DBAtom);
-
-  const [ingredient, setIngredient] = useState<FoodDto[]>(foodList || []);
-
-  const handleAddIngredient = () => {
-    const newIngredient = {
-      id: ingredient.length + 1,
-      name: `재료${ingredient.length + 1}`,
-      fixedPrice: 0,
-      primePrice: 0,
-      ingredients: [],
-    };
-    setIngredient((prevIngredients) => [...prevIngredients, newIngredient]);
-  };
-
-  const handleRemoveIngredient = (id: number) => {
-    setIngredient((prevIngredients) => prevIngredients.filter((ingredient) => ingredient.id !== id));
-  };
+export const DBBox: React.FC<DBBoxProps> = () => {
   return (
-    <>
-      {ingredient.map((item, index) => {
-        return (
-          <div className="flex justify-center" key={index}>
-            <div>
-              <div className="w-[55rem] border-[1px] h-8 border-black flex justify-around">
-                {editMode ? (
-                  <input type="text" placeholder="요리이름" className="w-28"></input>
-                ) : (
-                  <div className="w-28">{item.name}</div>
-                )}
-                {editMode ? (
-                  <input type="text" placeholder="요리 원가" className="w-28"></input>
-                ) : (
-                  <div className="w-28">{item.primePrice.toLocaleString()}원</div>
-                )}
-                {editMode ? (
-                  <input type="text" placeholder="요리 판매가" className="w-28"></input>
-                ) : (
-                  <div className="w-28">{item.fixedPrice.toLocaleString()}원</div>
-                )}
-                <button onClick={handleAddIngredient} className="w-28">
-                  재료 추가 +
-                </button>
-              </div>
-              {ingredient.map((item, index) => (
-                <IngredientBox
-                  key={index}
-                  ingredient={item.ingredients}
-                  ingredientId={item.id}
-                  onRemove={handleRemoveIngredient}
-                  editMode={editMode}
-                />
-              ))}
-            </div>
-          </div>
-        );
-      })}
-    </>
+    <div className="flex justify-center">
+      <div className="flex justify-center flex-col w-[70rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4">
+        <div className="flex justify-end font-bold mr-1 border-b-2 border-black pb-2 text-red-400">합계 : 원</div>
+        <table className="min-w-full text-center text-sm font-light">
+          <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800">
+            <tr>
+              <th scope="col" className=" py-4 text-right">
+                요리명
+              </th>
+              <th scope="col" className=" py-4 text-right">
+                요리원가
+              </th>
+              <th scope="col" className="py-4 text-right">
+                요리 판매가
+              </th>
+              <th scope="col" className=" py-4 text-right">
+                요리제거
+              </th>
+              <th scope="col" className="py-4 text-right mr-10">
+                요리추가
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <IngredientBox />
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
