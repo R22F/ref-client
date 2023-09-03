@@ -1,4 +1,3 @@
-import { SignIn } from "../../components/auth/SignIn";
 import { Header } from "../../components/header/Header";
 
 export const Homepage = () => {
