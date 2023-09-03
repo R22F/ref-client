@@ -79,6 +79,15 @@ export class ErrorClass {
   }
 }
 
+export const labelfont = () => {
+  return "block text-gray-700 mb-2 hover:text-red-400 font-semibold";
+};
+export const inputcss = () => {
+  return "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 focus:border-2";
+};
+export const errormsg = () => {
+  return "flex block items-center ml-auto text-gray-700";
+};
 export interface Props {
   SetValue: Function;
   error: [ErrorClass, Function];
@@ -125,15 +134,12 @@ export const IdBox = ({ SetValue, error }: Props) => {
   return (
     <div className="flex flex-col">
       <div className="flex items-center">
-        <label
-          htmlFor="id"
-          className="text-base font-bold font-medium leading-6 text-gray-900 mr-[8px]"
-        >
+        <label htmlFor="id" className={labelfont()}>
           ID{" "}
         </label>
         <button
           onClick={CheckDuplicate}
-          className="text-sm font-medium text-gray-900 whitespace-nowrap mr-2 ml-auto bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md border border-gray-400 border-2 ml-[8px]"
+          className="bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4 ml-auto"
         >
           중복확인
         </button>
@@ -145,12 +151,10 @@ export const IdBox = ({ SetValue, error }: Props) => {
           placeholder="아이디"
           required
           onChange={HandleId}
-          className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm 
-          ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-          focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className={inputcss()}
         />
       </div>
-      <div className="flex block items-center ml-auto">{validIdMessage}</div>
+      <div className={errormsg()}>{validIdMessage}</div>
     </div>
   );
 };
@@ -193,10 +197,7 @@ export const PwBox = ({ SetValue, error }: Props) => {
   return (
     <div className="flex flex-col mt-4">
       <div className="flex items-center">
-        <label
-          htmlFor="pw"
-          className="block text-base font-bold font-medium leading-6 text-gray-900 mr-[8px]"
-        >
+        <label htmlFor="pw" className={labelfont()}>
           비밀번호{" "}
         </label>
       </div>
@@ -208,17 +209,12 @@ export const PwBox = ({ SetValue, error }: Props) => {
             placeholder="비밀번호"
             onChange={HandlePw}
             required
-            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm 
-            ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-            focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className={inputcss()}
           />
         </div>
       </div>
       <div className="flex items-center mt-2">
-        <label
-          htmlFor="cpw"
-          className="text-base font-bold font-medium text-gray-900 whitespace-nowrap mr-[8px]"
-        >
+        <label htmlFor="cpw" className={labelfont()}>
           비밀번호확인{" "}
         </label>
       </div>
@@ -229,16 +225,11 @@ export const PwBox = ({ SetValue, error }: Props) => {
           placeholder="비밀번호 확인"
           onChange={HandlechkPw}
           required
-          className="
-            block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm 
-            ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-            focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className={inputcss()}
         />
       </div>
 
-      <div className="text-sm font-medium text-gray-900 whitespace-nowrap mr-2 ml-auto">
-        {pwMessage}
-      </div>
+      <div className={errormsg()}>{pwMessage}</div>
     </div>
   );
 };
@@ -260,10 +251,7 @@ export const NameBox = ({ SetValue, error }: Props) => {
   return (
     <div className="flex flex-col mt-4">
       <div className="flex items-center">
-        <label
-          htmlFor="name"
-          className="text-base font-bold font-medium text-gray-900 whitespace-nowrap mr-[8px]"
-        >
+        <label htmlFor="name" className={labelfont()}>
           성명{" "}
         </label>
       </div>
@@ -274,10 +262,7 @@ export const NameBox = ({ SetValue, error }: Props) => {
           placeholder="성명"
           required
           onChange={HandleName}
-          className="
-        block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm 
-        ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-        focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className={inputcss()}
         />
       </div>
     </div>
@@ -299,10 +284,7 @@ export const CalendarBox = ({ SetValue, error }: Props) => {
   };
   return (
     <div className="flex items-center mt-4">
-      <label
-        htmlFor="email"
-        className="text-base font-bold font-medium text-gray-900 whitespace-nowrap mr-[8px]"
-      >
+      <label htmlFor="email" className={labelfont()}>
         생년월일{" "}
       </label>
       <input
@@ -349,10 +331,7 @@ export const EmailBox = ({ SetValue, error }: Props) => {
   return (
     <div className="flex flex-col mt-4">
       <div className="flex items-center">
-        <label
-          htmlFor="email"
-          className="text-base font-bold font-medium text-gray-900 whitespace-nowrap mr-[8px]"
-        >
+        <label htmlFor="email" className={labelfont()}>
           이메일
         </label>
       </div>
@@ -363,15 +342,10 @@ export const EmailBox = ({ SetValue, error }: Props) => {
           placeholder="이메일"
           onChange={HandleEmail}
           required
-          className="
-            block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm 
-            ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-            focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className={inputcss()}
         />
       </div>
-      <div className="text-sm font-medium text-gray-900 whitespace-nowrap mr-2 ml-auto">
-        {emailMessage}
-      </div>
+      <div className={errormsg()}>{emailMessage}</div>
     </div>
   );
 };
