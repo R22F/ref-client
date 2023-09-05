@@ -49,7 +49,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
               <div className="flex justify-end items-center">
                 <button
                   onClick={handleClose}
-                  className="text-gray-400 hover:text-black"
+                  className="text-gray-400  hover:text-red-700"
                 >
                   <svg
                     className="w-6 h-6"
@@ -67,7 +67,9 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
                 </button>
               </div>
               <div className="flex justify-center items-center">
-                <h2 className="text-lg font-medium">로그인</h2>
+                <h2 className="text-lg font-medium text-red-400 font-semibold">
+                  로그인
+                </h2>
               </div>
             </div>
             <div className="modal-body p-4">{children}</div>
