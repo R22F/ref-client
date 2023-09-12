@@ -1,6 +1,7 @@
 import { useRecoilState } from 'recoil';
 import { FoodDto, Ingredient } from '../../../interface/DataInterface';
 import { DBAtom } from '../../../recoil/DBAtom';
+import { useState } from 'react';
 
 interface EditOnProps {
   props: FoodDto[];
@@ -9,6 +10,9 @@ interface EditOnProps {
 
 export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
   const [data, setData] = useRecoilState<FoodDto[]>(DBAtom);
+
+  console.log('change', data);
+
   const handleRemoveFood = (foodIdx: number) => {
     // 요리를 삭제하고 싶은 경우 해당 요리의 인덱스를 사용하여 onRemoveFood 콜백을 호출합니다.
     onRemoveFood(foodIdx);
@@ -26,6 +30,25 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
       return newData;
     });
   };
+
+  const handleProduceIngredient = (foodIdx: number) => {
+    setData((prevData) => {
+      const newData = [...prevData];
+      console.log('prev',prevData);
+      console.log('new',newData);
+
+      newData[foodIdx] = {
+        ...newData[foodIdx],
+        recipes: [
+          ...newData[foodIdx].recipes,
+          { id: prevData[foodIdx].recipes.length + 1, quantity: 0, ingredientName: '', units: 'g' },
+        ],
+      };
+
+      return newData;
+    });
+  };
+
   return (
     <tbody>
       {props.map((item: FoodDto, foodIdx: number) => {
@@ -46,7 +69,7 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
                 <button onClick={() => handleRemoveFood(foodIdx)}>요리 제거</button>
               </th>
               <th className="py-4 text-right">
-                <button>재료 추가</button>
+                <button onClick={() => handleProduceIngredient(foodIdx)}>재료 추가</button>
               </th>
             </tr>
             {item.recipes.map((ingredient: Ingredient, ingredientIdx: number) => {
@@ -54,10 +77,10 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
                 <tr key={ingredientIdx}>
                   {/* 재료 정보 출력 */}
                   <td className="py-1 text-right">
-                    <input type="text" placeholder={`${ingredient.ingredientName}`}></input>
+                    <input type="text" placeholder={`${ingredient.ingredientName}`} id="name"></input>
                   </td>
                   <td className="py-1 text-right">
-                    <input type="text" placeholder={`${ingredient.quantity} `}></input> {ingredient.units}
+                    <input type="text" placeholder={`${ingredient.quantity} `} id="quantity"></input> {ingredient.units}
                   </td>
                   {/* 삭제 버튼 */}
                   <td className="py-1 text-right"></td>
