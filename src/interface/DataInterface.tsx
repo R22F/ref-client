@@ -10,6 +10,7 @@ export interface Ingredient {
   ingredientName: string;
   quantity: number;
   units: string;
+  foodIdx?: number;
 }
 
 export interface FoodDto {
@@ -22,4 +23,9 @@ export interface FoodDto {
 
 export interface Data {
   foodDtoList: FoodDto[];
+}
+
+export interface FoodData {
+  name: string;
+  quantity: number;
 }

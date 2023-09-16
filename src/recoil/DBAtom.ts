@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { FoodDto } from '../interface/DataInterface';
+import { FoodData, FoodDto } from '../interface/DataInterface';
 
 export const DBAtom = atom<FoodDto[]>({
   key: 'DBAtomArr',
@@ -14,4 +14,11 @@ export const Ingredients = atom({
 export const EditMode = atom({
   key: 'edit',
   default: false,
+});
+export const foodData = atom({
+  key: 'foodData',
+  default: {
+    quantity: 0,
+    name: '',
+  },
 });

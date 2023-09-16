@@ -1,6 +1,7 @@
 import { useRecoilState } from 'recoil';
 import { FoodDto, Ingredient } from '../../../interface/DataInterface';
 import { DBAtom } from '../../../recoil/DBAtom';
+import { useState } from 'react';
 
 interface EditOnProps {
   props: FoodDto[];
@@ -9,22 +10,80 @@ interface EditOnProps {
 
 export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
   const [data, setData] = useRecoilState<FoodDto[]>(DBAtom);
+
+  // 각각의 입력 필드에 대한 상태
+  const [ingredientNames, setIngredientNames] = useState<string[]>([]);
+  const [quantities, setQuantities] = useState<number[]>([]);
+
   const handleRemoveFood = (foodIdx: number) => {
-    // 요리를 삭제하고 싶은 경우 해당 요리의 인덱스를 사용하여 onRemoveFood 콜백을 호출합니다.
     onRemoveFood(foodIdx);
   };
+  
 
   const handleRemoveIngredient = (foodIndex: number, ingredientIndex: number) => {
     setData((prevData) => {
-      const newData = [...prevData]; // 이전 배열을 복사하여 새로운 배열 생성
+      const newData = [...prevData];
       newData[foodIndex] = {
-        ...newData[foodIndex], // 해당 요리 항목을 복사하여 새로운 객체 생성
-        recipes: [...newData[foodIndex].recipes], // 해당 요리의 레시피 배열을 복사하여 새로운 배열 생성
+        ...newData[foodIndex],
+        recipes: [...newData[foodIndex].recipes],
       };
 
-      newData[foodIndex].recipes.splice(ingredientIndex, 1); // 해당 인덱스의 재료 삭제
+      newData[foodIndex].recipes.splice(ingredientIndex, 1);
       return newData;
     });
+  };
+
+  const handleProduceIngredient = (foodIdx: number) => {
+    const ingredientName = ingredientNames[foodIdx];
+    const quantity = quantities[foodIdx];
+
+    setData((prevData) => {
+      const newData = [...prevData];
+      newData[foodIdx] = {
+        ...newData[foodIdx],
+        recipes: [
+          ...newData[foodIdx].recipes,
+          { id: prevData[foodIdx].recipes.length + 1, quantity, ingredientName, units: 'g' },
+        ],
+      };
+
+      return newData;
+    });
+
+    // 추가 후 입력값 초기화
+    setIngredientNames((prevNames) => {
+      const newNames = [...prevNames];
+      newNames[foodIdx] = '';
+      return newNames;
+    });
+
+    setQuantities((prevQuantities) => {
+      const newQuantities = [...prevQuantities];
+      newQuantities[foodIdx] = 0;
+      return newQuantities;
+    });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, foodIdx: number) => {
+    const { id, value } = e.target;
+    switch (id) {
+      case 'name':
+        setIngredientNames((prevNames) => {
+          const newNames = [...prevNames];
+          newNames[foodIdx] = value;
+          return newNames;
+        });
+        break;
+      case 'quantity':
+        setQuantities((prevQuantities) => {
+          const newQuantities = [...prevQuantities];
+          newQuantities[foodIdx] = Number(value);
+          return newQuantities;
+        });
+        break;
+      default:
+        break;
+    }
   };
   return (
     <tbody>
@@ -46,7 +105,7 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
                 <button onClick={() => handleRemoveFood(foodIdx)}>요리 제거</button>
               </th>
               <th className="py-4 text-right">
-                <button>재료 추가</button>
+                <button onClick={() => handleProduceIngredient(foodIdx)}>재료 추가</button>
               </th>
             </tr>
             {item.recipes.map((ingredient: Ingredient, ingredientIdx: number) => {
@@ -54,10 +113,21 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
                 <tr key={ingredientIdx}>
                   {/* 재료 정보 출력 */}
                   <td className="py-1 text-right">
-                    <input type="text" placeholder={`${ingredient.ingredientName}`}></input>
+                    <input
+                      type="text"
+                      placeholder={`${ingredient.ingredientName}`}
+                      id="name"
+                      onChange={(e) => handleChange(e, foodIdx)}
+                    ></input>
                   </td>
                   <td className="py-1 text-right">
-                    <input type="text" placeholder={`${ingredient.quantity} `}></input> {ingredient.units}
+                    <input
+                      type="text"
+                      placeholder={`${ingredient.quantity} `}
+                      id="quantity"
+                      onChange={(e) => handleChange(e, foodIdx)}
+                    ></input>{' '}
+                    {ingredient.units}
                   </td>
                   {/* 삭제 버튼 */}
                   <td className="py-1 text-right"></td>

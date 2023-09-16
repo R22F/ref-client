@@ -12,7 +12,7 @@ export const CookingDB = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://172.30.1.93:8080/food/recipes');
+        const response = await axios.get('https://server-ref.kro.kr/food/recipes');
         setDB(response.data);
       } catch (err) {
         console.error(err);
@@ -25,27 +25,52 @@ export const CookingDB = () => {
   const handleEditMode = (_e: React.MouseEvent<HTMLButtonElement>) => {
     setEdit(!edit);
   };
-  const handleSendData = (_e: React.MouseEvent<HTMLButtonElement>) => {
-    setEdit(!edit);
+
+  const consoleLog = () => {
+    console.log(DB[0]);
+  };
+
+  // Step 1: Declare state for the array of DBBox components
+  const [dbBoxes, setDbBoxes] = useState<React.ReactNode[]>([]);
+
+  // Step 3: Function to add a new cooking box component to the array state
+  const handleAddCooking = () => {
+    setDbBoxes((prevDbBoxes) => [...prevDbBoxes, <DBBox key={prevDbBoxes.length} />]);
   };
 
   return (
     <div className="flex justify-center">
       <div className="border-[1px] border-black w-[80rem] min-h-[40rem] mt-4">
         <div className="flex justify-end p-4">
-          <input type="text" className="border-[1px] border-black rounded-xl px-2 py-1" placeholder="요리명으로 검색"></input>
-          <button className="w-14 h-9 bg-sky-500 hover:bg-sky-600 text-sm text-white text-center rounded-md ml-4">검색</button>
+          <input
+            type="text"
+            className="border-[1px] border-black rounded-xl px-2 py-1"
+            placeholder="요리명으로 검색"
+          ></input>
+          <button className="w-14 h-9 bg-sky-500 hover:bg-sky-600 text-sm text-white text-center rounded-md ml-4">
+            검색
+          </button>
         </div>
         <div className="flex justify-end p-4">
-          <button onClick={handleEditMode} className="w-24 h-6 bg-blue-500 hover:bg-blue-600 text-sm text-white text-center rounded-2xl">
+          <button
+            onClick={handleEditMode}
+            className="w-24 h-6 bg-blue-500 hover:bg-blue-600 text-sm text-white text-center rounded-2xl"
+          >
             수정
           </button>
-          <button onClick={handleSendData} className="w-24 h-6 bg-blue-500 hover:bg-blue-600 text-sm text-white text-center rounded-2xl ml-4">
+          <button className="w-24 h-6 bg-blue-500 hover:bg-blue-600 text-sm text-white text-center rounded-2xl ml-4">
             저장
           </button>
-          <button className="w-24 h-6 bg-green-500 hover:bg-green-600 text-sm text-white text-center rounded-2xl ml-4">요리 추가 +</button>
+          <button
+            className="w-24 h-6 bg-green-500 hover:bg-green-600 text-sm text-white text-center rounded-2xl ml-4"
+            onClick={handleAddCooking}
+          >
+            요리 추가 +
+          </button>
+          <button onClick={consoleLog}>new Data</button>
         </div>
         <DBBox />
+        {dbBoxes}
       </div>
     </div>
   );
