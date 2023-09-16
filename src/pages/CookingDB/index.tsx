@@ -3,12 +3,10 @@ import { DBBox } from '../../components/databox/DBBox';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { DBAtom, EditMode } from '../../recoil/DBAtom';
-import { Ingredient } from '../../interface/DataInterface';
 
 export const CookingDB = () => {
   const [DB, setDB] = useRecoilState(DBAtom);
   const [edit, setEdit] = useRecoilState(EditMode);
-  const [newIngredient, setNewIngredient] = useState<Ingredient>({ id: 0, ingredientName: '', quantity: 0, units: '' });
   console.log('db:', DB);
 
   useEffect(() => {
@@ -27,25 +25,17 @@ export const CookingDB = () => {
   const handleEditMode = (_e: React.MouseEvent<HTMLButtonElement>) => {
     setEdit(!edit);
   };
-  const handleSendData = (_e: React.MouseEvent<HTMLButtonElement>) => {
-    setEdit(!edit);
+
+  const consoleLog = () => {
+    console.log(DB[0]);
   };
 
-  const handleSaveNewIngredient = (foodIdx: number) => {
-    if (newIngredient.ingredientName && newIngredient.quantity && newIngredient.units) {
-      setDB((prevData) => {
-        const newData = [...prevData];
-        newData[foodIdx] = {
-          ...newData[foodIdx],
-          recipes: [...newData[foodIdx].recipes, newIngredient],
-        };
+  // Step 1: Declare state for the array of DBBox components
+  const [dbBoxes, setDbBoxes] = useState<React.ReactNode[]>([]);
 
-        return newData;
-      });
-    }
-
-    setNewIngredient({ id: 0, ingredientName: '', quantity: 0, units: '' });
-    setEdit(!edit);
+  // Step 3: Function to add a new cooking box component to the array state
+  const handleAddCooking = () => {
+    setDbBoxes((prevDbBoxes) => [...prevDbBoxes, <DBBox key={prevDbBoxes.length} />]);
   };
 
   return (
@@ -68,17 +58,19 @@ export const CookingDB = () => {
           >
             수정
           </button>
-          <button
-            onClick={()=>handleSaveNewIngredient(DB.length+1)}
-            className="w-24 h-6 bg-blue-500 hover:bg-blue-600 text-sm text-white text-center rounded-2xl ml-4"
-          >
+          <button className="w-24 h-6 bg-blue-500 hover:bg-blue-600 text-sm text-white text-center rounded-2xl ml-4">
             저장
           </button>
-          <button className="w-24 h-6 bg-green-500 hover:bg-green-600 text-sm text-white text-center rounded-2xl ml-4">
+          <button
+            className="w-24 h-6 bg-green-500 hover:bg-green-600 text-sm text-white text-center rounded-2xl ml-4"
+            onClick={handleAddCooking}
+          >
             요리 추가 +
           </button>
+          <button onClick={consoleLog}>new Data</button>
         </div>
         <DBBox />
+        {dbBoxes}
       </div>
     </div>
   );

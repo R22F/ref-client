@@ -24,3 +24,8 @@ export interface FoodDto {
 export interface Data {
   foodDtoList: FoodDto[];
 }
+
+export interface FoodData {
+  name: string;
+  quantity: number;
+}
