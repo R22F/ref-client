@@ -12,7 +12,11 @@ export const CookingDB = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://server-ref.kro.kr/food/recipes');
+        const response = await axios.get('https://server-ref.kro.kr/food/recipes', {
+          headers: {
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJpZCI6IjIiLCJleHAiOjE2OTU0ODMzMDQsInVzZXJuYW1lIjoic3RyaW5nIn0.O3W0T54MQqW8ZzT4vyh06WebEYMbQuisT-rI9ZpzpBqQhdGgTs7i2cm6Zp9YDRWUPgdXcG_It_zrqlMmZ1AIPw`,
+          },
+        });
         setDB(response.data);
       } catch (err) {
         console.error(err);
@@ -30,12 +34,28 @@ export const CookingDB = () => {
     console.log(DB[0]);
   };
 
-  // Step 1: Declare state for the array of DBBox components
-  const [dbBoxes, setDbBoxes] = useState<React.ReactNode[]>([]);
+  const handleProduceRecipes = (foodIdx: number) => {
+    setDB((prevData) => {
+      const newData = [...prevData];
 
-  // Step 3: Function to add a new cooking box component to the array state
-  const handleAddCooking = () => {
-    setDbBoxes((prevDbBoxes) => [...prevDbBoxes, <DBBox key={prevDbBoxes.length} />]);
+      // newData[foodIdx]가 없으면 빈 객체로 초기화합니다.
+      if (!newData[foodIdx]) {
+        newData[foodIdx] = {
+          id: 0, // 새로운 요리의 id를 적절히 설정해야 합니다.
+          name: '', // 새로운 요리의 이름을 설정하세요.
+          fixedPrice: 0, // 새로운 요리의 고정 가격을 설정하세요.
+          primePrice: 0, // 새로운 요리의 원가를 설정하세요.
+          recipes: [], // 빈 레시피 목록으로 초기화합니다.
+        };
+      }
+
+      newData[foodIdx] = {
+        ...newData[foodIdx],
+        recipes: [...newData[foodIdx].recipes, { id: 0, quantity: 0, ingredientName: '', units: 'g' }],
+      };
+
+      return newData;
+    });
   };
 
   return (
@@ -63,14 +83,13 @@ export const CookingDB = () => {
           </button>
           <button
             className="w-24 h-6 bg-green-500 hover:bg-green-600 text-sm text-white text-center rounded-2xl ml-4"
-            onClick={handleAddCooking}
+            onClick={() => handleProduceRecipes(DB.length)}
           >
             요리 추가 +
           </button>
           <button onClick={consoleLog}>new Data</button>
         </div>
         <DBBox />
-        {dbBoxes}
       </div>
     </div>
   );

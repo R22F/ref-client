@@ -18,7 +18,9 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
   const handleRemoveFood = (foodIdx: number) => {
     onRemoveFood(foodIdx);
   };
-  
+
+  console.log(ingredientNames);
+  console.log(quantities);
 
   const handleRemoveIngredient = (foodIndex: number, ingredientIndex: number) => {
     setData((prevData) => {
@@ -34,56 +36,44 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
   };
 
   const handleProduceIngredient = (foodIdx: number) => {
-    const ingredientName = ingredientNames[foodIdx];
-    const quantity = quantities[foodIdx];
-
     setData((prevData) => {
       const newData = [...prevData];
+
       newData[foodIdx] = {
         ...newData[foodIdx],
-        recipes: [
-          ...newData[foodIdx].recipes,
-          { id: prevData[foodIdx].recipes.length + 1, quantity, ingredientName, units: 'g' },
-        ],
+        recipes: [...newData[foodIdx].recipes, { id: 0, quantity: 0, ingredientName: '', units: 'g' }],
       };
 
       return newData;
     });
-
-    // 추가 후 입력값 초기화
-    setIngredientNames((prevNames) => {
-      const newNames = [...prevNames];
-      newNames[foodIdx] = '';
-      return newNames;
-    });
-
-    setQuantities((prevQuantities) => {
-      const newQuantities = [...prevQuantities];
-      newQuantities[foodIdx] = 0;
-      return newQuantities;
-    });
+    console.log('newdata', data, 'length', data.length);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, foodIdx: number) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, foodIdx: number, ingredientIdx: number) => {
     const { id, value } = e.target;
-    switch (id) {
-      case 'name':
-        setIngredientNames((prevNames) => {
-          const newNames = [...prevNames];
-          newNames[foodIdx] = value;
-          return newNames;
-        });
-        break;
-      case 'quantity':
-        setQuantities((prevQuantities) => {
-          const newQuantities = [...prevQuantities];
-          newQuantities[foodIdx] = Number(value);
-          return newQuantities;
-        });
-        break;
-      default:
-        break;
-    }
+
+    setData((prevData) => {
+      const newData = prevData.map((food) => ({ ...food }));
+      newData[foodIdx] = {
+        ...newData[foodIdx],
+        recipes: newData[foodIdx].recipes.map((ingredient) => ({ ...ingredient })),
+      };
+
+      switch (id) {
+        case 'name':
+          newData[foodIdx].recipes[ingredientIdx].ingredientName = value;
+          break;
+        case 'quantity':
+          newData[foodIdx].recipes[ingredientIdx].quantity = Number(value);
+          break;
+        default:
+          break;
+      }
+
+      return newData;
+    });
+    console.log(data);
+    
   };
   return (
     <tbody>
@@ -117,7 +107,7 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
                       type="text"
                       placeholder={`${ingredient.ingredientName}`}
                       id="name"
-                      onChange={(e) => handleChange(e, foodIdx)}
+                      onChange={(e) => handleChange(e, foodIdx, ingredientIdx)}
                     ></input>
                   </td>
                   <td className="py-1 text-right">
@@ -125,15 +115,14 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
                       type="text"
                       placeholder={`${ingredient.quantity} `}
                       id="quantity"
-                      onChange={(e) => handleChange(e, foodIdx)}
-                    ></input>{' '}
+                      onChange={(e) => handleChange(e, foodIdx, ingredientIdx)}
+                    ></input>
                     {ingredient.units}
                   </td>
                   {/* 삭제 버튼 */}
                   <td className="py-1 text-right"></td>
                   <td></td>
                   <td className="py-1 text-right">
-                    {' '}
                     <button onClick={() => handleRemoveIngredient(foodIdx, ingredientIdx)}>재료제거</button>
                   </td>
                 </tr>
