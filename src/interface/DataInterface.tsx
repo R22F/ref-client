@@ -29,3 +29,21 @@ export interface FoodData {
   name: string;
   quantity: number;
 }
+
+export interface InventoryDto {
+  IngredientList: IngredientDto[];
+}
+
+export interface IngredientDto {
+  id: number;
+  name: string;
+  remainQuantity: number;
+  buyDate: string;
+  expiredDate: string;
+  alertQuantity: number;
+  primePrice: number;
+  units: string;
+  relievedQuantity: number;
+  url: string;
+  username: string;
+}
