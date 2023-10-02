@@ -41,6 +41,19 @@ export const Inventory = () => {
     fetchData();
   }, [add]);
 
+  const eraseIngreData = (idx: number) => {
+    instance
+      .delete(`/endpoint/${idx}`)
+      .then((response) => {
+        console.log("DELETE 요청 성공", response);
+        // 화면 갱신 로직 작성
+      })
+      .catch((error) => {
+        console.error("DELETE 요청 실패:", error);
+        // 오류 처리 로직 작성
+      });
+  };
+
   const [Inv, setInv] = useRecoilState(InventoryDto);
   const buttonDesign = () => {
     return "bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow whitespace-nowrap text-right";
@@ -113,9 +126,19 @@ export const Inventory = () => {
               // 일 단위로 변환
               const dayDiff: number = timeDiff / (1000 * 3600 * 24);
               return (
-                <tr className="border-b dark:border-neutral-500">
+                <tr
+                  key={idx.toString()}
+                  className="border-b dark:border-neutral-500"
+                >
                   <td>
-                    <button className={eraseButtonDesign()}>제거</button>
+                    <button
+                      className={eraseButtonDesign()}
+                      onClick={() => {
+                        eraseIngreData(item.id);
+                      }}
+                    >
+                      제거
+                    </button>
                   </td>
                   <td>
                     <button className={buttonDesign()}>수정</button>
