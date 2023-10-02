@@ -1,12 +1,11 @@
 import axios, { AxiosInstance } from "axios";
+import { token } from "../../components/auth/token";
 
-export const addIngredient = (add: boolean, setAdd: Function) => {
+export const AddIngredient = (add: boolean, setAdd: Function) => {
   // 요청을 보낼 URL
   const url = "https://server-ref.kro.kr";
 
   // 토큰 값
-  const token =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJpZCI6IjIiLCJleHAiOjE2OTYyMTgxNzMsInVzZXJuYW1lIjoic3RyaW5nIn0.e25j6RwehGzfwnQdHy2H7d_5WayW8nlkTF2DoXW4MLkX_0U4FHINQOwibYVVeBYjliqRIeIm5vbuj4pbWQKLQA";
 
   // Axios 인스턴스 생성
   const instance: AxiosInstance = axios.create({
@@ -15,25 +14,6 @@ export const addIngredient = (add: boolean, setAdd: Function) => {
       Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
     },
   });
-
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       // GET 요청 예시
-  //       instance
-  //         .get("/inventory/")
-  //         .then((response) => {
-  //           // 응답 처리 로직 작성
-  //           console.log(response.data);
-  //           setInv(response.data);
-  //         })
-  //         .catch((error) => {
-  //           // 에러 처리 로직 작성
-  //           console.error(error);
-  //         });
-  //     };
-
-  //     fetchData();
-  //   }, []);
 
   const modalblur = () => {
     return add
@@ -53,6 +33,84 @@ export const addIngredient = (add: boolean, setAdd: Function) => {
   };
 
   const today = new Date().toISOString().split("T")[0];
+
+  interface AddIngreData {
+    name: string; // 재료 이름
+    buyDate: string; // 구매일
+    units: string; // 단위
+    url: string;
+    unitQuantity: number; // 사용자 단위 수량
+    remainQuantity: number; // 재고 수량
+    expiredPeriod: number; // +유효기간
+    alertQuantity: number; // 알림 수량
+    unitPrice: number; // 사용자 단위 수량별 단위가격
+    relievedQuantity: number; // 구매 수량
+  }
+
+  const addIngreData: AddIngreData = {
+    name: "", // 재료 이름
+    buyDate: "", // 구매일
+    units: "", // 단위
+    url: "",
+    unitQuantity: 0,
+    remainQuantity: 0, // 재고 수량
+    expiredPeriod: 0, // +유효기간
+    alertQuantity: 0, // 알림 수량
+    unitPrice: 0, // 사용자 단위 수량별 단위가격
+    relievedQuantity: 0, // 구매 수량
+  };
+  const postIngredient = () => {
+    const strName = document.getElementById("name-input") as HTMLInputElement;
+    const strBuyDate = document.getElementById(
+      "buyDate-input"
+    ) as HTMLInputElement;
+    const strUnits = document.getElementById("units-input") as HTMLInputElement;
+    const strUrl = document.getElementById("url-input") as HTMLInputElement;
+    const numUnitQuantity = document.getElementById(
+      "unitQuantity-input"
+    ) as HTMLInputElement;
+    const numRemainQuantity = document.getElementById(
+      "remainQuantity-input"
+    ) as HTMLInputElement;
+    const numExpiredPeriod = document.getElementById(
+      "expiredPeriod-input"
+    ) as HTMLInputElement;
+    const numAlertQuantity = document.getElementById(
+      "alertQuantity-input"
+    ) as HTMLInputElement;
+    const numUnitPrice = document.getElementById(
+      "unitPrice-input"
+    ) as HTMLInputElement;
+    const numRelievedQuantity = document.getElementById(
+      "relievedQuantity-input"
+    ) as HTMLInputElement;
+
+    addIngreData.name = strName.value;
+    addIngreData.buyDate = strBuyDate.value;
+    addIngreData.units = strUnits.value;
+    addIngreData.url = strUrl.value;
+    addIngreData.unitQuantity = parseInt(numUnitQuantity?.value || "", 10);
+    addIngreData.remainQuantity = parseInt(numRemainQuantity?.value || "", 10);
+    addIngreData.expiredPeriod = parseInt(numExpiredPeriod?.value || "", 10);
+    addIngreData.alertQuantity = parseInt(numAlertQuantity?.value || "", 10);
+    addIngreData.unitPrice = parseInt(numUnitPrice?.value || "", 10);
+    addIngreData.relievedQuantity = parseInt(
+      numRelievedQuantity?.value || "",
+      10
+    );
+
+    console.log(addIngreData);
+
+    instance
+      .post("/inventory/", addIngreData)
+      .then((response) => {
+        console.log("응답:", response.data);
+        setAdd(false);
+      })
+      .catch((error) => {
+        console.error("에러:", error);
+      });
+  };
 
   return (
     <div className={modalblur()}>
@@ -78,9 +136,7 @@ export const addIngredient = (add: boolean, setAdd: Function) => {
                 <th scope="col" className=" px-6 py-4 text-right">
                   구매 날짜
                 </th>
-                <th scope="col" className=" px-6 py-4 text-right mr-4">
-                  구매 예정 날짜
-                </th>
+
                 <th scope="col" className=" px-6 py-4 text-right mr-4">
                   재고 경고량
                 </th>
@@ -99,6 +155,7 @@ export const addIngredient = (add: boolean, setAdd: Function) => {
                 <th scope="col" className=" px-6 py-4 text-right mr-4">
                   구매 링크
                 </th>
+                <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
               </tr>
             </thead>
             <tbody>
@@ -114,28 +171,28 @@ export const addIngredient = (add: boolean, setAdd: Function) => {
                   </button>
                 </td>
                 <td>
-                  <button className={buttonDesign()}>저장</button>
+                  <button className={buttonDesign()} onClick={postIngredient}>
+                    저장
+                  </button>
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
                   <input
                     type="text"
-                    onChange={() => {
-                      console.log("text");
-                    }}
+                    id="name-input"
                     className={inputcss()}
+                    required
                   />
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input
                     type="number"
-                    onChange={() => {
-                      console.log("remainQuantity");
-                    }}
+                    id="remainQuantity-input"
                     className={inputcss()}
+                    required
                   />
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
-                  <select className={inputcss()}>
+                  <select className={inputcss()} id="units-input" required>
                     <option value="g">g</option>
                     <option value="ea">ea</option>
                   </select>
@@ -145,69 +202,59 @@ export const addIngredient = (add: boolean, setAdd: Function) => {
                     type="date"
                     className={inputcss()}
                     defaultValue={today}
+                    id="buyDate-input"
+                    required
                   />
                 </td>
+
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input
-                    type="date"
+                    type="number"
                     className={inputcss()}
-                    defaultValue={today}
+                    id="alertQuantity-input"
+                    required
                   />
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input
                     type="number"
-                    onChange={() => {
-                      console.log("alertquantity");
-                    }}
                     className={inputcss()}
-                  />
-                </td>
-                <td className="whitespace-nowrap  px-6 py-4 text-right">
-                  <input
-                    type="number"
-                    onChange={() => {
-                      console.log("alertquantity");
-                    }}
-                    className={inputcss()}
+                    id="unitPrice-input"
+                    required
                   />
                   원
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input
                     type="number"
-                    onChange={() => {
-                      console.log("buyquantity");
-                    }}
                     className={inputcss()}
+                    id="unitQuantity-input"
+                    required
                   />
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input
                     type="number"
-                    onChange={() => {
-                      console.log("alertquantity");
-                    }}
                     className={inputcss()}
+                    id="expiredPeriod-input"
+                    required
                   />
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input
                     type="number"
-                    onChange={() => {
-                      console.log("alertquantity");
-                    }}
                     className={inputcss()}
+                    id="relievedQuantity-input"
+                    required
                   />
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
-                  <input
-                    type="text"
-                    onChange={() => {
-                      console.log("text");
-                    }}
-                    className={inputcss()}
-                  />
+                  <input type="text" className={inputcss()} id="url-input" />
+                </td>
+                <td>
+                  <button className={buttonDesign()} onClick={postIngredient}>
+                    저장
+                  </button>
                 </td>
               </tr>
             </tbody>

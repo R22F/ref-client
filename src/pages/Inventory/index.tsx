@@ -4,16 +4,16 @@ import { useRecoilState } from "recoil";
 import { InventoryDto } from "../../recoil/DBAtom";
 import { IngredientDto } from "../../interface/DataInterface";
 import { useState } from "react";
-import { addIngredient } from "./addIngredient";
+import { AddIngredient } from "./AddIngredient";
+import { token } from "../../components/auth/token";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
   const url = "https://server-ref.kro.kr";
-
-  // 토큰 값
-  const token =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJpZCI6IjIiLCJleHAiOjE2OTYyMTgxNzMsInVzZXJuYW1lIjoic3RyaW5nIn0.e25j6RwehGzfwnQdHy2H7d_5WayW8nlkTF2DoXW4MLkX_0U4FHINQOwibYVVeBYjliqRIeIm5vbuj4pbWQKLQA";
-
+  const [add, setAdd] = useState(false);
+  const isaddIngredient = () => {
+    setAdd(true);
+  };
   // Axios 인스턴스 생성
   const instance: AxiosInstance = axios.create({
     baseURL: url,
@@ -39,7 +39,7 @@ export const Inventory = () => {
     };
 
     fetchData();
-  }, []);
+  }, [add]);
 
   const [Inv, setInv] = useRecoilState(InventoryDto);
   const buttonDesign = () => {
@@ -50,16 +50,11 @@ export const Inventory = () => {
     return "bg-white hover:bg-gray-400 hover:border-gray-100 hover:text-gray-100 text-gray-400 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-auto whitespace-nowrap text-right";
   };
 
-  const [add, setAdd] = useState(false);
-  const isaddIngredient = () => {
-    setAdd(true);
-  };
-
   return (
     <div className="flex justify-center flex-col mt-28 items-left ml-[10rem] ">
       <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 mr-[10rem]">
         {/* 재료 추가버튼 클릭시 뜨는 모달 컴포넌트 */}
-        {add && addIngredient(add, setAdd)}
+        {add && AddIngredient(add, setAdd)}
         <div className="flex items-center ml-[1rem] mb-[1rem]">
           <button
             id="재료추가"
