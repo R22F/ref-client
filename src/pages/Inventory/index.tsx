@@ -13,7 +13,6 @@ export const Inventory = () => {
   const url = "https://server-ref.kro.kr";
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
-  const [modidx, setModIdx] = useState(0);
   const isaddIngredient = () => {
     setAdd(true);
   };
@@ -151,7 +150,6 @@ export const Inventory = () => {
                       className={buttonDesign()}
                       onClick={() => {
                         setMod(true);
-                        setModIdx(item.id);
                         SetIngredient(item);
                       }}
                     >
