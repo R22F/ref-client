@@ -8,6 +8,7 @@ export const Settlement = () => {
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(event.target.value);
   };
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-between mt-28 items-center">
