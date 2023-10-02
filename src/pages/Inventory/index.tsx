@@ -6,11 +6,14 @@ import { IngredientDto } from "../../interface/DataInterface";
 import { useState } from "react";
 import { AddIngredient } from "./AddIngredient";
 import { token } from "../../components/auth/token";
+import { ModifyIngredient } from "./ModifyIngredient";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
   const url = "https://server-ref.kro.kr";
   const [add, setAdd] = useState(false);
+  const [mod, setMod] = useState(false);
+  const [modidx, setModIdx] = useState(0);
   const isaddIngredient = () => {
     setAdd(true);
   };
@@ -21,6 +24,8 @@ export const Inventory = () => {
       Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
     },
   });
+
+  const [ingredient, SetIngredient] = useState<IngredientDto | undefined>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +73,7 @@ export const Inventory = () => {
       <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 mr-[10rem]">
         {/* 재료 추가버튼 클릭시 뜨는 모달 컴포넌트 */}
         {add && AddIngredient(add, setAdd)}
+        {mod && ModifyIngredient(mod, setMod, ingredient)}
         <div className="flex items-center ml-[1rem] mb-[1rem]">
           <button
             id="재료추가"
@@ -141,7 +147,16 @@ export const Inventory = () => {
                     </button>
                   </td>
                   <td>
-                    <button className={buttonDesign()}>수정</button>
+                    <button
+                      className={buttonDesign()}
+                      onClick={() => {
+                        setMod(true);
+                        setModIdx(item.id);
+                        SetIngredient(item);
+                      }}
+                    >
+                      수정
+                    </button>
                   </td>
                   <td>{idx + 1}</td>
                   <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
