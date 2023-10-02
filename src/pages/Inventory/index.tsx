@@ -13,7 +13,7 @@ export const Inventory = () => {
   // 토큰 값
   const token =
     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJpZCI6IjIiLCJleHAiOjE2OTYyMTgxNzMsInVzZXJuYW1lIjoic3RyaW5nIn0.e25j6RwehGzfwnQdHy2H7d_5WayW8nlkTF2DoXW4MLkX_0U4FHINQOwibYVVeBYjliqRIeIm5vbuj4pbWQKLQA";
-  const [Inv, setInv] = useRecoilState(InventoryDto);
+
   // Axios 인스턴스 생성
   const instance: AxiosInstance = axios.create({
     baseURL: url,
@@ -40,6 +40,8 @@ export const Inventory = () => {
 
     fetchData();
   }, []);
+
+  const [Inv, setInv] = useRecoilState(InventoryDto);
   const buttonDesign = () => {
     return "bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow whitespace-nowrap text-right";
     //  "bg-red-400 border-red-100 text-red-100 font-semibold py-2 px-4 border rounded shadow ml-4"
@@ -54,8 +56,8 @@ export const Inventory = () => {
   };
 
   return (
-    <div className="flex justify-center flex-col mt-28 items-left ml-[10rem]">
-      <div className="w-[100rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4">
+    <div className="flex justify-center flex-col mt-28 items-left ml-[10rem] ">
+      <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 mr-[10rem]">
         {/* 재료 추가버튼 클릭시 뜨는 모달 컴포넌트 */}
         {add && addIngredient(add, setAdd)}
         <div className="flex items-center ml-[1rem] mb-[1rem]">
@@ -68,7 +70,7 @@ export const Inventory = () => {
           </button>
         </div>
         <table className="min-w-full text-center text-sm font-light border-t-2 border-black">
-          <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800">
+          <thead className="whitespace-nowrap border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800">
             <tr>
               <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
               <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
@@ -143,13 +145,14 @@ export const Inventory = () => {
                     {item.primePrice}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {item.relievedQuantity}
+                    {/* buy quantity */}
+                    {"1회 구매 량"}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.expiredDate}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {"1회 구매 량"}
+                    {item.relievedQuantity}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.url}

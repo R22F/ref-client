@@ -1,4 +1,40 @@
+import axios, { AxiosInstance } from "axios";
+
 export const addIngredient = (add: boolean, setAdd: Function) => {
+  // 요청을 보낼 URL
+  const url = "https://server-ref.kro.kr";
+
+  // 토큰 값
+  const token =
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJpZCI6IjIiLCJleHAiOjE2OTYyMTgxNzMsInVzZXJuYW1lIjoic3RyaW5nIn0.e25j6RwehGzfwnQdHy2H7d_5WayW8nlkTF2DoXW4MLkX_0U4FHINQOwibYVVeBYjliqRIeIm5vbuj4pbWQKLQA";
+
+  // Axios 인스턴스 생성
+  const instance: AxiosInstance = axios.create({
+    baseURL: url,
+    headers: {
+      Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+    },
+  });
+
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       // GET 요청 예시
+  //       instance
+  //         .get("/inventory/")
+  //         .then((response) => {
+  //           // 응답 처리 로직 작성
+  //           console.log(response.data);
+  //           setInv(response.data);
+  //         })
+  //         .catch((error) => {
+  //           // 에러 처리 로직 작성
+  //           console.error(error);
+  //         });
+  //     };
+
+  //     fetchData();
+  //   }, []);
+
   const modalblur = () => {
     return add
       ? "fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"
@@ -21,7 +57,7 @@ export const addIngredient = (add: boolean, setAdd: Function) => {
   return (
     <div className={modalblur()}>
       <div className="flex justify-center flex-col mt-[20rem] items-left ml-[10rem]">
-        <div className="w-[100rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 bg-white">
+        <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 bg-white">
           <table className="min-w-full text-center text-sm font-light border-t-2 border-black bg-white">
             <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800 ">
               <tr>
