@@ -1,22 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { DBBox } from '../../components/databox/DBBox';
-import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { DBAtom, EditMode } from '../../recoil/DBAtom';
-
+import { useAxiosInstance } from '../../Axios/api';
 export const CookingDB = () => {
   const [DB, setDB] = useRecoilState(DBAtom);
   const [edit, setEdit] = useRecoilState(EditMode);
+  const instance = useAxiosInstance();
+
   console.log('db:', DB);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://server-ref.kro.kr/food/recipes', {
-          headers: {
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJpZCI6IjIiLCJleHAiOjE2OTU0ODMzMDQsInVzZXJuYW1lIjoic3RyaW5nIn0.O3W0T54MQqW8ZzT4vyh06WebEYMbQuisT-rI9ZpzpBqQhdGgTs7i2cm6Zp9YDRWUPgdXcG_It_zrqlMmZ1AIPw`,
-          },
-        });
+        const response:any = await instance.get('food/recipes');
+
         setDB(response.data);
       } catch (err) {
         console.error(err);
