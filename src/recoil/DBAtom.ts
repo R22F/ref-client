@@ -27,3 +27,8 @@ export const InventoryDto = atom<IngredientDto[]>({
   key: "IvnAtomArr",
   default: [],
 });
+//로그인 상태관리 atom
+export const Login = atom({
+  key:"Login",
+  default:false
+})
