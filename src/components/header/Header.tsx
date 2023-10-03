@@ -7,6 +7,8 @@ import { useRecoilState } from "recoil";
 export const Header = () => {
   const [isLogin, setIsLogin] = useRecoilState(Login); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
 
   useEffect(() => {}, [isLogin]);
   const url = "https://server-ref.kro.kr";
@@ -58,8 +60,7 @@ export const Header = () => {
       });
   };
 
-  const [id, setId] = useState("");
-  const [pw, setPw] = useState("");
+
   return (
     <>
       <div className="flex justify-between">
