@@ -4,15 +4,19 @@ import { useRecoilState } from "recoil";
 import { InventoryDto } from "../../recoil/DBAtom";
 import { IngredientDto } from "../../interface/DataInterface";
 import { useState } from "react";
+import { AddIngredient } from "./AddIngredient";
+import { token } from "../../components/auth/token";
+import { ModifyIngredient } from "./ModifyIngredient";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
   const url = "https://server-ref.kro.kr";
-
-  // 토큰 값
-  const token =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmciLCJpZCI6IjIiLCJleHAiOjE2OTYxNzg4MTIsInVzZXJuYW1lIjoic3RyaW5nIn0.OJs9xlIbgKoa0T7Rs09vbOS3NrRW_ejUcyzkXqHyY264OUCOIZ8j_nFlqqa4FX87J3rmfPpon8JLzA7gWj9jzg";
-  const [Inv, setInv] = useRecoilState(InventoryDto);
+  const [add, setAdd] = useState(false);
+  const [mod, setMod] = useState(false);
+  const [modidx, setModIdx] = useState(0);
+  const isaddIngredient = () => {
+    setAdd(true);
+  };
   // Axios 인스턴스 생성
   const instance: AxiosInstance = axios.create({
     baseURL: url,
@@ -21,6 +25,8 @@ export const Inventory = () => {
     },
   });
 
+  const [ingredient, SetIngredient] = useState<IngredientDto | undefined>();
+
   useEffect(() => {
     const fetchData = async () => {
       // GET 요청 예시
@@ -28,7 +34,7 @@ export const Inventory = () => {
         .get("/inventory/")
         .then((response) => {
           // 응답 처리 로직 작성
-          console.log(response.data);
+
           setInv(response.data);
         })
         .catch((error) => {
@@ -38,7 +44,33 @@ export const Inventory = () => {
     };
 
     fetchData();
-  }, []);
+  }, [add]);
+
+  const eraseIngreData = (idx: number) => {
+    instance
+      .delete(`/inventory/${idx}`)
+      .then(() => {
+        alert("재료를 삭제했습니다.");
+        // 화면 갱신 로직 작성
+        instance
+          .get("/inventory/")
+          .then((response) => {
+            // 응답 처리 로직 작성
+            setInv(response.data);
+          })
+          .catch((error) => {
+            // 에러 처리 로직 작성
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error("DELETE 요청 실패:", error);
+        alert("재료 삭제에 실패했습니다.");
+        // 오류 처리 로직 작성
+      });
+  };
+
+  const [Inv, setInv] = useRecoilState(InventoryDto);
   const buttonDesign = () => {
     return "bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow whitespace-nowrap text-right";
     //  "bg-red-400 border-red-100 text-red-100 font-semibold py-2 px-4 border rounded shadow ml-4"
@@ -47,203 +79,23 @@ export const Inventory = () => {
     return "bg-white hover:bg-gray-400 hover:border-gray-100 hover:text-gray-100 text-gray-400 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-auto whitespace-nowrap text-right";
   };
 
-  const [add, setAdd] = useState(false);
-  const addIngredient = () => {
-    setAdd(!add);
-    console.log(add);
-  };
-  const modalblur = () => {
-    return add
-      ? "fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"
-      : "";
-  };
-  const inputcss = () => {
-    return " px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 focus:border-2 ";
-  };
-  const today = new Date().toISOString().split("T")[0];
-
   return (
-    <div className="flex justify-center flex-col mt-28 items-left ml-[10rem]">
-      <div className="w-[100rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4">
-        {add && (
-          <div className={modalblur()}>
-            <div className="flex justify-center flex-col mt-[20rem] items-left ml-[10rem]">
-              <div className="w-[100rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 bg-white">
-                <table className="min-w-full text-center text-sm font-light border-t-2 border-black bg-white">
-                  <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800 ">
-                    <tr>
-                      <th
-                        scope="col"
-                        className=" px-6 py-4 text-right mr-4"
-                      ></th>
-                      <th
-                        scope="col"
-                        className=" px-6 py-4 text-right mr-4"
-                      ></th>
-                      <th
-                        scope="col"
-                        className="whitespace-nowrap px-6 py-4 text-right"
-                      >
-                        재료명
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right">
-                        남은 재고
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right">
-                        단위
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right">
-                        구매 날짜
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right mr-4">
-                        구매 예정 날짜
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right mr-4">
-                        재고 경고량
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right mr-4">
-                        구매 가격(원가)
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right mr-4">
-                        구매 묶음 양
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right mr-4">
-                        소비 기한
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right mr-4">
-                        이상적인 양
-                      </th>
-                      <th scope="col" className=" px-6 py-4 text-right mr-4">
-                        구매 링크
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b dark:border-neutral-500">
-                      <td>
-                        <button
-                          className={eraseButtonDesign()}
-                          onClick={() => {
-                            setAdd(false);
-                          }}
-                        >
-                          취소
-                        </button>
-                      </td>
-                      <td>
-                        <button className={buttonDesign()}>저장</button>
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                        <input
-                          type="text"
-                          onChange={() => {
-                            console.log("text");
-                          }}
-                          className={inputcss()}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="number"
-                          onChange={() => {
-                            console.log("remainQuantity");
-                          }}
-                          className={inputcss()}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <select className={inputcss()}>
-                          <option value="g">g</option>
-                          <option value="ea">ea</option>
-                        </select>
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="date"
-                          className={inputcss()}
-                          defaultValue={today}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="date"
-                          className={inputcss()}
-                          defaultValue={today}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="number"
-                          onChange={() => {
-                            console.log("alertquantity");
-                          }}
-                          className={inputcss()}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="number"
-                          onChange={() => {
-                            console.log("alertquantity");
-                          }}
-                          className={inputcss()}
-                        />
-                        원
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="number"
-                          onChange={() => {
-                            console.log("buyquantity");
-                          }}
-                          className={inputcss()}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="number"
-                          onChange={() => {
-                            console.log("alertquantity");
-                          }}
-                          className={inputcss()}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="number"
-                          onChange={() => {
-                            console.log("alertquantity");
-                          }}
-                          className={inputcss()}
-                        />
-                      </td>
-                      <td className="whitespace-nowrap  px-6 py-4 text-right">
-                        <input
-                          type="text"
-                          onChange={() => {
-                            console.log("text");
-                          }}
-                          className={inputcss()}
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
+    <div className="flex justify-center flex-col mt-28 items-left ml-[10rem] ">
+      <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 mr-[10rem]">
+        {/* 재료 추가버튼 클릭시 뜨는 모달 컴포넌트 */}
+        {add && AddIngredient(add, setAdd, setInv)}
+        {mod && ModifyIngredient(mod, setMod, setInv, ingredient)}
         <div className="flex items-center ml-[1rem] mb-[1rem]">
           <button
             id="재료추가"
             className={buttonDesign()}
-            onClick={addIngredient}
+            onClick={isaddIngredient}
           >
             재료추가
           </button>
         </div>
         <table className="min-w-full text-center text-sm font-light border-t-2 border-black">
-          <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800">
+          <thead className="whitespace-nowrap border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800">
             <tr>
               <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
               <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
@@ -291,12 +143,31 @@ export const Inventory = () => {
               // 일 단위로 변환
               const dayDiff: number = timeDiff / (1000 * 3600 * 24);
               return (
-                <tr className="border-b dark:border-neutral-500">
+                <tr
+                  key={idx.toString()}
+                  className="border-b dark:border-neutral-500"
+                >
                   <td>
-                    <button className={eraseButtonDesign()}>제거</button>
+                    <button
+                      className={eraseButtonDesign()}
+                      onClick={() => {
+                        eraseIngreData(item.id);
+                      }}
+                    >
+                      제거
+                    </button>
                   </td>
                   <td>
-                    <button className={buttonDesign()}>수정</button>
+                    <button
+                      className={buttonDesign()}
+                      onClick={() => {
+                        setMod(true);
+                        setModIdx(item.id);
+                        SetIngredient(item);
+                      }}
+                    >
+                      수정
+                    </button>
                   </td>
                   <td>{idx + 1}</td>
                   <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
@@ -309,22 +180,23 @@ export const Inventory = () => {
                     {item.buyDate}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {dayDiff}일
+                    {dayDiff}일 {/*expiredDate - buyDate*/}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {item.alertQuantity}
+                    {item.alertQuantity} {item.units.toString()}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.primePrice}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {item.relievedQuantity}
+                    {/* buy quantity */}
+                    {"1회 구매 량"} {item.units.toString()}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.expiredDate}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {"1회 구매 량"}
+                    {item.relievedQuantity}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.url}

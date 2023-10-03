@@ -36,14 +36,16 @@ export interface InventoryDto {
 
 export interface IngredientDto {
   id: number;
-  name: string;
-  remainQuantity: number;
-  buyDate: string;
+  name: string; // 재료 이름
+  unitQuantity: number; // 사용자 단위 수량
+  remainQuantity: number; // 재고 수량
+  buyDate: string; // 구매일
   expiredDate: string;
-  alertQuantity: number;
-  primePrice: number;
-  units: string;
-  relievedQuantity: number;
+  expiredPeriod: number; // +유효기간
+  alertQuantity: number; // 알림 수량
+  unitPrice: number; // 사용자 단위 수량별 단위가격
+  primePrice: number; // 1unit당 가격
+  units: string; // 단위
+  relievedQuantity: number; // 구매 수량
   url: string;
-  username: string;
 }
