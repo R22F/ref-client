@@ -31,3 +31,8 @@ export const Login = atom({
   key:"Login",
   default:false
 })
+
+export const AuthorizedToken = atom({
+  key:"token",
+  default:''
+})

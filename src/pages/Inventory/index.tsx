@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { InventoryDto } from "../../recoil/DBAtom";
 import { IngredientDto } from "../../interface/DataInterface";
 import { useState } from "react";
-import { AddIngredient } from "./AddIngredient";
+import { AddIngredient } from "./addIngredient";
 import { token } from "../../components/auth/token";
 import { ModifyIngredient } from "./ModifyIngredient";
 

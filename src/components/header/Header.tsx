@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { TotalGNB } from "../GNB/TotalGNB";
 import { Link } from "react-router-dom";
 import axios, { AxiosInstance } from "axios";
-import { Login } from "../../recoil/DBAtom";
+import { AuthorizedToken, Login } from "../../recoil/DBAtom";
 import { useRecoilState } from "recoil";
 export const Header = () => {
   const [isLogin, setIsLogin] = useRecoilState(Login); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [token,setToken]=useRecoilState(AuthorizedToken)
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
   useEffect(() => {}, [isLogin]);
-  const url = "https://server-ref.kro.kr";
 
   const logInButtonColor = (isLogin: boolean) => {
     return isLogin === true
@@ -25,10 +25,10 @@ export const Header = () => {
     return "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 mb-4 focus:border-2";
   };
   const instance: AxiosInstance = axios.create({
-    baseURL: url,
+    baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {},
   });
-  const signinHandler = () => {
+  const signinHandler = async() => {
     interface SigninData {
       username: string;
       password: string;
@@ -41,16 +41,17 @@ export const Header = () => {
     signinData.username = id;
     signinData.password = pw;
 
-    instance
+    await instance
       .post("/signin", signinData)
       .then((response) => {
         setIsModalOpen(false);
         setIsLogin(true);
         console.log(response);
-        const responseToken = response.headers.authorization;
+        const responseToken = response.headers.authorization
+        const token = responseToken.split(" ")[1]
 
-        const token = responseToken.split(" ")[1];
-        localStorage.setItem("token", token);
+        setToken(token);
+        localStorage.setItem("Authorization", token);
 
         console.log(token);
       })
@@ -71,6 +72,7 @@ export const Header = () => {
             onClick={() => {
               if (isLogin) {
                 alert("로그아웃 완료!");
+                window.localStorage.removeItem('Authorization')
                 setIsLogin(false);
               } else {
                 setIsModalOpen(true);
