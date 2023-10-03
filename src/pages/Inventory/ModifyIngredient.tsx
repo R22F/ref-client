@@ -6,6 +6,7 @@ import { IngredientDto } from "../../interface/DataInterface";
 export const ModifyIngredient = (
   mod: boolean,
   setMod: Function,
+  setInv: Function,
   ingredient?: IngredientDto
 ) => {
   // 요청을 보낼 URL
@@ -106,12 +107,19 @@ export const ModifyIngredient = (
       10
     );
 
-    console.log(ingredient);
-
     instance
       .put(`/inventory/${ingredient?.id}`, modIngreData)
-      .then((response) => {
-        console.log("응답:", response.data);
+      .then(() => {
+        instance
+          .get("/inventory/")
+          .then((response) => {
+            // 응답 처리 로직 작성
+            setInv(response.data);
+          })
+          .catch((error) => {
+            // 에러 처리 로직 작성
+            console.error(error);
+          });
         setMod(false);
       })
       .catch((error) => {

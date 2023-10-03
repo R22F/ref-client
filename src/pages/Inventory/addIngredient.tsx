@@ -1,7 +1,11 @@
 import axios, { AxiosInstance } from "axios";
 import { token } from "../../components/auth/token";
 
-export const AddIngredient = (add: boolean, setAdd: Function) => {
+export const AddIngredient = (
+  add: boolean,
+  setAdd: Function,
+  setInv: Function
+) => {
   // 요청을 보낼 URL
   const url = "https://server-ref.kro.kr";
 
@@ -99,16 +103,24 @@ export const AddIngredient = (add: boolean, setAdd: Function) => {
       10
     );
 
-    console.log(addIngreData);
-
     instance
       .post("/inventory/", addIngreData)
-      .then((response) => {
-        console.log("응답:", response.data);
+      .then(() => {
+        instance
+          .get("/inventory/")
+          .then((response) => {
+            // 응답 처리 로직 작성
+            setInv(response.data);
+          })
+          .catch((error) => {
+            // 에러 처리 로직 작성
+            console.error(error);
+          });
         setAdd(false);
       })
       .catch((error) => {
         console.error("에러:", error);
+        alert("재료 추가에 실패했습니다.");
       });
   };
 
