@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { TotalGNB } from "../GNB/TotalGNB";
 import { Link } from "react-router-dom";
 import axios, { AxiosInstance } from "axios";
+import { Login } from "../../recoil/DBAtom";
+import { useRecoilState } from "recoil";
 export const Header = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(Login); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {}, [isLogin]);
