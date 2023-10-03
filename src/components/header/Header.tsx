@@ -66,8 +66,11 @@ export const Header = () => {
           <div className=" pr-4">{isLogin ? "OOO님 안녕하세요!" : ""}</div>
           <button
             onClick={() => {
-              {
-                !isLogin && setIsModalOpen(true);
+              if (isLogin) {
+                alert("로그아웃 완료!");
+                setIsLogin(false);
+              } else {
+                setIsModalOpen(true);
               }
             }}
             className={logInButtonColor(isLogin)}
