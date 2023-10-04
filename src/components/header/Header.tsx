@@ -62,6 +62,14 @@ export const Header = () => {
       <div className="flex justify-between">
         <TotalGNB />
         <div className="flex items-center mr-4">
+          <button
+            className={logInButtonColor(false)}
+            onClick={() => {
+              console.log(token);
+            }}
+          >
+            토큰 확인
+          </button>
           <div className=" pr-4">{isLogin ? "OOO님 안녕하세요!" : ""}</div>
           <button
             onClick={() => {
