@@ -56,12 +56,49 @@ export const Header = () => {
         alert("로그인에 실패했습니다.");
       });
   };
+  // 임시 로그인 버튼 함수
+  const tempsigninHandler = async () => {
+    interface SigninData {
+      username: string;
+      password: string;
+    }
+
+    const signinData: SigninData = {
+      username: "",
+      password: "",
+    };
+    signinData.username = "string";
+    signinData.password = "string";
+
+    await instance
+      .post("/signin", signinData)
+      .then((response) => {
+        setIsModalOpen(false);
+        setIsLogin(true);
+        const responseToken = response.headers.authorization;
+        const token = responseToken.split(" ")[1];
+
+        setToken(token);
+      })
+      .catch((error) => {
+        console.error("에러:", error);
+        alert("로그인에 실패했습니다.");
+      });
+  };
 
   return (
     <>
       <div className="flex justify-between">
         <TotalGNB />
         <div className="flex items-center mr-4">
+          <button
+            className={logInButtonColor(false)}
+            onClick={() => {
+              tempsigninHandler();
+            }}
+          >
+            임시로그인
+          </button>
           <button
             className={logInButtonColor(false)}
             onClick={() => {
