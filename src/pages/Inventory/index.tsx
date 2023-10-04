@@ -5,8 +5,8 @@ import { InventoryDto } from "../../recoil/DBAtom";
 import { IngredientDto } from "../../interface/DataInterface";
 import { useState } from "react";
 import { AddIngredient } from "./addIngredient";
-import { token } from "../../components/auth/token";
 import { ModifyIngredient } from "./ModifyIngredient";
+import { useAxiosInstance } from "../../Axios/api";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
@@ -14,16 +14,11 @@ export const Inventory = () => {
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
   const [modidx, setModIdx] = useState(0);
+  const instance: AxiosInstance = useAxiosInstance();
+
   const isaddIngredient = () => {
     setAdd(true);
   };
-  // Axios 인스턴스 생성
-  const instance: AxiosInstance = axios.create({
-    baseURL: url,
-    headers: {
-      Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
-    },
-  });
 
   const [ingredient, SetIngredient] = useState<IngredientDto | undefined>();
 

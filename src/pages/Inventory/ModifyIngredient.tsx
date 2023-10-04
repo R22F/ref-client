@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from "axios";
-import { token } from "../../components/auth/token";
-
 import { IngredientDto } from "../../interface/DataInterface";
+import { useAxiosInstance } from "../../Axios/api";
 
 export const ModifyIngredient = (
   mod: boolean,
@@ -9,18 +8,7 @@ export const ModifyIngredient = (
   setInv: Function,
   ingredient?: IngredientDto
 ) => {
-  // 요청을 보낼 URL
-  const url = "https://server-ref.kro.kr";
-
-  // 토큰 값
-
-  // Axios 인스턴스 생성
-  const instance: AxiosInstance = axios.create({
-    baseURL: url,
-    headers: {
-      Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
-    },
-  });
+  const instance: AxiosInstance = useAxiosInstance();
 
   const modalblur = () => {
     return mod
