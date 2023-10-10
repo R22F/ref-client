@@ -4,25 +4,21 @@ import { useRecoilState } from "recoil";
 import { InventoryDto } from "../../recoil/DBAtom";
 import { IngredientDto } from "../../interface/DataInterface";
 import { useState } from "react";
-import { AddIngredient } from "./AddIngredient";
-import { token } from "../../components/auth/token";
+import { AddIngredient } from "./addIngredient";
 import { ModifyIngredient } from "./ModifyIngredient";
+import { useAxiosInstance } from "../../Axios/api";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
   const url = "https://server-ref.kro.kr";
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
+  const [modidx, setModIdx] = useState(0);
+  const instance: AxiosInstance = useAxiosInstance();
+
   const isaddIngredient = () => {
     setAdd(true);
   };
-  // Axios 인스턴스 생성
-  const instance: AxiosInstance = axios.create({
-    baseURL: url,
-    headers: {
-      Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
-    },
-  });
 
   const [ingredient, SetIngredient] = useState<IngredientDto | undefined>();
 
@@ -33,7 +29,7 @@ export const Inventory = () => {
         .get("/inventory/")
         .then((response) => {
           // 응답 처리 로직 작성
-          console.log(response.data);
+
           setInv(response.data);
         })
         .catch((error) => {
@@ -47,13 +43,24 @@ export const Inventory = () => {
 
   const eraseIngreData = (idx: number) => {
     instance
-      .delete(`/endpoint/${idx}`)
-      .then((response) => {
-        console.log("DELETE 요청 성공", response);
+      .delete(`/inventory/${idx}`)
+      .then(() => {
+        alert("재료를 삭제했습니다.");
         // 화면 갱신 로직 작성
+        instance
+          .get("/inventory/")
+          .then((response) => {
+            // 응답 처리 로직 작성
+            setInv(response.data);
+          })
+          .catch((error) => {
+            // 에러 처리 로직 작성
+            console.error(error);
+          });
       })
       .catch((error) => {
         console.error("DELETE 요청 실패:", error);
+        alert("재료 삭제에 실패했습니다.");
         // 오류 처리 로직 작성
       });
   };
@@ -71,8 +78,15 @@ export const Inventory = () => {
     <div className="flex justify-center flex-col mt-28 items-left ml-[10rem] ">
       <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 mr-[10rem]">
         {/* 재료 추가버튼 클릭시 뜨는 모달 컴포넌트 */}
-        {add && AddIngredient(add, setAdd)}
-        {mod && ModifyIngredient(mod, setMod, ingredient)}
+        {add && <AddIngredient add={add} setAdd={setAdd} setInv={setInv} />}
+        {mod && (
+          <ModifyIngredient
+            mod={mod}
+            setMod={setMod}
+            setInv={setInv}
+            ingredient={ingredient}
+          />
+        )}
         <div className="flex items-center ml-[1rem] mb-[1rem]">
           <button
             id="재료추가"
@@ -167,17 +181,17 @@ export const Inventory = () => {
                     {item.buyDate}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {dayDiff}일
+                    {dayDiff}일 {/*expiredDate - buyDate*/}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {item.alertQuantity}
+                    {item.alertQuantity} {item.units.toString()}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.primePrice}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {/* buy quantity */}
-                    {"1회 구매 량"}
+                    {"1회 구매 량"} {item.units.toString()}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.expiredDate}

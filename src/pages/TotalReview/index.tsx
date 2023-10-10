@@ -10,9 +10,7 @@ export const TotalReview = () => {
     const id = e.currentTarget.id;
     setText(id);
   };
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
+  useEffect(() => {}, [text]);
   const handleDateChange = (event: any) => {
     setSelectedDate(event.target.value);
   };

@@ -17,7 +17,7 @@ export const Settlement = () => {
             type="date"
             value={selectedDate}
             onChange={handleDateChange}
-            className="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-red-400 flex-grow"
+            className="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow"
           />
           <button className="bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4">
             정산

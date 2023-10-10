@@ -1,29 +1,38 @@
-import { atom } from "recoil";
-import { FoodData, FoodDto, IngredientDto } from "../interface/DataInterface";
+import { atom } from 'recoil';
+import { FoodDto, IngredientDto } from '../interface/DataInterface';
 
 export const DBAtom = atom<FoodDto[]>({
-  key: "DBAtomArr",
+  key: 'DBAtomArr',
   default: [],
 });
 
 export const Ingredients = atom({
-  key: "Ingredients",
+  key: 'Ingredients',
   default: [],
 });
 
 export const EditMode = atom({
-  key: "edit",
+  key: 'edit',
   default: false,
 });
 export const foodData = atom({
-  key: "foodData",
+  key: 'foodData',
   default: {
     quantity: 0,
-    name: "",
+    name: '',
   },
 });
-
 export const InventoryDto = atom<IngredientDto[]>({
-  key: "IvnAtomArr",
+  key: 'IvnAtomArr',
   default: [],
 });
+//로그인 상태관리 atom
+export const Login = atom({
+  key:"Login",
+  default:false
+})
+
+export const AuthorizedToken = atom({
+  key:"token",
+  default:''
+})
