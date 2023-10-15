@@ -5,8 +5,8 @@ import { InventoryDto } from "../../recoil/DBAtom";
 import { IngredientDto } from "../../interface/DataInterface";
 import { useState } from "react";
 import { AddIngredient } from "./addIngredient";
-import { token } from "../../components/auth/token";
 import { ModifyIngredient } from "./ModifyIngredient";
+import { useAxiosInstance } from "../../Axios/api";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
@@ -14,16 +14,11 @@ export const Inventory = () => {
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
   const [modidx, setModIdx] = useState(0);
+  const instance: AxiosInstance = useAxiosInstance();
+
   const isaddIngredient = () => {
     setAdd(true);
   };
-  // Axios 인스턴스 생성
-  const instance: AxiosInstance = axios.create({
-    baseURL: url,
-    headers: {
-      Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 추가
-    },
-  });
 
   const [ingredient, SetIngredient] = useState<IngredientDto | undefined>();
 
@@ -83,8 +78,15 @@ export const Inventory = () => {
     <div className="flex justify-center flex-col mt-28 items-left ml-[10rem] ">
       <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 mr-[10rem]">
         {/* 재료 추가버튼 클릭시 뜨는 모달 컴포넌트 */}
-        {add && AddIngredient(add, setAdd, setInv)}
-        {mod && ModifyIngredient(mod, setMod, setInv, ingredient)}
+        {add && <AddIngredient add={add} setAdd={setAdd} setInv={setInv} />}
+        {mod && (
+          <ModifyIngredient
+            mod={mod}
+            setMod={setMod}
+            setInv={setInv}
+            ingredient={ingredient}
+          />
+        )}
         <div className="flex items-center ml-[1rem] mb-[1rem]">
           <button
             id="재료추가"
@@ -162,7 +164,6 @@ export const Inventory = () => {
                       className={buttonDesign()}
                       onClick={() => {
                         setMod(true);
-                        setModIdx(item.id);
                         SetIngredient(item);
                       }}
                     >

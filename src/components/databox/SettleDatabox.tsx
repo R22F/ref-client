@@ -48,7 +48,7 @@ export const SettleDatabox = () => {
         <tbody>
           {data.data.map((item: SettlementData, idx: number): any => {
             return (
-              <tr className="border-b dark:border-neutral-500">
+              <tr key={idx} className="border-b dark:border-neutral-500">
                 <td>{idx + 1}</td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
                   {item.dish}

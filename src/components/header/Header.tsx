@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 export const Header = () => {
   const [isLogin, setIsLogin] = useRecoilState(Login); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [token,setToken]=useRecoilState(AuthorizedToken)
+  const [token, setToken] = useRecoilState(AuthorizedToken);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
@@ -28,7 +28,7 @@ export const Header = () => {
     baseURL: process.env.REACT_APP_SERVER_URL,
     headers: {},
   });
-  const signinHandler = async() => {
+  const signinHandler = async () => {
     interface SigninData {
       username: string;
       password: string;
@@ -46,14 +46,39 @@ export const Header = () => {
       .then((response) => {
         setIsModalOpen(false);
         setIsLogin(true);
-        console.log(response);
-        const responseToken = response.headers.authorization
-        const token = responseToken.split(" ")[1]
+        const responseToken = response.headers.authorization;
+        const token = responseToken.split(" ")[1];
 
         setToken(token);
-        localStorage.setItem("Authorization", token);
+      })
+      .catch((error) => {
+        console.error("에러:", error);
+        alert("로그인에 실패했습니다.");
+      });
+  };
+  // 임시 로그인 버튼 함수
+  const tempsigninHandler = async () => {
+    interface SigninData {
+      username: string;
+      password: string;
+    }
 
-        console.log(token);
+    const signinData: SigninData = {
+      username: "",
+      password: "",
+    };
+    signinData.username = "string";
+    signinData.password = "string";
+
+    await instance
+      .post("/signin", signinData)
+      .then((response) => {
+        setIsModalOpen(false);
+        setIsLogin(true);
+        const responseToken = response.headers.authorization;
+        const token = responseToken.split(" ")[1];
+
+        setToken(token);
       })
       .catch((error) => {
         console.error("에러:", error);
@@ -61,18 +86,33 @@ export const Header = () => {
       });
   };
 
-
   return (
     <>
       <div className="flex justify-between">
         <TotalGNB />
         <div className="flex items-center mr-4">
+          <button
+            className={logInButtonColor(false)}
+            onClick={() => {
+              tempsigninHandler();
+            }}
+          >
+            임시로그인
+          </button>
+          <button
+            className={logInButtonColor(false)}
+            onClick={() => {
+              console.log(token);
+            }}
+          >
+            토큰 확인
+          </button>
           <div className=" pr-4">{isLogin ? "OOO님 안녕하세요!" : ""}</div>
           <button
             onClick={() => {
               if (isLogin) {
                 alert("로그아웃 완료!");
-                window.localStorage.removeItem('Authorization')
+                setToken("");
                 setIsLogin(false);
               } else {
                 setIsModalOpen(true);
@@ -169,15 +209,6 @@ export const Header = () => {
                         onClick={signinHandler}
                       >
                         로그인
-                      </button>
-                      <button
-                        className="bg-gray-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded hover:shadow-lg whitespace-nowrap ml-auto"
-                        onClick={() => {
-                          const token = localStorage.getItem("token");
-                          console.log(token);
-                        }}
-                      >
-                        토큰확인
                       </button>
                     </div>
                   </div>
