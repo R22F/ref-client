@@ -1,7 +1,10 @@
+import { useRecoilValue } from "recoil";
 import { SettlementData } from "../../interface/DataInterface";
 import data from "../../pages/Settlement/data.json";
+import { foodData } from "../../recoil/DBAtom";
 
 export const TotalData = () => {
+  const foods = useRecoilValue(foodData);
   return (
     <div className="flex justify-center flex-col w-[60rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4">
       <table className="min-w-full text-center text-sm font-light">
@@ -23,15 +26,15 @@ export const TotalData = () => {
           </tr>
         </thead>
         <tbody>
-          {data.data.map((item: SettlementData, idx: number): any => {
+          {foods.map((item: SettlementData, idx: number): any => {
             return (
               <tr key={item.id} className="border-b dark:border-neutral-500">
                 <td>{idx + 1}</td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                  {item.dish}
+                  {item.name}
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                  {item.price.toLocaleString()} 원
+                  {item.fixedPrice.toLocaleString()} 원
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
                   0 개

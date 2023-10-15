@@ -1,8 +1,7 @@
 export interface SettlementData {
   id: number;
-  dish: string;
-  price: number;
-  quantity: number;
+  name: string;
+  fixedPrice: number;
   count: number;
 }
 export interface Ingredient {

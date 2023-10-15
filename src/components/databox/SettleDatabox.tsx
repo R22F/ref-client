@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { SettlementData } from "../../interface/DataInterface";
 import data from "../../pages/Settlement/data.json";
+import { useAxiosInstance } from "../../Axios/api";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { settlementData, settlementDate } from "../../recoil/DBAtom";
 
 export const SettleDatabox = () => {
   const [itemCounts, setItemCounts] = useState<Record<string, number>>({});
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const instance = useAxiosInstance();
+  // const [foods, setFoods] = useRecoilState(settlementData);
+  const foods = useRecoilValue(settlementData);
+  const settleDate = useRecoilState(settlementDate);
 
   const handleCountChange = (itemId: number, count: any) => {
     setItemCounts((prevCounts) => {
@@ -13,6 +20,18 @@ export const SettleDatabox = () => {
   };
 
   useEffect(() => {
+    if (settleDate[0] == "") return;
+
+    instance
+      .get(`/settlement/${settleDate[0]}`)
+      .then((response) => {
+        console.log("response", response);
+        console.log("foods", foods);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     let sum = 0;
     for (let itemId in itemCounts) {
       sum +=
@@ -20,7 +39,7 @@ export const SettleDatabox = () => {
         (data.data.find((item) => item.id === parseInt(itemId))?.price || 0);
     }
     setTotalPrice(sum);
-  }, [itemCounts]);
+  }, [itemCounts, settleDate]);
 
   return (
     <div className="flex justify-center flex-col w-[60rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4">
@@ -45,16 +64,17 @@ export const SettleDatabox = () => {
             </th>
           </tr>
         </thead>
+        {/* id: number; name: string; fixedPrice: number; count: number; */}
         <tbody>
-          {data.data.map((item: SettlementData, idx: number): any => {
+          {foods.map((item: SettlementData, idx: number): any => {
             return (
               <tr key={idx} className="border-b dark:border-neutral-500">
                 <td>{idx + 1}</td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                  {item.dish}
+                  {item.name}
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
-                  {item.price.toLocaleString()} 원
+                  {item.fixedPrice.toLocaleString()} 원
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input
@@ -68,7 +88,9 @@ export const SettleDatabox = () => {
                   <> 개</>
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
-                  {((itemCounts[item.id] ?? 0) * item.price).toLocaleString()}{" "}
+                  {(
+                    (itemCounts[item.id] ?? 0) * item.fixedPrice
+                  ).toLocaleString()}{" "}
                   원
                 </td>
               </tr>

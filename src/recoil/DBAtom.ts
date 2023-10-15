@@ -1,38 +1,50 @@
-import { atom } from 'recoil';
-import { FoodDto, IngredientDto } from '../interface/DataInterface';
+import { atom } from "recoil";
+import {
+  FoodDto,
+  IngredientDto,
+  SettlementData,
+} from "../interface/DataInterface";
 
 export const DBAtom = atom<FoodDto[]>({
-  key: 'DBAtomArr',
+  key: "DBAtomArr",
   default: [],
 });
 
 export const Ingredients = atom({
-  key: 'Ingredients',
+  key: "Ingredients",
   default: [],
 });
 
 export const EditMode = atom({
-  key: 'edit',
+  key: "edit",
   default: false,
 });
-export const foodData = atom({
-  key: 'foodData',
-  default: {
-    quantity: 0,
-    name: '',
-  },
+export const foodData = atom<SettlementData[]>({
+  key: "foodData",
+  default: [],
 });
+
+export const settlementData = atom<SettlementData[]>({
+  key: "settlementData",
+  default: [],
+});
+
 export const InventoryDto = atom<IngredientDto[]>({
-  key: 'IvnAtomArr',
+  key: "IvnAtomArr",
   default: [],
 });
 //로그인 상태관리 atom
 export const Login = atom({
-  key:"Login",
-  default:false
-})
+  key: "Login",
+  default: false,
+});
 
 export const AuthorizedToken = atom({
-  key:"token",
-  default:''
-})
+  key: "token",
+  default: "",
+});
+
+export const settlementDate = atom({
+  key: "settleDate",
+  default: "",
+});
