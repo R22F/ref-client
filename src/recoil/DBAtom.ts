@@ -28,11 +28,16 @@ export const InventoryDto = atom<IngredientDto[]>({
 });
 //로그인 상태관리 atom
 export const Login = atom({
-  key:"Login",
-  default:false
-})
+  key: 'Login',
+  default: false,
+});
 
 export const AuthorizedToken = atom({
-  key:"token",
-  default:''
-})
+  key: 'token',
+  default: localStorage.getItem('token') || null,
+});
+
+export const Options = atom<Map<string, number>>({
+  key: 'options',
+  default: new Map<string, number>(),
+});

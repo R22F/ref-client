@@ -53,7 +53,7 @@ export const TotalGNB = () => {
           to={RouteConst.CookingDB}
           className={getLinkClass(RouteConst.CookingDB)}
         >
-          요리별 DB
+          요리 레시피
         </Link>
       </li>
     </ul>
