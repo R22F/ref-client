@@ -1,3 +1,4 @@
+import { useAxiosInstance } from '../../../Axios/api';
 import { FoodDto, Ingredient } from '../../../interface/DataInterface';
 import { useState } from 'react';
 
@@ -8,20 +9,23 @@ interface EditOffProps {
 
 export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
   const [edit, setEdit] = useState(false);
-  const console1 = (foodIdx: number) => {
-    console.log(data);
-    console.log(data[foodIdx]);
-  };
+  const instance = useAxiosInstance();
 
   const handleEdit = () => {
     setEdit(!edit);
+    console.log(edit);
+  };
+
+  const handleRemoveIngredient = async (id: number) => {
+    const response = await instance.delete(`recipe/ingredientId/${id}`);
+    console.log(response);
   };
   return (
     <tbody>
       {data.map((item: FoodDto, foodIdx: number) => {
         return (
           <>
-            <tr key={foodIdx} onClick={() => console1(foodIdx)}>
+            <tr key={foodIdx}>
               {/* 요리 정보 출력 */}
               <th scope="col" className=" py-4">
                 <button onClick={handleEdit}>레시피 상세보기</button>
@@ -36,24 +40,29 @@ export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
                 판매가 : {item.fixedPrice.toLocaleString()} 원
               </th>
               <th scope="col" className="py-4 text-right">
-                <button onClick={() => handleRemoveFood(item.id)}>레시피 제거</button>
+                <button onClick={() => handleRemoveFood(item.id)}>요리 제거</button>
               </th>
             </tr>
+            {edit && (
+              <tr className="py-4 text-right">
+                <th></th>
+                <th>재료 명</th>
+                <th>재료 량</th>
+                <th>재료 단위</th>
+              </tr>
+            )}
             {edit &&
               item.recipes.map((item) => {
                 return (
                   <>
                     <tr className="py-4 text-right">
                       <th></th>
-                      <th>재료 명</th>
-                      <th>재료 량</th>
-                      <th>재료 단위</th>
-                    </tr>
-                    <tr className="py-4 text-right">
-                      <th></th>
                       <th className="py-4 text-right">{item.ingredientName}</th>
                       <th>{item.quantity.toLocaleString()}</th>
                       <th>{item.units}</th>
+                      <th>
+                        <button onClick={() => handleRemoveIngredient(item.id)}>재료 제거</button>
+                      </th>
                     </tr>
                   </>
                 );

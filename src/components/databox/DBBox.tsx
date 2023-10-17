@@ -14,8 +14,7 @@ export const DBBox = () => {
 
   const handleRemoveFood = async (id: number) => {
     try {
-      const response = await instance.delete(`recipe/${id}`);
-      console.log(response);
+      const response = await instance.delete(`food/${id}/recipes`);
       const newData = [...data];
       setData(newData.filter((item) => item.id !== id));
 

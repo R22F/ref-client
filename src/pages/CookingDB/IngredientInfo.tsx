@@ -1,20 +1,35 @@
 import { IngredientInput } from './IngredientInput';
 import React, { useState, useEffect } from 'react';
 
-export const IngredientInfo = () => {
-  const [ingredients, setIngredients] = useState([{ id: 1, ingredientName: '', quantity: 0, units: 'g' }]);
-
+interface ingredientData {
+  name: string;
+  ingredientId: number;
+}
+interface recipe {
+  id: number;
+  ingredientName: ingredientData;
+  quantity: number;
+  units: string | undefined;
+}
+export const IngredientInfo = ({
+  ingredients,
+  setIngredients,
+}: {
+  ingredients: recipe[];
+  setIngredients: Function;
+}) => {
   const addIngredientInput = () => {
-    const newId = ingredients.length + 1;
-    setIngredients([...ingredients, { id: newId, ingredientName: '', quantity: 0, units: 'g' }]);
-    console.log(ingredients);
+    const newId = ingredients[ingredients.length - 1].id + 1;
+    setIngredients([
+      ...ingredients,
+      { id: newId, ingredientName: { name: '', ingredientId: 0 }, quantity: 0, units: 'g' },
+    ]);
   };
 
   const removeIngredientInput = (id: number) => {
     setIngredients(ingredients.filter((ingredient) => ingredient.id !== id));
   };
   useEffect(() => {
-    console.log(ingredients);
   }, [ingredients]);
   return (
     <table className="min-w-full text-center text-sm font-light border-t-2 border-black bg-white">
@@ -36,7 +51,13 @@ export const IngredientInfo = () => {
       </thead>
       <tbody>
         {ingredients.map((ingredient) => (
-          <IngredientInput key={ingredient.id} id={ingredient.id} onRemove={removeIngredientInput} />
+          <IngredientInput
+            key={ingredient.id}
+            id={ingredient.id}
+            onRemove={removeIngredientInput}
+            ingredients={ingredients}
+            setIngredients={setIngredients}
+          />
         ))}
       </tbody>
     </table>

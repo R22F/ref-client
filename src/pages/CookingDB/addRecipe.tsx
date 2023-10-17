@@ -1,6 +1,23 @@
 import { IngredientInfo } from './IngredientInfo';
+import { useState } from 'react';
+import { useAxiosInstance } from '../../Axios/api';
 
 export const AddRecipe = ({ add, setAdd }: { add: boolean; setAdd: Function }) => {
+  const [ingredients, setIngredients] = useState([
+    {
+      id: 1,
+      ingredientName: {
+        name: '',
+        ingredientId: 0,
+      },
+      quantity: 0,
+      units: 'g',
+    },
+  ]);
+  const [name, setName] = useState('');
+  const [fixed, setFixed] = useState(0);
+  const instance = useAxiosInstance();
+
   const modalblur = () => {
     return add ? 'fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity' : '';
   };
@@ -15,8 +32,49 @@ export const AddRecipe = ({ add, setAdd }: { add: boolean; setAdd: Function }) =
   const eraseButtonDesign = () => {
     return 'bg-white hover:bg-gray-400 hover:border-gray-100 hover:text-gray-100 text-gray-400 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-auto whitespace-nowrap text-right';
   };
+  const postFoodData = {
+    name: name,
+    fixedPrice: fixed,
+  };
+  const handlePostData = (value: string | number, id: string) => {
+    switch (id) {
+      case 'name':
+        setName(String(value));
+        break;
+      case 'fixedPrice':
+        setFixed(Number(value));
+        break;
 
-  const postRecipe = () => {};
+      default:
+        break;
+    }
+  };
+  const postRecipe = async () => {
+    try {
+      //요리 정보 입력X 시 오류메세지 및 함수종료
+      if (!postFoodData.name || !postFoodData.fixedPrice) {
+        alert('요리명과 판매가를 확인해주세요');
+        return;
+      }
+
+      const FoodResponse = await instance.post('/food', postFoodData);
+      const FoodId = FoodResponse.data.id;
+
+      try { //각 recipe들 api 요청
+        ingredients.map(async (item) => {
+          const RecipeResponse = await instance.post('/recipe', {
+            quantity: item.quantity,
+            foodId: FoodId,
+            ingredientId: item.ingredientName.ingredientId,
+          });
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className={modalblur()}>
       <div className="flex justify-center flex-col mt-[20rem] items-center ml-[10rem]">
@@ -28,22 +86,26 @@ export const AddRecipe = ({ add, setAdd }: { add: boolean; setAdd: Function }) =
                   요리명
                 </th>
                 <th scope="col" className="px-2 py-4 text-right">
-                  요리원가
-                </th>
-                <th scope="col" className="px-2 py-4 text-right">
                   요리 판매가
                 </th>
               </tr>
             </thead>
             <tbody>
               <th className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                <input type="text" id="name-input" className={inputcss()}  />
+                <input
+                  type="text"
+                  id="name"
+                  className={inputcss()}
+                  onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                />
               </th>
               <th className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                <input type="text" id="name-input" className={inputcss()}  />
-              </th>
-              <th className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                <input type="text" id="name-input" className={inputcss()}  />
+                <input
+                  type="text"
+                  id="fixedPrice"
+                  className={inputcss()}
+                  onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                />
               </th>
 
               {/*재료추가 인풋창 */}
@@ -52,7 +114,7 @@ export const AddRecipe = ({ add, setAdd }: { add: boolean; setAdd: Function }) =
               <tr className="border-b dark:border-neutral-500"></tr>
             </tbody>
           </table>
-          <IngredientInfo />
+          <IngredientInfo ingredients={ingredients} setIngredients={setIngredients} />
           <button
             className={eraseButtonDesign()}
             onClick={() => {

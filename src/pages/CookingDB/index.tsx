@@ -1,35 +1,63 @@
 import { useEffect, useState } from 'react';
 import { DBBox } from '../../components/databox/DBBox';
 import { useRecoilState } from 'recoil';
-import { DBAtom, EditMode } from '../../recoil/DBAtom';
+import { DBAtom, EditMode, Options } from '../../recoil/DBAtom';
 import { useAxiosInstance } from '../../Axios/api';
 import { AddRecipe } from './addRecipe';
 import { ModifyRecipe } from './ModifyRecipe';
+
+interface InventoryData {
+  alertQuantity: number;
+  buyDate: string;
+  expiredDate: string;
+  expiredPeriod: number;
+  id: number;
+  name: string;
+  primePrice: null;
+  relievedQuantity: number;
+  remainQuantity: number;
+  unitPrice: number;
+  unitQuantity: number;
+  units: string;
+  url: string;
+  username: string;
+}
 export const CookingDB = () => {
   const [DB, setDB] = useRecoilState(DBAtom);
   const [edit, setEdit] = useRecoilState(EditMode);
   const instance = useAxiosInstance();
-
+  const [option, setOption] = useRecoilState(Options);
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
-  
-
-  console.log('db:', DB);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: any = await instance.get('food/recipes');
+        const response: any = await instance.get('/food/recipes');
 
         setDB(response.data);
       } catch (err) {
         console.error(err);
       }
     };
+    const inventoryData = async () => {
+      try {
+        const response: any = await instance.get('/inventory/');
+
+        const nameOfData: Map<string, number> = new Map();
+        response.data.map((data: InventoryData) => {
+          const { name, id } = data;
+          return nameOfData.set(name, id);
+        });
+        setOption(nameOfData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
     fetchData();
+    inventoryData();
   }, []);
-
 
   return (
     <div className="flex justify-center">
@@ -53,8 +81,8 @@ export const CookingDB = () => {
           </button>
         </div>
         <DBBox />
-        {add && <AddRecipe add={add} setAdd={setAdd}/>}
-        {mod && <ModifyRecipe mod={mod} setMod={setMod}/>}
+        {add && <AddRecipe add={add} setAdd={setAdd} />}
+        {mod && <ModifyRecipe mod={mod} setMod={setMod} />}
       </div>
     </div>
   );
