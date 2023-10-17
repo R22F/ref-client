@@ -3,7 +3,9 @@ export interface SettlementData {
   name: string;
   fixedPrice: number;
   count: number;
+  username: string;
 }
+
 export interface Ingredient {
   id: number;
   ingredientName: string;

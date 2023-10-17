@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { SettlementData } from "../../interface/DataInterface";
 import data from "../../pages/Settlement/data.json";
 import { useAxiosInstance } from "../../Axios/api";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { settlementData, settlementDate } from "../../recoil/DBAtom";
+import { useRecoilState } from "recoil";
+import { foodData, settlementDate } from "../../recoil/DBAtom";
 
 export const SettleDatabox = () => {
   const [itemCounts, setItemCounts] = useState<Record<string, number>>({});
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const instance = useAxiosInstance();
-  // const [foods, setFoods] = useRecoilState(settlementData);
-  const foods = useRecoilValue(settlementData);
+  const [foods, setFoods] = useRecoilState<SettlementData[]>(foodData);
   const settleDate = useRecoilState(settlementDate);
 
   const handleCountChange = (itemId: number, count: any) => {
@@ -20,23 +19,26 @@ export const SettleDatabox = () => {
   };
 
   useEffect(() => {
-    if (settleDate[0] == "") return;
-
     instance
-      .get(`/settlement/${settleDate[0]}`)
+      .get("/food")
       .then((response) => {
-        console.log("response", response);
-        console.log("foods", foods);
+        setFoods(response.data);
+
+        console.log(foods);
       })
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    console.log(foods);
 
     let sum = 0;
     for (let itemId in itemCounts) {
       sum +=
         (itemCounts[itemId] || 0) *
-        (data.data.find((item) => item.id === parseInt(itemId))?.price || 0);
+        (foods.find((item) => item.id === parseInt(itemId))?.fixedPrice || 0);
     }
     setTotalPrice(sum);
   }, [itemCounts, settleDate]);
@@ -83,7 +85,10 @@ export const SettleDatabox = () => {
                     max="9999"
                     placeholder="0"
                     className=" border-b-2 border-black w-24 text-right w-12"
-                    onChange={(e) => handleCountChange(item.id, e.target.value)}
+                    onChange={(e) => {
+                      handleCountChange(item.id, e.target.value);
+                      // item.count = parseInt(e.target.value, 10);
+                    }}
                   ></input>
                   <> 개</>
                 </td>
