@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   CalendarBox,
   EmailBox,
@@ -8,6 +8,8 @@ import {
   NameBox,
   PwBox,
 } from "../inputBox/inputBox";
+import { AxiosInstance } from "axios";
+import { useAxiosInstanceNoToken } from "../../Axios/api";
 
 export const submitButton = () => {
   return "bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4 ml-auto";
@@ -21,13 +23,12 @@ export const cancleButton = () => {
  * @returns
  */
 export const SignUpBox = () => {
-  // 임시 api url
-  const [apiUrl, setApiUrl] = useState("");
   // const err: ErrorClass = new ErrorClass();
+  const navigate = useNavigate();
 
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [birth, setBrith] = useState("");
   const [invalidReasonText, setInvalidReasonText] = useState("");
@@ -38,43 +39,35 @@ export const SignUpBox = () => {
    * 제출 버튼 함수.
    * @param e 리랜더링을 멈추기 위한 기법으로 잠시 사용
    */
+  const instance: AxiosInstance = useAxiosInstanceNoToken();
+
   const submitClick = (e: any) => {
-    setApiUrl("https://server-ref.kro.kr/v1/test");
-    console.log(err);
     if (!err.isValid()) {
       setInvalidReasonText(err.getMessage());
+      console.log(err);
+      e.preventDefault();
       return false;
     }
 
-    const SingUpData = {
-      id: id,
-      pw: pw,
-      name: name,
+    const SignUpData = {
+      username: id,
+      password: pw,
+      // name: name,
       email: email,
       birth: birth,
     };
 
-    // 추후 api url 변경 필요
-    fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        accept: "*/*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(SingUpData),
-    })
+    instance
+      .post("/signup", SignUpData)
       .then((response) => {
-        if (response.ok) {
-          return response.json;
-        } else {
-          throw new Error("회원가입에 실패했습니다.");
-        }
-      })
-      .then((data) => {
-        console.log(data);
+        // 응답 처리 로직 작성
+        alert("회원가입에 성공하였습니다.");
+        navigate("/");
       })
       .catch((error) => {
-        console.log(error);
+        // 에러 처리 로직 작성
+        console.error(error);
+        alert("회원가입에 실패하였습니다.");
       });
 
     e.preventDefault();
@@ -93,7 +86,6 @@ export const SignUpBox = () => {
         <form>
           <IdBox SetValue={setId} error={[err, setErr]} />
           <PwBox SetValue={setPw} error={[err, setErr]} />
-          <NameBox SetValue={setName} error={[err, setErr]} />
           <CalendarBox SetValue={setBrith} error={[err, setErr]} />
           <EmailBox SetValue={setEmail} error={[err, setErr]} />
           <div>{invalidReasonText}</div>
