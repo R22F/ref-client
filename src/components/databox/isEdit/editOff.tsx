@@ -10,6 +10,7 @@ interface EditOffProps {
 export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
   const [edit, setEdit] = useState(false);
   const instance = useAxiosInstance();
+  console.log(data);
 
   const handleEdit = () => {
     setEdit(!edit);
@@ -26,7 +27,6 @@ export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
         return (
           <>
             <tr key={foodIdx}>
-              {/* 요리 정보 출력 */}
               <th scope="col" className=" py-4">
                 <button onClick={handleEdit}>레시피 상세보기</button>
               </th>
@@ -43,7 +43,7 @@ export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
                 <button onClick={() => handleRemoveFood(item.id)}>요리 제거</button>
               </th>
             </tr>
-            {edit && (
+            {edit && item.recipes[0] && (
               <tr className="py-4 text-right">
                 <th></th>
                 <th>재료 명</th>

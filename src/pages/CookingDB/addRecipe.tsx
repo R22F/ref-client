@@ -60,17 +60,26 @@ export const AddRecipe = ({ add, setAdd }: { add: boolean; setAdd: Function }) =
       const FoodResponse = await instance.post('/food', postFoodData);
       const FoodId = FoodResponse.data.id;
 
-      try { //각 recipe들 api 요청
-        ingredients.map(async (item) => {
-          const RecipeResponse = await instance.post('/recipe', {
-            quantity: item.quantity,
-            foodId: FoodId,
-            ingredientId: item.ingredientName.ingredientId,
+      if (ingredients[0]) {
+        try {
+          //각 recipe들 api 요청
+          console.log(ingredients);
+          
+          ingredients.map(async (item) => {
+            const RecipeResponse = await instance.post('/recipe', [
+              {
+                quantity: item.quantity,
+                foodId: FoodId,
+                ingredientId: item.ingredientName.ingredientId,
+              },
+            ]);
+            console.log(RecipeResponse);
           });
-        });
-      } catch (err) {
-        console.log(err);
+        } catch (err) {
+          console.log(err);
+        }
       }
+      setAdd(false);
     } catch (err) {
       console.log(err);
     }
