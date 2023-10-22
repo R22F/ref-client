@@ -164,7 +164,6 @@ export const Inventory = () => {
                       className={buttonDesign()}
                       onClick={() => {
                         setMod(true);
-                        setModIdx(item.id);
                         SetIngredient(item);
                       }}
                     >
