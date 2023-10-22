@@ -1,6 +1,6 @@
-import { useAxiosInstance } from '../../../Axios/api';
-import { FoodDto, Ingredient } from '../../../interface/DataInterface';
-import { useState } from 'react';
+import { useAxiosInstance } from "../../../Axios/api";
+import { FoodDto, Ingredient } from "../../../interface/DataInterface";
+import { useState } from "react";
 
 interface EditOffProps {
   data: FoodDto[];
@@ -15,10 +15,15 @@ export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
     setEdit(!edit);
     console.log(edit);
   };
+  console.log(data);
 
   const handleRemoveIngredient = async (id: number) => {
-    const response = await instance.delete(`recipe/ingredientId/${id}`);
-    console.log(response);
+    try {
+      const response = await instance.delete(`recipe/${id}`);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <tbody>
@@ -40,7 +45,9 @@ export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
                 판매가 : {item.fixedPrice.toLocaleString()} 원
               </th>
               <th scope="col" className="py-4 text-right">
-                <button onClick={() => handleRemoveFood(item.id)}>요리 제거</button>
+                <button onClick={() => handleRemoveFood(item.id)}>
+                  요리 제거
+                </button>
               </th>
             </tr>
             {edit && (
@@ -61,7 +68,9 @@ export const EditOff: React.FC<EditOffProps> = ({ data, handleRemoveFood }) => {
                       <th>{item.quantity.toLocaleString()}</th>
                       <th>{item.units}</th>
                       <th>
-                        <button onClick={() => handleRemoveIngredient(item.id)}>재료 제거</button>
+                        <button onClick={() => handleRemoveIngredient(item.id)}>
+                          재료 제거
+                        </button>
                       </th>
                     </tr>
                   </>

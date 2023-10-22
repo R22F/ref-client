@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { DBBox } from '../../components/databox/DBBox';
-import { useRecoilState } from 'recoil';
-import { DBAtom, EditMode, Options } from '../../recoil/DBAtom';
-import { useAxiosInstance } from '../../Axios/api';
-import { AddRecipe } from './addRecipe';
-import { ModifyRecipe } from './ModifyRecipe';
+import { useEffect, useState } from "react";
+import { DBBox } from "../../components/databox/DBBox";
+import { useRecoilState } from "recoil";
+import { DBAtom, EditMode, Options } from "../../recoil/DBAtom";
+import { useAxiosInstance } from "../../Axios/api";
+import { AddRecipe } from "./addRecipe";
+import { ModifyRecipe } from "./ModifyRecipe";
 
 interface InventoryData {
   alertQuantity: number;
@@ -33,7 +33,7 @@ export const CookingDB = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: any = await instance.get('/food/recipes');
+        const response: any = await instance.get("/food/recipes");
 
         setDB(response.data);
       } catch (err) {
@@ -42,7 +42,7 @@ export const CookingDB = () => {
     };
     const inventoryData = async () => {
       try {
-        const response: any = await instance.get('/inventory/');
+        const response: any = await instance.get("/inventory/");
 
         const nameOfData: Map<string, number> = new Map();
         response.data.map((data: InventoryData) => {
@@ -57,7 +57,7 @@ export const CookingDB = () => {
 
     fetchData();
     inventoryData();
-  }, []);
+  }, [add]);
 
   return (
     <div className="flex justify-center">
