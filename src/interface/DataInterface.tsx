@@ -1,10 +1,12 @@
 export interface SettlementData {
   id: number;
-  dish: string;
-  price: number;
-  quantity: number;
+  foodId: number;
+  name: string;
+  fixedPrice: number;
   count: number;
+  username: string;
 }
+
 export interface Ingredient {
   id: number;
   ingredientName: string;
