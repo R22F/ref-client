@@ -175,7 +175,7 @@ export const Inventory = () => {
                     </button>
                   </td>
                   <td>{idx + 1}</td>
-                  <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
+                  <td className="whitespace-nowrap px-6 py-4 font-medium text-right">
                     {item.name}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">

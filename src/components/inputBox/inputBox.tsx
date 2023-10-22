@@ -1,4 +1,6 @@
+import { AxiosInstance } from "axios";
 import { useEffect, useState } from "react";
+import { useAxiosInstance, useAxiosInstanceNoToken } from "../../Axios/api";
 
 export class ErrorClass {
   constructor(e?: Partial<ErrorClass>) {
@@ -10,6 +12,8 @@ export class ErrorClass {
     this.isNameEmpty = e?.isNameEmpty ?? true;
     this.isEmailEmpty = e?.isEmailEmpty ?? true;
     this.isEmailIncorrect = e?.isEmailIncorrect ?? true;
+    this.isNeedchkEmailDuplicate = e?.isNeedchkEmailDuplicate ?? true;
+    this.isEmailDuplicate = e?.isEmailDuplicate ?? true;
     this.isCalendarEmpty = e?.isCalendarEmpty ?? true;
     this.message = e?.message ?? "";
   }
@@ -22,6 +26,8 @@ export class ErrorClass {
   public isNameEmpty: boolean;
   public isEmailEmpty: boolean;
   public isEmailIncorrect: boolean;
+  public isNeedchkEmailDuplicate: boolean;
+  public isEmailDuplicate: boolean;
   public isCalendarEmpty: boolean;
   public message: string;
 
@@ -50,10 +56,10 @@ export class ErrorClass {
       this.message = "비밀번호가 일치하지 않습니다.";
       return false;
     }
-    if (this.isNameEmpty) {
-      this.message = "성함을 입력해주세요.";
-      return false;
-    }
+    // if (this.isNameEmpty) {
+    //   this.message = "성함을 입력해주세요.";
+    //   return false;
+    // }
     if (this.isCalendarEmpty) {
       this.message = "생년월일을 입력해주세요.";
       return false;
@@ -62,8 +68,17 @@ export class ErrorClass {
       this.message = "이메일을 입력해주세요.";
       return false;
     }
+    if (this.isNeedchkEmailDuplicate) {
+      this.message = "이메일 중복체크를 확인해주세요.";
+      return false;
+    }
     if (this.isEmailIncorrect) {
       this.message = "이메일이 유효하지 않습니다.";
+      return false;
+    }
+
+    if (this.isEmailDuplicate) {
+      this.message = "이메일이 중복됩니다.";
       return false;
     }
 
@@ -104,6 +119,7 @@ export const IdBox = ({ SetValue, error }: Props) => {
 
   // 서버쪽에서 중복 여부만 res받으면 없어질 코드
   const [id, setId] = useState("");
+  const instance: AxiosInstance = useAxiosInstanceNoToken();
 
   useEffect(() => {
     SetValue(id);
@@ -122,15 +138,28 @@ export const IdBox = ({ SetValue, error }: Props) => {
     setError(cloneError);
   };
 
-  const CheckDuplicate = () => {
-    if (id == "aaa") {
-      cloneError.isDuplicate = true;
-      setvalidIdMessage("중복되는 아이디 입니다.");
-    } else {
-      cloneError.isDuplicate = false;
-      setvalidIdMessage("사용가능한 아이디 입니다.");
+  const CheckDuplicate = (e: any) => {
+    if (id == "") {
+      return;
     }
+
+    instance
+      .get(`/check/user/${id}`)
+      .then((response) => {
+        if (response.data) {
+          alert("사용 가능한 아이디입니다. ");
+          cloneError.isDuplicate = false;
+        } else {
+          alert("중복된 아이디입니다. ");
+          cloneError.isDuplicate = true;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("중복 검사에 실패했습니다.");
+      });
     cloneError.isNeedchkDuplicate = false;
+    e.preventDefault();
     setError(cloneError);
   };
 
@@ -283,17 +312,21 @@ export const CalendarBox = ({ SetValue, error }: Props) => {
     setError(cloneError);
   };
   return (
-    <div className="flex items-center mt-4">
-      <label htmlFor="email" className={labelfont()}>
-        생년월일{" "}
-      </label>
-      <input
-        type="date"
-        name="dateOfBirth"
-        onChange={HandleCalendar}
-        required
-        className="ml-auto"
-      ></input>
+    <div className="flex flex-col mt-4">
+      <div>
+        <label htmlFor="email" className={labelfont()}>
+          생년월일{" "}
+        </label>
+      </div>
+      <div>
+        <input
+          type="date"
+          name="dateOfBirth"
+          onChange={HandleCalendar}
+          required
+          className="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow w-full"
+        ></input>
+      </div>
     </div>
   );
 };
@@ -303,6 +336,7 @@ export const EmailBox = ({ SetValue, error }: Props) => {
   const cloneError = new ErrorClass(err);
   const [emailValue, setEmailValue] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
+  const instance: AxiosInstance = useAxiosInstanceNoToken();
 
   useEffect(() => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -319,6 +353,7 @@ export const EmailBox = ({ SetValue, error }: Props) => {
     } else {
       cloneError.isEmailEmpty = false;
     }
+    cloneError.isNeedchkEmailDuplicate = true;
     setError(cloneError);
   }, [emailValue]);
 
@@ -328,14 +363,42 @@ export const EmailBox = ({ SetValue, error }: Props) => {
     setEmailValue(email);
   };
 
+  const CheckDuplicate = (e: any) => {
+    if (emailValue == "") {
+      return;
+    }
+
+    instance
+      .get(`/check/email/${emailValue}`)
+      .then((response) => {
+        if (response.data) {
+          cloneError.isEmailDuplicate = false;
+          alert("사용 가능한 이메일입니다.");
+        } else {
+          cloneError.isEmailDuplicate = true;
+          alert("중복되는 이메일입니다.");
+        }
+      })
+      .catch((err) => {
+        alert("이메일 중복 확인에 실피했습니다.");
+      });
+
+    cloneError.isNeedchkEmailDuplicate = false;
+    e.preventDefault();
+    setError(cloneError);
+  };
+
   return (
     <div className="flex flex-col mt-4">
       <div className="flex items-center">
         <label htmlFor="email" className={labelfont()}>
           이메일
         </label>
+        <button onClick={CheckDuplicate} className={normalButton()}>
+          중복확인
+        </button>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center mt-2">
         <input
           type="text"
           id="email"
@@ -345,6 +408,7 @@ export const EmailBox = ({ SetValue, error }: Props) => {
           className={inputcss()}
         />
       </div>
+
       <div className={errormsg()}>{emailMessage}</div>
     </div>
   );

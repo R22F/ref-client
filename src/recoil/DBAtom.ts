@@ -47,10 +47,15 @@ export const Login = atom({
 
 export const AuthorizedToken = atom({
   key: "token",
-  default: "",
+  default: localStorage.getItem('token') || null,
 });
 
 export const settlementDate = atom({
   key: "settleDate",
   default: "",
+});
+
+export const Options = atom<Map<string, number>>({
+  key: 'options',
+  default: new Map<string, number>(),
 });
