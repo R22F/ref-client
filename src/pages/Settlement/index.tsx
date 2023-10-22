@@ -3,8 +3,14 @@ import { DayCount } from "../../components/databox/DayCount";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Login, foodData, settlementDate } from "../../recoil/DBAtom";
+import {
+  Login,
+  foodData,
+  settlementDate,
+  totalPriceSet,
+} from "../../recoil/DBAtom";
 import { SettlementData } from "../../interface/DataInterface";
+import { useAxiosInstance } from "../../Axios/api";
 
 export const Settlement = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
@@ -12,6 +18,9 @@ export const Settlement = () => {
   const navigate = useNavigate();
   const [settleDate, setSettleDate] = useRecoilState(settlementDate);
   const foods = useRecoilValue(foodData);
+  const totalPrice = useRecoilValue(totalPriceSet);
+
+  const instance = useAxiosInstance();
 
   const handleDateChange = (event: any) => {
     setSelectedDate(event.target.value);
@@ -27,8 +36,26 @@ export const Settlement = () => {
     setSettleDate(DayCount());
   }, []);
 
+  interface settleData {
+    sum: number;
+    foods: SettlementData[];
+  }
+
   const handleSettlement = () => {
-    console.log(foods);
+    const data: settleData = {
+      sum: totalPrice,
+      foods: foods,
+    };
+    console.log(data);
+
+    instance
+      .post("settlement", data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

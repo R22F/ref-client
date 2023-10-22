@@ -1,5 +1,6 @@
 export interface SettlementData {
   id: number;
+  foodId: number;
   name: string;
   fixedPrice: number;
   count: number;

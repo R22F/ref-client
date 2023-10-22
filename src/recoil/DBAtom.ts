@@ -19,6 +19,12 @@ export const EditMode = atom({
   key: "edit",
   default: false,
 });
+
+export const totalPriceSet = atom<number>({
+  key: "totalPriceSet",
+  default: 0,
+});
+
 export const foodData = atom<SettlementData[]>({
   key: "foodData",
   default: [],

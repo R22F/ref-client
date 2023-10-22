@@ -29,8 +29,11 @@ export const Inventory = () => {
         .get("/inventory/")
         .then((response) => {
           // 응답 처리 로직 작성
-
-          setInv(response.data);
+          if (response.data == "") {
+            console.log(response);
+          } else {
+            setInv(response.data);
+          }
         })
         .catch((error) => {
           // 에러 처리 로직 작성
@@ -51,6 +54,7 @@ export const Inventory = () => {
           .get("/inventory/")
           .then((response) => {
             // 응답 처리 로직 작성
+
             setInv(response.data);
           })
           .catch((error) => {
