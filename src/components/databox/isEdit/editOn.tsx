@@ -73,7 +73,6 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
       return newData;
     });
     console.log(data);
-    
   };
   return (
     <tbody>
@@ -101,7 +100,7 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
             {item.recipes.map((ingredient: Ingredient, ingredientIdx: number) => {
               return (
                 <tr key={ingredientIdx}>
-                  {/* 재료 정보 출력 */}
+                  
                   <td className="py-1 text-right">
                     <input
                       type="text"
@@ -119,7 +118,7 @@ export const EditOn: React.FC<EditOnProps> = ({ props, onRemoveFood }) => {
                     ></input>
                     {ingredient.units}
                   </td>
-                  {/* 삭제 버튼 */}
+                  
                   <td className="py-1 text-right"></td>
                   <td></td>
                   <td className="py-1 text-right">
