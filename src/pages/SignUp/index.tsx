@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { SignUpBox } from "../../components/auth/SignUpBox";
-import { useRecoilValue } from "recoil";
-import { Login } from "../../recoil/DBAtom";
-import { useNavigate } from "react-router-dom";
+import {useEffect} from "react";
+import {SignUpBox} from "../../components/auth/SignUpBox";
+import {useRecoilValue} from "recoil";
+import {Login} from "../../recoil/DBAtom";
+import {useNavigate} from "react-router-dom";
+
 export const SignUp = () => {
   const isLogin = useRecoilValue(Login);
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export const SignUp = () => {
     if (isLogin) {
       navigate("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <SignUpBox />;

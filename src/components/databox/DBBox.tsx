@@ -1,9 +1,9 @@
-import { FoodDto } from "../../interface/DataInterface";
-import { DBAtom, EditMode } from "../../recoil/DBAtom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { EditOff } from "./isEdit/editOff";
-import { useEffect } from "react";
-import { useAxiosInstance } from "../../Axios/api";
+import {FoodDto} from "../../interface/DataInterface";
+import {DBAtom, EditMode} from "../../recoil/DBAtom";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {EditOff} from "./isEdit/editOff";
+import {useEffect} from "react";
+import {useAxiosInstance} from "../../Axios/api";
 
 export const DBBox = ({ setAdd }: { setAdd: Function }) => {
   const [data, setData] = useRecoilState<FoodDto[]>(DBAtom);

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useAxiosInstance } from "../../Axios/api";
-import { IngredientInfo } from "./IngredientInfo";
+import {useState} from "react";
+import {useAxiosInstance} from "../../Axios/api";
+import {IngredientInfo} from "./IngredientInfo";
 
 export const ModifyRecipe = ({ mod, setMod }: { mod: boolean; setMod: Function }) => {
   const [ingredients, setIngredients] = useState([

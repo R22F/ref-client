@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { useAxiosInstance } from "../../../Axios/api";
-import { FoodDto, Ingredient } from "../../../interface/DataInterface";
-import { useState } from "react";
-import { DBAtom } from "../../../recoil/DBAtom";
-import { useRecoilState } from "recoil";
+import {useAxiosInstance} from "../../../Axios/api";
+import {FoodDto} from "../../../interface/DataInterface";
+import React, {useState} from "react";
+import {DBAtom} from "../../../recoil/DBAtom";
+import {useRecoilState} from "recoil";
 
 interface EditOffProps {
   handleRemoveFood: Function;
@@ -52,12 +51,10 @@ export const EditOff: React.FC<EditOffProps> = ({ handleRemoveFood }) => {
           <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
         </tr>
       </thead>
-      <tbody>
         {data.map((item: FoodDto, foodIdx: number) => {
           return (
-            <>
+            <tbody key={foodIdx}>
               <tr
-                key={foodIdx}
                 className="border-t dark:border-neutral-500 bg-gray-100 font-normal"
               >
                 <th scope="col" className=" py-4">
@@ -115,10 +112,9 @@ export const EditOff: React.FC<EditOffProps> = ({ handleRemoveFood }) => {
                     </>
                   );
                 })}
-            </>
+            </tbody>
           );
         })}
-      </tbody>
     </table>
   );
 };

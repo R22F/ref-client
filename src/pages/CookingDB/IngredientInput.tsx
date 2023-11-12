@@ -1,5 +1,5 @@
-import { useRecoilValue } from "recoil";
-import { Options } from "../../recoil/DBAtom";
+import {useRecoilValue} from "recoil";
+import {Options} from "../../recoil/DBAtom";
 
 interface ingredientData {
   name: string;

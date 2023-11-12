@@ -1,6 +1,6 @@
-import axios, { AxiosInstance } from 'axios';
-import { IngredientDto } from '../../interface/DataInterface';
-import { useAxiosInstance } from '../../Axios/api';
+import {AxiosInstance} from 'axios';
+import {IngredientDto} from '../../interface/DataInterface';
+import {useAxiosInstance} from '../../Axios/api';
 
 export const ModifyIngredient = ({
   mod,

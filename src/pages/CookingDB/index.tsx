@@ -1,15 +1,10 @@
-import { useEffect, useState } from "react";
-import { DBBox } from "../../components/databox/DBBox";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  AuthorizedToken,
-  DBAtom,
-  EditMode,
-  Options,
-} from "../../recoil/DBAtom";
-import { useAxiosInstance } from "../../Axios/api";
-import { AddRecipe } from "./addRecipe";
-import { ModifyRecipe } from "./ModifyRecipe";
+import {useEffect, useState} from "react";
+import {DBBox} from "../../components/databox/DBBox";
+import {useRecoilState} from "recoil";
+import {DBAtom, Options,} from "../../recoil/DBAtom";
+import {useAxiosInstance} from "../../Axios/api";
+import {AddRecipe} from "./addRecipe";
+import {ModifyRecipe} from "./ModifyRecipe";
 
 interface InventoryData {
   alertQuantity: number;
@@ -28,13 +23,13 @@ interface InventoryData {
   username: string;
 }
 export const CookingDB = () => {
-  const [DB, setDB] = useRecoilState(DBAtom);
-  const [edit, setEdit] = useRecoilState(EditMode);
+  const [, setDB] = useRecoilState(DBAtom);
+  // const [edit, setEdit] = useRecoilState(EditMode);
   const instance = useAxiosInstance();
-  const [option, setOption] = useRecoilState(Options);
+  const [, setOption] = useRecoilState(Options);
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
-  const token = useRecoilValue(AuthorizedToken);
+  // const token = useRecoilValue(AuthorizedToken);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,8 +44,6 @@ export const CookingDB = () => {
     const inventoryData = async () => {
       try {
         const response: any = await instance.get("/inventory/");
-        console.log(response.data);
-
         const nameOfData: Map<string, number> = new Map();
         response.data.map((data: InventoryData) => {
           const { name, id } = data;
@@ -64,6 +57,7 @@ export const CookingDB = () => {
 
     fetchData();
     inventoryData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [add]);
 
   return (

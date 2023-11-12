@@ -1,19 +1,17 @@
-import axios, { AxiosInstance } from "axios";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { InventoryDto } from "../../recoil/DBAtom";
-import { IngredientDto } from "../../interface/DataInterface";
-import { useState } from "react";
-import { AddIngredient } from "./addIngredient";
-import { ModifyIngredient } from "./ModifyIngredient";
-import { useAxiosInstance } from "../../Axios/api";
+import {AxiosInstance} from "axios";
+import {useEffect, useState} from "react";
+import {useRecoilState} from "recoil";
+import {InventoryDto} from "../../recoil/DBAtom";
+import {IngredientDto} from "../../interface/DataInterface";
+import {AddIngredient} from "./addIngredient";
+import {ModifyIngredient} from "./ModifyIngredient";
+import {useAxiosInstance} from "../../Axios/api";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
-  const url = "https://server-ref.kro.kr";
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
-  const [modidx, setModIdx] = useState(0);
+  // const [modidx, setModIdx] = useState(0);
   const instance: AxiosInstance = useAxiosInstance();
 
   const isaddIngredient = () => {
@@ -29,7 +27,7 @@ export const Inventory = () => {
         .get("/inventory/")
         .then((response) => {
           // 응답 처리 로직 작성
-          if (response.data == "") {
+          if (response.data === "") {
             console.log(response);
           } else {
             setInv(response.data);
@@ -40,8 +38,8 @@ export const Inventory = () => {
           console.error(error);
         });
     };
-
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [add]);
 
   const eraseIngreData = (idx: number) => {

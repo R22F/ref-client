@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { SettlementData } from "../../interface/DataInterface";
-import { useAxiosInstance } from "../../Axios/api";
-import { useRecoilState } from "recoil";
-import { foodData, settlementDate, totalPriceSet } from "../../recoil/DBAtom";
+import {useEffect, useState} from "react";
+import {SettlementData} from "../../interface/DataInterface";
+import {useAxiosInstance} from "../../Axios/api";
+import {useRecoilState} from "recoil";
+import {foodData, settlementDate, totalPriceSet} from "../../recoil/DBAtom";
 
 export const SettleDatabox = () => {
   const [itemCounts, setItemCounts] = useState<Record<string, number>>({});

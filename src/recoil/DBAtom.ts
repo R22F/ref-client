@@ -1,9 +1,5 @@
-import { atom } from "recoil";
-import {
-  FoodDto,
-  IngredientDto,
-  SettlementData,
-} from "../interface/DataInterface";
+import {atom} from "recoil";
+import {FoodDto, IngredientDto, SettlementData,} from "../interface/DataInterface";
 
 export const DBAtom = atom<FoodDto[]>({
   key: "DBAtomArr",

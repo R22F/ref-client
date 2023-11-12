@@ -1,6 +1,5 @@
-import { IngredientInfo } from "./IngredientInfo";
-import { useState } from "react";
-import { useAxiosInstance } from "../../Axios/api";
+import {IngredientInfo} from "./IngredientInfo";
+import {useState} from "react";
 
 export const AddRecipe = ({
   add,
@@ -22,7 +21,6 @@ export const AddRecipe = ({
   ]);
   const [name, setName] = useState("");
   const [fixed, setFixed] = useState(0);
-  const instance = useAxiosInstance();
 
   const modalblur = () => {
     return add
@@ -65,8 +63,8 @@ export const AddRecipe = ({
         return;
       }
 
-      const FoodResponse = await instance.post("/food", postFoodData);
-      const FoodId = FoodResponse.data.id;
+      // const FoodResponse = await instance.post("/food", postFoodData);
+      // const FoodId = FoodResponse.data.id;
 
       if (ingredients[0]) {
         try {
@@ -74,13 +72,13 @@ export const AddRecipe = ({
           console.log(ingredients);
 
           ingredients.map(async (item) => {
-            const RecipeResponse = await instance.post("/recipe", [
-              {
-                quantity: item.quantity,
-                foodId: FoodId,
-                ingredientId: item.ingredientName.ingredientId,
-              },
-            ]);
+            // const RecipeResponse = await instance.post("/recipe", [
+            //   {
+            //     quantity: item.quantity,
+            //     foodId: FoodId,
+            //     ingredientId: item.ingredientName.ingredientId,
+            //   },
+            // ]);
             setAdd(false);
           });
         } catch (err) {

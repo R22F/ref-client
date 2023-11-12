@@ -1,5 +1,5 @@
-import { useRecoilValue } from 'recoil';
-import { DBAtom } from '../../recoil/DBAtom';
+import {useRecoilValue} from 'recoil';
+import {DBAtom} from '../../recoil/DBAtom';
 
 export const IngredientBox = ({ ingredientId, onRemove, editMode }: any) => {
   const foodList = useRecoilValue(DBAtom);
