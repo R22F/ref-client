@@ -1,5 +1,6 @@
-import axios, { AxiosInstance } from "axios";
-import { useAxiosInstance } from "../../Axios/api";
+import {AxiosInstance} from "axios";
+import {useAxiosInstance} from "../../Axios/api";
+
 export const AddIngredient = ({
   add,
   setAdd,

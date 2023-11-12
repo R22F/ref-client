@@ -1,7 +1,7 @@
-import { useRecoilState } from 'recoil';
-import { FoodDto, Ingredient } from '../../../interface/DataInterface';
-import { DBAtom } from '../../../recoil/DBAtom';
-import { useState } from 'react';
+import {useRecoilState} from 'recoil';
+import {FoodDto, Ingredient} from '../../../interface/DataInterface';
+import {DBAtom} from '../../../recoil/DBAtom';
+import {useState} from 'react';
 
 interface EditOnProps {
   props: FoodDto[];

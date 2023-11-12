@@ -1,5 +1,5 @@
-import { IngredientInput } from "./IngredientInput";
-import React, { useState, useEffect } from "react";
+import {IngredientInput} from "./IngredientInput";
+import React, {useEffect} from "react";
 
 interface ingredientData {
   name: string;

@@ -1,6 +1,6 @@
-import { AxiosInstance } from "axios";
-import { useEffect, useState } from "react";
-import { useAxiosInstance, useAxiosInstanceNoToken } from "../../Axios/api";
+import {AxiosInstance} from "axios";
+import {useEffect, useState} from "react";
+import {useAxiosInstanceNoToken} from "../../Axios/api";
 
 export class ErrorClass {
   constructor(e?: Partial<ErrorClass>) {
@@ -115,7 +115,7 @@ export const IdBox = ({ SetValue, error }: Props) => {
   const [err, setError] = error;
   const cloneError = new ErrorClass(err);
 
-  const [validIdMessage, setvalidIdMessage] = useState("");
+  const [validIdMessage, ] = useState("");
 
   // 서버쪽에서 중복 여부만 res받으면 없어질 코드
   const [id, setId] = useState("");
@@ -123,7 +123,7 @@ export const IdBox = ({ SetValue, error }: Props) => {
 
   useEffect(() => {
     SetValue(id);
-    if (id == "") {
+    if (id === "") {
       cloneError.isIdEmpty = true;
     } else {
       cloneError.isIdEmpty = false;

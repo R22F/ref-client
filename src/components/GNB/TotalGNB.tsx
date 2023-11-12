@@ -1,6 +1,5 @@
-import Button from "@mui/material/Button";
-import { Link, useLocation } from "react-router-dom";
-import { RouteConst } from "../../interface/RouteConst";
+import {Link, useLocation} from "react-router-dom";
+import {RouteConst} from "../../interface/RouteConst";
 
 export const TotalGNB = () => {
   const location = useLocation();

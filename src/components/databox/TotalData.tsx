@@ -1,7 +1,6 @@
-import { useRecoilValue } from "recoil";
-import { SettlementData } from "../../interface/DataInterface";
-import data from "../../pages/Settlement/data.json";
-import { foodData } from "../../recoil/DBAtom";
+import {useRecoilValue} from "recoil";
+import {SettlementData} from "../../interface/DataInterface";
+import {foodData} from "../../recoil/DBAtom";
 
 export const TotalData = () => {
   const foods = useRecoilValue(foodData);
@@ -23,12 +22,14 @@ export const TotalData = () => {
             <th scope="col" className=" px-6 py-4 text-right mr-4">
               소계
             </th>
+            <th scope="col" className=" px-6 py-4 text-right mr-4">
+            </th>
           </tr>
         </thead>
         <tbody>
           {foods.map((item: SettlementData, idx: number): any => {
             return (
-              <tr key={item.id} className="border-b dark:border-neutral-500">
+              <tr key={idx} className="border-b dark:border-neutral-500">
                 <td>{idx + 1}</td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
                   {item.name}
@@ -37,10 +38,14 @@ export const TotalData = () => {
                   {item.fixedPrice.toLocaleString()} 원
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                  0 개
+                  {item.count.toLocaleString()} 개
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
-                  0 원
+                  {(item.fixedPrice * item.count).toLocaleString()} 원
+                </td>
+                <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
+                  <button className={"bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow whitespace-nowrap text-right"
+                  } onClick={()=>{console.log("TODO : 하나씩 변경 하거나 수정 가능")}}>수정</button>
                 </td>
               </tr>
               //   <tr className="border-b dark:border-neutral-500">

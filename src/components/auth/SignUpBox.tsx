@@ -1,15 +1,8 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  CalendarBox,
-  EmailBox,
-  ErrorClass,
-  IdBox,
-  NameBox,
-  PwBox,
-} from "../inputBox/inputBox";
-import { AxiosInstance } from "axios";
-import { useAxiosInstanceNoToken } from "../../Axios/api";
+import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {CalendarBox, EmailBox, ErrorClass, IdBox, PwBox,} from "../inputBox/inputBox";
+import {AxiosInstance} from "axios";
+import {useAxiosInstanceNoToken} from "../../Axios/api";
 
 export const submitButton = () => {
   return "bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4 ml-auto";
