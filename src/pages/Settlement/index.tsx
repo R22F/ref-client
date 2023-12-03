@@ -1,7 +1,6 @@
 import {SettleDatabox} from "../../components/databox/SettleDatabox";
 import {DayCount} from "../../components/databox/DayCount";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {foodData, settlementDate, totalPriceSet,} from "../../recoil/DBAtom";
 import {SettlementData} from "../../interface/DataInterface";
@@ -9,8 +8,6 @@ import {useAxiosInstance} from "../../Axios/api";
 
 export const Settlement = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
-  const isLogin = localStorage.getItem("Authorization") !== null;
-  const navigate = useNavigate();
   const [, setSettleDate] = useRecoilState(settlementDate);
   const foods = useRecoilValue(foodData);
   const totalPrice = useRecoilValue(totalPriceSet);
@@ -23,10 +20,6 @@ export const Settlement = () => {
   };
 
   useEffect(() => {
-    if (!isLogin) {
-      alert("로그인이 필요한 접근입니다.");
-      navigate("/");
-    }
     setSettleDate(DayCount());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,7 +48,6 @@ export const Settlement = () => {
 
   return (
     <div className="flex justify-center">
-      {isLogin ? (
         <div className="flex flex-col justify-between mt-28 items-center">
           <div className="flex justify-between items-center ml-auto mb-4">
             <input
@@ -74,9 +66,6 @@ export const Settlement = () => {
           </div>
           <SettleDatabox />
         </div>
-      ) : (
-        <></>
-      )}
     </div>
   );
 };
