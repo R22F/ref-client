@@ -62,7 +62,7 @@ export const Inventory = () => {
       })
       .catch((error) => {
         console.error("DELETE 요청 실패:", error);
-        alert("재료 삭제에 실패했습니다.");
+        alert("요리 레시피에서 사용하는 재료가 없어야만 삭제가 가능합니다.");
         // 오류 처리 로직 작성
       });
   };
@@ -155,7 +155,8 @@ export const Inventory = () => {
                     <button
                       className={eraseButtonDesign()}
                       onClick={() => {
-                        eraseIngreData(item.id);
+                        if (window.confirm("정말로 삭제 하시겠습니까?"))
+                          eraseIngreData(item.id);
                       }}
                     >
                       제거
