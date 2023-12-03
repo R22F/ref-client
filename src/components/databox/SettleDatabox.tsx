@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {SettlementData} from "../../interface/DataInterface";
-import {useAxiosInstance} from "../../Axios/api";
+import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 import {useRecoilState} from "recoil";
-import {foodData, settlementDate, totalPriceSet} from "../../recoil/DBAtom";
+import {foodData, isLoginModalOpen, settlementDate, totalPriceSet} from "../../recoil/DBAtom";
 
 export const SettleDatabox = () => {
   const [itemCounts, setItemCounts] = useState<Record<string, number>>({});
@@ -11,12 +11,9 @@ export const SettleDatabox = () => {
   const instance = useAxiosInstance();
   const [foods, setFoods] = useRecoilState<SettlementData[]>(foodData);
   const settleDate = useRecoilState(settlementDate);
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
 
   const handleCountChange = (itemId: number, count: any) => {
-    // const newfoods = foods.map((item: SettlementData) => ({
-    //   ...item,
-    //   count: parseInt(count, 10),
-    // }));
     const newfoods = foods.map((item: SettlementData) => {
       if (item.id === itemId) {
         return { ...item, count: parseInt(count, 10) };
@@ -26,16 +23,30 @@ export const SettleDatabox = () => {
     setFoods(newfoods);
   };
 
+  const handleNoteChange = (itemId: number, note: string) => {
+    if (note.length > 20) return
+    const newfoods = foods.map((item: SettlementData) => {
+      if (item.id === itemId) {
+        return { ...item, note: note};
+      }
+      return item;
+    });
+    setFoods(newfoods);
+  }
+
   useEffect(() => {
     const fetchData = async () => {
-      const response: any = await instance.get("food");
-      const needData = response.data.map((item: SettlementData) => ({
-        ...item,
-        count: 0,
-        foodId: item.id,
-      }));
-      setFoods(needData);
-      // setFoods(response.data)
+      try {
+        const response: any = await instance.get("food");
+        const needData = response.data.map((item: SettlementData) => ({
+          ...item,
+          count: 0,
+          foodId: item.id,
+        }))
+        setFoods(needData);
+      }catch (error){
+        checkTokenValidate(error, setIsLoginModalOpen)
+      }
     };
     fetchData();
   }, []);
@@ -56,7 +67,8 @@ export const SettleDatabox = () => {
       <table className="min-w-full text-center text-sm font-light">
         <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800">
           <tr>
-            <th scope="col" className="w-4 px-6 py-4"></th>
+            <th scope="col" className="w-4 px-6 py-4">
+            </th>
             <th scope="col" className=" px-6 py-4 text-right">
               요리명
             </th>
@@ -66,8 +78,11 @@ export const SettleDatabox = () => {
             <th scope="col" className=" px-6 py-4 text-right">
               판매개수
             </th>
-            <th scope="col" className=" px-6 py-4 text-right mr-4">
+            <th scope="col" className=" px-6 py-4 text-right">
               소계
+            </th>
+            <th scope="col" className=" px-6 py-4 text-right mr-4">
+              비고
             </th>
           </tr>
         </thead>
@@ -99,6 +114,10 @@ export const SettleDatabox = () => {
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   {((item.count ?? 0) * item.fixedPrice).toLocaleString()} 원
+                </td>
+                <td className="whitespace-nowrap text-right">
+                  <input type={"text"} maxLength={20} onChange={(e)=>
+                    handleNoteChange(item.id, e.target.value)}/>
                 </td>
               </tr>
             );

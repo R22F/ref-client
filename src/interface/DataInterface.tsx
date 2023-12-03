@@ -5,6 +5,7 @@ export interface SettlementData {
   fixedPrice: number;
   count: number;
   username: string;
+  note:string
 }
 
 export interface Ingredient {
