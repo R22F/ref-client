@@ -2,16 +2,16 @@ import {SettleDatabox} from "../../components/databox/SettleDatabox";
 import {DayCount} from "../../components/databox/DayCount";
 import {useEffect, useState} from "react";
 import {useRecoilState, useRecoilValue} from "recoil";
-import {foodData, settlementDate, totalPriceSet,} from "../../recoil/DBAtom";
+import {foodData, isLoginModalOpen, settlementDate, totalPriceSet,} from "../../recoil/DBAtom";
 import {SettlementData} from "../../interface/DataInterface";
-import {useAxiosInstance} from "../../Axios/api";
+import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 
 export const Settlement = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
   const [, setSettleDate] = useRecoilState(settlementDate);
   const foods = useRecoilValue(foodData);
   const totalPrice = useRecoilValue(totalPriceSet);
-
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
   const instance = useAxiosInstance();
 
   const handleDateChange = (event: any) => {
@@ -34,15 +34,11 @@ export const Settlement = () => {
       sum: totalPrice,
       foods: foods,
     };
-    console.log(data);
 
     instance
       .post("settlement", data)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        checkTokenValidate(error, setIsLoginModalOpen)
       });
   };
 

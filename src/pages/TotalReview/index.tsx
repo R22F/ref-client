@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import {DayCount} from "../../components/databox/DayCount";
 import {TotalData} from "../../components/databox/TotalData";
-import {useAxiosInstance} from "../../Axios/api";
+import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 import {useRecoilState} from "recoil";
-import {foodData} from "../../recoil/DBAtom";
+import {foodData, isLoginModalOpen} from "../../recoil/DBAtom";
 
 export const TotalReview = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
@@ -13,6 +13,8 @@ export const TotalReview = () => {
   const [worstMenu, setWorstMenu] = useState({name:"", count:0});
   const instance = useAxiosInstance()
   const [foods, setFoods] = useRecoilState(foodData);
+  const [, setIsModalOpen] = useRecoilState(isLoginModalOpen);
+
 
   useEffect(() => {
     findBestAndWorstMenu()
@@ -25,7 +27,7 @@ export const TotalReview = () => {
       setFoods(response.data.foods)
       setIncome(response.data.sum)
     } catch (err) {
-      console.error(err);
+      checkTokenValidate(err, setIsModalOpen)
     }
   };
 

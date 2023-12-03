@@ -1,7 +1,7 @@
-import {useAxiosInstance} from "../../../Axios/api";
+import {checkTokenValidate, useAxiosInstance} from "../../../Axios/api";
 import {FoodDto} from "../../../interface/DataInterface";
 import React, {useState} from "react";
-import {DBAtom} from "../../../recoil/DBAtom";
+import {DBAtom, isLoginModalOpen} from "../../../recoil/DBAtom";
 import {useRecoilState} from "recoil";
 
 interface EditOffProps {
@@ -11,6 +11,8 @@ interface EditOffProps {
 export const EditOff: React.FC<EditOffProps> = ({ handleRemoveFood }) => {
   const [data, setData] = useRecoilState<FoodDto[]>(DBAtom);
   const [edit, setEdit] = useState(false);
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
+
   const instance = useAxiosInstance();
   const buttonDesign = () => {
     return "bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-2 border border-red-400 rounded shadow whitespace-nowrap text-right";
@@ -30,8 +32,8 @@ export const EditOff: React.FC<EditOffProps> = ({ handleRemoveFood }) => {
       alert("재료가 제거되었습니다.");
       const response = await instance.get("food/recipes");
       setData(response.data);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      checkTokenValidate(error, setIsLoginModalOpen)
     }
   };
   return (

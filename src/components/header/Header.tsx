@@ -3,15 +3,17 @@ import {TotalGNB} from "../GNB/TotalGNB";
 import {Link, useNavigate} from "react-router-dom";
 import axios, {AxiosInstance} from "axios";
 import {hasToken} from "../auth/HasToken";
+import {useRecoilState} from "recoil";
+import {isLoginModalOpen} from "../../recoil/DBAtom";
 
 export const Header = () => {
     const [isLogin, setIsLogin] = useState(hasToken()); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useRecoilState(isLoginModalOpen);
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
     const navigate = useNavigate();
     useEffect(() => {
-    }, [isLogin]);
+    }, [isLogin, isModalOpen]);
 
     const logInButtonColor = (isLogin: boolean) => {
         return isLogin === true
@@ -49,7 +51,6 @@ export const Header = () => {
                 const responseToken = response.headers.authorization;
                 const token = responseToken.split(" ")[1];
 
-                navigate("/");
                 localStorage.setItem("Authorization", token);
                 localStorage.setItem("Username", signinData.username);
                 setIsLogin(true);

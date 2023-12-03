@@ -19,3 +19,15 @@ export const useAxiosInstance = (): AxiosInstance => {
     },
   });
 };
+
+export const checkTokenValidate = (res: any, setIsModalOpen:any):any=> {
+  console.log(res)
+  switch (res.response.status) {
+    case 401: case 403: case 417:
+      window.alert("로그인 정보가 만료되었습니다.")
+      setIsModalOpen(true)
+      break;
+    default: break;
+  }
+  return res
+}

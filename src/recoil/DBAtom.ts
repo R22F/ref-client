@@ -31,6 +31,11 @@ export const settlementDate = atom({
   default: "",
 });
 
+export const isLoginModalOpen = atom({
+  key: "isLogin",
+  default: false
+})
+
 export const Options = atom<Map<string, number>>({
   key: 'options',
   default: new Map<string, number>(),
