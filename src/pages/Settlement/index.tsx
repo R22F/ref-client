@@ -3,13 +3,13 @@ import {DayCount} from "../../components/databox/DayCount";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useRecoilState, useRecoilValue} from "recoil";
-import {foodData, Login, settlementDate, totalPriceSet,} from "../../recoil/DBAtom";
+import {foodData, settlementDate, totalPriceSet,} from "../../recoil/DBAtom";
 import {SettlementData} from "../../interface/DataInterface";
 import {useAxiosInstance} from "../../Axios/api";
 
 export const Settlement = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
-  const isLogin = useRecoilValue(Login);
+  const isLogin = localStorage.getItem("Authorization") !== null;
   const navigate = useNavigate();
   const [, setSettleDate] = useRecoilState(settlementDate);
   const foods = useRecoilValue(foodData);

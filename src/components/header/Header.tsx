@@ -2,13 +2,11 @@ import {useEffect, useState} from "react";
 import {TotalGNB} from "../GNB/TotalGNB";
 import {Link, useNavigate} from "react-router-dom";
 import axios, {AxiosInstance} from "axios";
-import {AuthorizedToken, Login} from "../../recoil/DBAtom";
-import {useRecoilState} from "recoil";
+import {hasToken} from "../auth/HasToken";
 
 export const Header = () => {
-  const [isLogin, setIsLogin] = useRecoilState(Login); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
+  const [isLogin, setIsLogin] = useState(hasToken()); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [token, setToken] = useRecoilState(AuthorizedToken);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const navigate = useNavigate();
@@ -46,12 +44,12 @@ export const Header = () => {
       .post("/signin", signinData)
       .then((response) => {
         setIsModalOpen(false);
-        setIsLogin(true);
+        setIsLogin(hasToken());
         const responseToken = response.headers.authorization;
         const token = responseToken.split(" ")[1];
 
         navigate("/");
-        setToken(token);
+        localStorage.setItem("Authorization",token);
       })
       .catch((error) => {
         console.error("에러:", error);
@@ -76,11 +74,11 @@ export const Header = () => {
       .post("/signin", signinData)
       .then((response) => {
         setIsModalOpen(false);
-        setIsLogin(true);
+        setIsLogin(hasToken());
         const responseToken = response.headers.authorization;
         const token = responseToken.split(" ")[1];
 
-        setToken(token);
+        localStorage.setItem("Authorization", token);
       })
       .catch((error) => {
         console.error("에러:", error);
@@ -104,18 +102,18 @@ export const Header = () => {
           <button
             className={logInButtonColor(false)}
             onClick={() => {
-              console.log(token);
+              console.log(localStorage.getItem("Authorization"));
             }}
           >
             토큰 확인
           </button>
-          <div className=" pr-4">{isLogin ? "OOO님 안녕하세요!" : ""}</div>
+          <div className=" pr-4">{localStorage.getItem("Authorization")!==null ? "OOO님 안녕하세요!" : ""}</div>
           <button
             onClick={() => {
               if (isLogin) {
                 alert("로그아웃 완료!");
-                setToken("");
-                setIsLogin(false);
+                localStorage.clear();
+                setIsLogin(hasToken());
               } else {
                 setIsModalOpen(true);
               }
