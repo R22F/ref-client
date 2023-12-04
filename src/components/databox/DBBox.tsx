@@ -13,12 +13,12 @@ export const DBBox = ({ setAdd }: { setAdd: Function }) => {
 
   useEffect(() => {}, [data]);
 
-  const handleRemoveFood = async (id: number) => {
+  const handleRemoveFood = async (id: number, name:string) => {
     try {
+      if (!window.confirm(`${name}을(를) 삭제 하시겠습니까?`)) return
       const response = await instance.delete(`food/${id}/recipes`);
       const newData = [...data];
       setData(newData.filter((item) => item.id !== id));
-
       alert("삭제되었습니다.");
     } catch (error) {
       checkTokenValidate(error, setIsLoginModalOpen)

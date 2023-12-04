@@ -15,15 +15,18 @@ export const TotalReview = () => {
   const [foods, setFoods] = useRecoilState(foodData);
   const [, setIsModalOpen] = useRecoilState(isLoginModalOpen);
 
+  useEffect(() => {
+    fetchData(parseISODate(new Date()))
+  }, []);
 
   useEffect(() => {
     findBestAndWorstMenu()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foods]);
 
-  const fetchData = async (startDate:string, endDate:string) => {
+  const fetchData = async (startDate:string, endDate?:string) => {
     try {
-      const response = await instance.get(`/settlement/?startDate=${startDate}&endDate=${endDate}`)
+      const response = await instance.get(`/settlement/?startDate=${startDate}&endDate=${endDate?endDate:startDate}`)
       setFoods(response.data.foods)
       setIncome(response.data.sum)
     } catch (err) {

@@ -25,18 +25,19 @@ export const Settlement = () => {
   }, []);
 
   interface settleData {
-    sum: number;
     foods: SettlementData[];
+    reqDate: string
   }
 
   const handleSettlement = () => {
     const data: settleData = {
-      sum: totalPrice,
       foods: foods,
+      reqDate: selectedDate
     };
 
     instance
       .post("settlement", data)
+      .then(()=>console.log("정산이 완료 되었습니다."))
       .catch((error) => {
         checkTokenValidate(error, setIsLoginModalOpen)
       });
