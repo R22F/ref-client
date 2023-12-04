@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {DBBox} from "../../components/databox/DBBox";
 import {useRecoilState} from "recoil";
-import {DBAtom, Options,} from "../../recoil/DBAtom";
-import {useAxiosInstance} from "../../Axios/api";
+import {DBAtom, isLoginModalOpen, Options,} from "../../recoil/DBAtom";
+import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 import {AddRecipe} from "./addRecipe";
 import {ModifyRecipe} from "./ModifyRecipe";
 
@@ -29,6 +29,8 @@ export const CookingDB = () => {
   const [, setOption] = useRecoilState(Options);
   const [add, setAdd] = useState(false);
   const [mod, setMod] = useState(false);
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
+
   // const token = useRecoilValue(AuthorizedToken);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export const CookingDB = () => {
 
         setDB(response.data);
       } catch (err) {
-        console.error(err);
+        checkTokenValidate(err, setIsLoginModalOpen)
       }
     };
     const inventoryData = async () => {
@@ -51,7 +53,7 @@ export const CookingDB = () => {
         });
         setOption(nameOfData);
       } catch (err) {
-        console.log(err);
+        checkTokenValidate(err, setIsLoginModalOpen)
       }
     };
 

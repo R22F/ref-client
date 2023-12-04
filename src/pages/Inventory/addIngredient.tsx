@@ -1,5 +1,7 @@
 import {AxiosInstance} from "axios";
-import {useAxiosInstance} from "../../Axios/api";
+import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
+import {useRecoilState} from "recoil";
+import {isLoginModalOpen} from "../../recoil/DBAtom";
 
 export const AddIngredient = ({
   add,
@@ -11,6 +13,7 @@ export const AddIngredient = ({
   setInv: Function;
 }) => {
   const instance: AxiosInstance = useAxiosInstance();
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
 
   const modalblur = () => {
     return add
@@ -107,13 +110,12 @@ export const AddIngredient = ({
           })
           .catch((error) => {
             // 에러 처리 로직 작성
-            console.error(error);
+            checkTokenValidate(error, setIsLoginModalOpen)
           });
         setAdd(false);
       })
       .catch((error) => {
-        console.error("에러:", error);
-        alert("재료 추가에 실패했습니다.");
+        checkTokenValidate(error, setIsLoginModalOpen)
       });
   };
 

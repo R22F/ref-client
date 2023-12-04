@@ -1,6 +1,8 @@
 import {useState} from "react";
-import {useAxiosInstance} from "../../Axios/api";
+import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 import {IngredientInfo} from "./IngredientInfo";
+import {useRecoilState} from "recoil";
+import {isLoginModalOpen} from "../../recoil/DBAtom";
 
 export const ModifyRecipe = ({ mod, setMod }: { mod: boolean; setMod: Function }) => {
   const [ingredients, setIngredients] = useState([
@@ -14,6 +16,8 @@ export const ModifyRecipe = ({ mod, setMod }: { mod: boolean; setMod: Function }
       units: 'g',
     },
   ]);
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
+
   const [name, setName] = useState('');
   const [fixed, setFixed] = useState(0);
   const instance = useAxiosInstance();
@@ -76,12 +80,12 @@ export const ModifyRecipe = ({ mod, setMod }: { mod: boolean; setMod: Function }
             console.log(RecipeResponse);
           });
         } catch (err) {
-          console.log(err);
+          checkTokenValidate(err, setIsLoginModalOpen)
         }
       }
       setMod(false);
     } catch (err) {
-      console.log(err);
+      checkTokenValidate(err, setIsLoginModalOpen)
     }
   };
   return (

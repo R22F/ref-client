@@ -1,11 +1,11 @@
 import {AxiosInstance} from "axios";
 import {useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
-import {InventoryDto} from "../../recoil/DBAtom";
+import {InventoryDto, isLoginModalOpen} from "../../recoil/DBAtom";
 import {IngredientDto} from "../../interface/DataInterface";
 import {AddIngredient} from "./addIngredient";
 import {ModifyIngredient} from "./ModifyIngredient";
-import {useAxiosInstance} from "../../Axios/api";
+import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 
 export const Inventory = () => {
   // 요청을 보낼 URL
@@ -13,6 +13,8 @@ export const Inventory = () => {
   const [mod, setMod] = useState(false);
   // const [modidx, setModIdx] = useState(0);
   const instance: AxiosInstance = useAxiosInstance();
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
+
 
   const isaddIngredient = () => {
     setAdd(true);
@@ -34,8 +36,7 @@ export const Inventory = () => {
           }
         })
         .catch((error) => {
-          // 에러 처리 로직 작성
-          console.error(error);
+          checkTokenValidate(error, setIsLoginModalOpen)
         });
     };
     fetchData();
@@ -56,13 +57,12 @@ export const Inventory = () => {
             setInv(response.data);
           })
           .catch((error) => {
-            // 에러 처리 로직 작성
-            console.error(error);
+            checkTokenValidate(error, setIsLoginModalOpen)
           });
       })
       .catch((error) => {
-        console.error("DELETE 요청 실패:", error);
-        alert("재료 삭제에 실패했습니다.");
+        checkTokenValidate(error, setIsLoginModalOpen)
+        alert("요리 레시피에서 사용하는 재료가 없어야만 삭제가 가능합니다.");
         // 오류 처리 로직 작성
       });
   };
@@ -155,7 +155,8 @@ export const Inventory = () => {
                     <button
                       className={eraseButtonDesign()}
                       onClick={() => {
-                        eraseIngreData(item.id);
+                        if (window.confirm("정말로 삭제 하시겠습니까?"))
+                          eraseIngreData(item.id);
                       }}
                     >
                       제거

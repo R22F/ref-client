@@ -1,6 +1,8 @@
 import {AxiosInstance} from 'axios';
 import {IngredientDto} from '../../interface/DataInterface';
-import {useAxiosInstance} from '../../Axios/api';
+import {checkTokenValidate, useAxiosInstance} from '../../Axios/api';
+import {useRecoilState} from "recoil";
+import {isLoginModalOpen} from "../../recoil/DBAtom";
 
 export const ModifyIngredient = ({
   mod,
@@ -14,6 +16,8 @@ export const ModifyIngredient = ({
   ingredient?: IngredientDto;
 }) => {
   const instance: AxiosInstance = useAxiosInstance();
+  const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
+
 
   const modalblur = () => {
     return mod ? 'fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity' : '';
@@ -91,13 +95,12 @@ export const ModifyIngredient = ({
             setInv(response.data);
           })
           .catch((error) => {
-            // 에러 처리 로직 작성
-            console.error(error);
+            checkTokenValidate(error, setIsLoginModalOpen)
           });
         setMod(false);
       })
       .catch((error) => {
-        console.error('에러:', error);
+        checkTokenValidate(error, setIsLoginModalOpen)
       });
   };
 

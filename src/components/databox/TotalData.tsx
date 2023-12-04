@@ -19,8 +19,11 @@ export const TotalData = () => {
             <th scope="col" className=" px-6 py-4 text-right">
               판매개수
             </th>
-            <th scope="col" className=" px-6 py-4 text-right mr-4">
+            <th scope="col" className=" px-6 py-4 text-right">
               소계
+            </th>
+            <th scope="col" className=" px-6 py-4 text-right">
+              비고
             </th>
             <th scope="col" className=" px-6 py-4 text-right mr-4">
             </th>
@@ -42,6 +45,9 @@ export const TotalData = () => {
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
                   {(item.fixedPrice * item.count).toLocaleString()} 원
+                </td>
+                <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
+                  {item.note}
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
                   <button className={"bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow whitespace-nowrap text-right"
