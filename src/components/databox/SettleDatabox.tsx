@@ -1,16 +1,13 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {SettlementData} from "../../interface/DataInterface";
 import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 import {useRecoilState} from "recoil";
-import {foodData, isLoginModalOpen, settlementDate, totalPriceSet} from "../../recoil/DBAtom";
+import {foodData, isLoginModalOpen, totalPriceSet} from "../../recoil/DBAtom";
 
-export const SettleDatabox = () => {
-  const [itemCounts, setItemCounts] = useState<Record<string, number>>({});
-  // const [totalPrice, setTotalPrice] = useState<number>(0);
+export const SettleDatabox = ({date}:any) => {
   const [totalPrice, setTotalPrice] = useRecoilState(totalPriceSet);
   const instance = useAxiosInstance();
   const [foods, setFoods] = useRecoilState<SettlementData[]>(foodData);
-  const settleDate = useRecoilState(settlementDate);
   const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
 
   const handleCountChange = (itemId: number, count: any) => {
@@ -37,19 +34,30 @@ export const SettleDatabox = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: any = await instance.get("food");
-        const needData = response.data.map((item: SettlementData) => ({
-          ...item,
-          count: 0,
-          foodId: item.id,
-        }))
-        setFoods(needData);
-      } catch (error) {
+        const response: any = await instance.get(`settlement/${date}`)
+        const foods = response.data.foods;
+        if (foods.length > 0){
+          setFoods(foods)
+          return
+        }
+        try {
+          const response: any = await instance.get("food");
+          const needData = response.data.map((item: SettlementData) => ({
+            ...item,
+            count: 0,
+            id: item.id,
+            note: ""
+          }))
+          setFoods(needData);
+        } catch (error) {
+          checkTokenValidate(error, setIsLoginModalOpen)
+        }
+      }catch (error){
         checkTokenValidate(error, setIsLoginModalOpen)
       }
-    };
+    }
     fetchData();
-  }, []);
+  }, [date]);
 
   useEffect(() => {
     let sum = 0;
@@ -57,7 +65,7 @@ export const SettleDatabox = () => {
       sum += item.count * item.fixedPrice;
     });
     setTotalPrice(sum);
-  }, [foods]);
+  }, [foods, date]);
 
   return (
     <div
@@ -106,6 +114,7 @@ export const SettleDatabox = () => {
                   max="9999"
                   placeholder="0"
                   className=" border-b-2 border-black w-24 text-right w-12"
+                  value={item.count}
                   onChange={(e) => {
                     handleCountChange(item.id, e.target.value);
                     // item.count = parseInt(e.target.value, 10);
@@ -121,8 +130,9 @@ export const SettleDatabox = () => {
                   type={"text"}
                   className=" border-b-2 border-black w-36"
                   maxLength={20}
+                  value={item.note??""}
                   onChange={(e) =>
-                    handleNoteChange(item.id, e.target.value)}/>
+                    handleNoteChange(item.foodId??item.id, e.target.value)}/>
               </td>
             </tr>
           );

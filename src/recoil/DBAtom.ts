@@ -1,5 +1,6 @@
 import {atom} from "recoil";
 import {FoodDto, IngredientDto, SettlementData,} from "../interface/DataInterface";
+import {DayCount} from "../components/databox/DayCount";
 
 export const DBAtom = atom<FoodDto[]>({
   key: "DBAtomArr",
@@ -28,7 +29,7 @@ export const InventoryDto = atom<IngredientDto[]>({
 
 export const settlementDate = atom({
   key: "settleDate",
-  default: "",
+  default: DayCount(),
 });
 
 export const isLoginModalOpen = atom({

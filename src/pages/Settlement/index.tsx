@@ -8,7 +8,7 @@ import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 
 export const Settlement = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
-  const [, setSettleDate] = useRecoilState(settlementDate);
+  const [settleDate, setSettleDate] = useRecoilState(settlementDate);
   const foods = useRecoilValue(foodData);
   const totalPrice = useRecoilValue(totalPriceSet);
   const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
@@ -61,7 +61,7 @@ export const Settlement = () => {
               정산
             </button>
           </div>
-          <SettleDatabox />
+          <SettleDatabox date={settleDate}/>
         </div>
     </div>
   );
