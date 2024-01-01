@@ -180,7 +180,8 @@ export const ModifyIngredient = ({
                   <select className={inputcss()} id="units-input" required defaultValue={ingredient?.units}>
                     <option value="g">g</option>
                     <option value="ea">ea</option>
-                  </select>
+                    <option value="ml">ml</option>
+                 </select>
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">
                   <input type="date" className={inputcss()} defaultValue={today} id="buyDate-input" required />
