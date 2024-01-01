@@ -87,19 +87,17 @@ export const EditOff: React.FC<EditOffProps> = ({handleRemoveFood}) => {
               <tr className="  border-gray-400 border-y text-right ">
                 <th></th>
                 <th className="py-2">재료 명</th>
+                <th></th>
                 <th>재료 량</th>
-                <th>재료 단위</th>
                 <th></th>
               </tr>
               {item.recipes.map((item, idx) => {
                 return (
                     <tr key={idx} className="py-4 text-right">
                       <th></th>
-                      <th className="py-4 text-right">
-                        {item.ingredientName}
-                      </th>
-                      <th>{item.quantity.toLocaleString()}</th>
-                      <th>{item.units}</th>
+                      <th className="py-4 text-right">{item.ingredientName}</th>
+                      <th></th>
+                      <th>{item.quantity.toLocaleString() + item.units}</th>
                       <th>
                         <button
                           className={eraseButtonDesign()}

@@ -202,6 +202,7 @@ export const AddIngredient = ({
                   <select className={inputcss()} id="units-input" required>
                     <option value="g">g</option>
                     <option value="ea">ea</option>
+                    <option value="ml">ml</option>
                   </select>
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 text-right">

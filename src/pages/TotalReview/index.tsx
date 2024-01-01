@@ -9,6 +9,7 @@ export const TotalReview = () => {
   const [selectedDate, setSelectedDate] = useState(DayCount());
   const [text, setText] = useState("일일");
   const [income, setIncome] = useState(0);
+  const [primePrice, setPrimePrice] = useState(0);
   const [bestMenu, setBestMenu] = useState({name:"", count:0});
   const [worstMenu, setWorstMenu] = useState({name:"", count:0});
   const instance = useAxiosInstance()
@@ -29,6 +30,7 @@ export const TotalReview = () => {
       const response = await instance.get(`/settlement/?startDate=${startDate}&endDate=${endDate?endDate:startDate}`)
       setFoods(response.data.foods)
       setIncome(response.data.sum)
+      setPrimePrice(response.data.primePrice)
     } catch (err) {
       checkTokenValidate(err, setIsModalOpen)
     }
@@ -66,7 +68,7 @@ export const TotalReview = () => {
     const endDate = parseISODate(today);
     switch (id){
       case "일일":
-        startDate = parseISODate(today)
+        startDate = selectedDate
         break;
       case "월간":
         startDate = parseISODate(new Date(today.getFullYear(), today.getMonth(), 2));
@@ -142,7 +144,7 @@ export const TotalReview = () => {
         <div className="justify-around pt-[1rem] pb-4 w-full">
           <div className="flex w-[10rem] justify-around ml-auto text-red-400 font-semibold ">
             <div>{text === "총계" ? "총" : text} 원가 :</div>
-            <div>val</div>
+            <div>{primePrice.toLocaleString()}</div>
             <>원</>
           </div>
           <div className="flex w-[10rem] justify-around ml-auto text-red-400 font-semibold mb-4">

@@ -37,7 +37,7 @@ export const Settlement = () => {
 
     instance
       .post("settlement", data)
-      .then(()=>console.log("정산이 완료 되었습니다."))
+      .then(()=>alert("정산이 완료 되었습니다."))
       .catch((error) => {
         checkTokenValidate(error, setIsLoginModalOpen)
       });

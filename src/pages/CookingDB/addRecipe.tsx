@@ -1,5 +1,6 @@
 import {IngredientInfo} from "./IngredientInfo";
 import {useState} from "react";
+import {useAxiosInstance} from "../../Axios/api";
 
 export const AddRecipe = ({
   add,
@@ -19,6 +20,7 @@ export const AddRecipe = ({
       units: "g",
     },
   ]);
+  const instance = useAxiosInstance()
   const [name, setName] = useState("");
   const [fixed, setFixed] = useState(0);
 
@@ -63,8 +65,8 @@ export const AddRecipe = ({
         return;
       }
 
-      // const FoodResponse = await instance.post("/food", postFoodData);
-      // const FoodId = FoodResponse.data.id;
+      const FoodResponse = await instance.post("/food", postFoodData);
+      const FoodId = FoodResponse.data.id;
 
       if (ingredients[0]) {
         try {
@@ -72,13 +74,13 @@ export const AddRecipe = ({
           console.log(ingredients);
 
           ingredients.map(async (item) => {
-            // const RecipeResponse = await instance.post("/recipe", [
-            //   {
-            //     quantity: item.quantity,
-            //     foodId: FoodId,
-            //     ingredientId: item.ingredientName.ingredientId,
-            //   },
-            // ]);
+            const RecipeResponse = await instance.post("/recipe", [
+              {
+                quantity: item.quantity,
+                foodId: FoodId,
+                ingredientId: item.ingredientName.ingredientId,
+              },
+            ]);
             setAdd(false);
           });
         } catch (err) {
@@ -106,22 +108,24 @@ export const AddRecipe = ({
               </tr>
             </thead>
             <tbody>
-              <th className="whitespace-nowrap  px-6 py-4 font-medium">
-                <input
-                  type="text"
-                  id="name"
-                  className={inputcss()}
-                  onChange={(e) => handlePostData(e.target.value, e.target.id)}
-                />
-              </th>
-              <th className="whitespace-nowrap  px-6 py-4 font-medium">
-                <input
-                  type="text"
-                  id="fixedPrice"
-                  className={inputcss()}
-                  onChange={(e) => handlePostData(e.target.value, e.target.id)}
-                />
-              </th>
+              <tr>
+                <th className="whitespace-nowrap  px-6 py-4 font-medium">
+                  <input
+                    type="text"
+                    id="name"
+                    className={inputcss()}
+                    onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                  />
+                </th>
+                <th className="whitespace-nowrap  px-6 py-4 font-medium">
+                  <input
+                    type="text"
+                    id="fixedPrice"
+                    className={inputcss()}
+                    onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                  />
+                </th>
+              </tr>
 
               {/*재료추가 인풋창 */}
 
