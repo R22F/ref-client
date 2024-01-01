@@ -3,6 +3,7 @@ export interface SettlementData {
   foodId: number;
   name: string;
   fixedPrice: number;
+  primePrice: number;
   count: number;
   username: string;
   note:string
