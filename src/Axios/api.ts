@@ -25,6 +25,7 @@ export const checkTokenValidate = (res: any, setIsModalOpen:any):any=> {
   switch (res.response.status) {
     case 417:
       window.alert("로그인 정보가 만료되었습니다.")
+      localStorage.removeItem("Authorization")
       setIsModalOpen(true)
       break;
     case 401: case 403:

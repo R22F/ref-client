@@ -17,7 +17,7 @@ export const TotalReview = () => {
   const [, setIsModalOpen] = useRecoilState(isLoginModalOpen);
 
   useEffect(() => {
-    fetchData(parseISODate(new Date()))
+    fetchData(parseISODate(getKSTtime()))
   }, []);
 
   useEffect(() => {
@@ -35,6 +35,10 @@ export const TotalReview = () => {
       checkTokenValidate(err, setIsModalOpen)
     }
   };
+
+  const getKSTtime = () => {
+    return new Date(new Date().getTime() + 9 * 60 * 60 * 1000)
+  }
 
   const findBestAndWorstMenu = () => {
     if (foods.length === 0)
@@ -63,9 +67,10 @@ export const TotalReview = () => {
 
   const handleText = (e: any) => {
     const id = e.currentTarget.id;
-    const today =  new Date();
+    const today =  getKSTtime();
     let startDate:string = "";
     const endDate = parseISODate(today);
+    console.log(endDate)
     switch (id){
       case "일일":
         startDate = selectedDate

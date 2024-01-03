@@ -1,9 +1,12 @@
 import {useRecoilValue} from "recoil";
 import {SettlementData} from "../../interface/DataInterface";
 import {foodData} from "../../recoil/DBAtom";
+import {useNavigate} from "react-router-dom";
+import {RouteConst} from "../../interface/RouteConst";
 
 export const TotalData = () => {
   const foods = useRecoilValue(foodData);
+  const navigate = useNavigate()
   return (
     <div className="flex justify-center flex-col w-[60rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4">
       <table className="min-w-full text-center text-sm font-light">
@@ -51,7 +54,7 @@ export const TotalData = () => {
                 </td>
                 <td className="whitespace-nowrap  px-6 py-4 font-medium text-right">
                   <button className={"bg-white hover:bg-red-500 hover:border-red-200 hover:text-red-200 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow whitespace-nowrap text-right"
-                  } onClick={()=>{console.log("TODO : 하나씩 변경 하거나 수정 가능")}}>수정</button>
+                  } onClick={()=>{navigate(RouteConst.settlement)}}>수정</button>
                 </td>
               </tr>
               //   <tr className="border-b dark:border-neutral-500">
