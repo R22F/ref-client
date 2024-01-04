@@ -1,5 +1,7 @@
 import {useRecoilValue} from "recoil";
 import {Options} from "../../recoil/DBAtom";
+import './index.css'
+import React from "react";
 
 interface ingredientData {
   name: string;
@@ -13,7 +15,7 @@ interface recipe {
 }
 
 type IngredientInputProps = {
-  id: number; // id 속성을 명시적으로 정의
+  id: number;
   onRemove: (id: number) => void;
   ingredients: recipe[];
   setIngredients: Function;
@@ -22,17 +24,10 @@ type IngredientInputProps = {
 export const IngredientInput: React.FC<IngredientInputProps> = ({
   id,
   onRemove,
-  ingredients,
-  setIngredients,
+  ingredients
 }) => {
   const ingredientOptions = useRecoilValue<Map<string, number>>(Options);
   const ingredientsOption = ["재료", ...Array.from(ingredientOptions.keys())];
-  const inputcss = () => {
-    return " px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 focus:border-2 ";
-  };
-  const eraseButtonDesign = () => {
-    return "bg-white hover:bg-gray-400 hover:border-gray-100 hover:text-gray-100 text-gray-400 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-auto whitespace-nowrap text-right";
-  };
 
   const handleChange = (
     e:
@@ -55,9 +50,9 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
     }
   };
   return (
-    <tr key={id} className=" border-t-2">
-      <th className="whitespace-nowrap  px-6 py-4 font-medium text-center">
-        <select id="name" className={inputcss()} onChange={handleChange}>
+    <tr key={id} className='ingredient-edit-table'>
+      <th className='ingredient-table-header'>
+        <select id="name" className='ingredient-info-input' onChange={handleChange}>
           {ingredientsOption.map((item, index) => (
             <option key={index} value={item}>
               {item}
@@ -65,16 +60,16 @@ export const IngredientInput: React.FC<IngredientInputProps> = ({
           ))}
         </select>
       </th>
-      <th className="whitespace-nowrap  px-6 py-4 font-medium text-center">
+      <th className='ingredient-table-header'>
         <input
           type="text"
           id="quantity"
-          className={inputcss()}
+          className='ingredient-info-input'
           onChange={handleChange}
         />
       </th>
-      <th className="whitespace-nowrap  px-6 py-4 font-medium text-center">
-        <button className={eraseButtonDesign()} onClick={() => onRemove(id)}>
+      <th className='ingredient-table-header'>
+        <button className='ingredient-erase-button' onClick={() => onRemove(id)}>
           재료 제거
         </button>
       </th>

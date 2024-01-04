@@ -28,58 +28,6 @@
   color: #61dafb;
 }
 
-.notification-list {
-  margin: 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.notification-box {
-  display: flex;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.02);
-  padding: 10px;
-  border-radius: 10px;
-  width: inherit;
-}
-
-.notification-header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.notification-icon {
-  margin-right: 10px;
-}
-
-.notification-icon img {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-
-.notification-title {
-  margin-right: 10px;
-}
-
-.notification-content {
-  width: 100%;
-}
-.notification-description {
-  width: 100%;
-  margin: 0;
-  font-size: 14px;
-  color: #888;
-}
-
-.notification-date {
-  margin-right: 0;
-  font-size: 12px;
-  color: #888;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

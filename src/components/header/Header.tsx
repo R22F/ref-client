@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {TotalGNB} from "../GNB/TotalGNB";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import axios, {AxiosInstance} from "axios";
 import {hasToken} from "../auth/HasToken";
 import {useRecoilState} from "recoil";
@@ -11,7 +11,6 @@ export const Header = () => {
     const [isModalOpen, setIsModalOpen] = useRecoilState(isLoginModalOpen);
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
-    const navigate = useNavigate();
     useEffect(() => {
     }, [isLogin, isModalOpen]);
 

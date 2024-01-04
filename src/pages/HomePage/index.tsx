@@ -1,6 +1,6 @@
-import "../../App.css"
+import "./index.css"
+
 export const Homepage = () => {
-  const logo = require("./cookingman.png");
 
   const notifications = [
     { title: '알림 제목', type: 'caution', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },

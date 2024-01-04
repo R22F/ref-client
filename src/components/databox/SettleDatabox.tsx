@@ -56,15 +56,19 @@ export const SettleDatabox = ({date}:any) => {
         checkTokenValidate(error, setIsLoginModalOpen)
       }
     }
-    fetchData();
+    fetchData().then();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
   useEffect(() => {
     let sum = 0;
     foods.map((item: SettlementData) => {
       sum += item.count * item.fixedPrice;
+      // eslint-disable-next-line array-callback-return
+      return;
     });
     setTotalPrice(sum);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foods, date]);
 
   return (

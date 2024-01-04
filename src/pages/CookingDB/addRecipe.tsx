@@ -24,12 +24,12 @@ export const AddRecipe = ({
   const [name, setName] = useState("");
   const [fixed, setFixed] = useState(0);
 
-  const modalblur = () => {
+  const modalBlur = () => {
     return add
       ? "fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"
       : "";
   };
-  const inputcss = () => {
+  const inputCss = () => {
     return " px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 focus:border-2 ";
   };
 
@@ -70,11 +70,8 @@ export const AddRecipe = ({
 
       if (ingredients[0]) {
         try {
-          //각 recipe들 api 요청
-          console.log(ingredients);
-
           ingredients.map(async (item) => {
-            const RecipeResponse = await instance.post("/recipe", [
+            await instance.post("/recipe", [
               {
                 quantity: item.quantity,
                 foodId: FoodId,
@@ -93,7 +90,7 @@ export const AddRecipe = ({
     }
   };
   return (
-    <div className={modalblur()}>
+    <div className={modalBlur()}>
       <div className="flex justify-center mt-[5rem] max-h-[40rem]">
         <div className="w-[60rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 bg-white">
           <table className="min-w-full text-center text-sm font-light border-t-2 border-black bg-white">
@@ -113,7 +110,7 @@ export const AddRecipe = ({
                   <input
                     type="text"
                     id="name"
-                    className={inputcss()}
+                    className={inputCss()}
                     onChange={(e) => handlePostData(e.target.value, e.target.id)}
                   />
                 </th>
@@ -121,15 +118,11 @@ export const AddRecipe = ({
                   <input
                     type="text"
                     id="fixedPrice"
-                    className={inputcss()}
+                    className={inputCss()}
                     onChange={(e) => handlePostData(e.target.value, e.target.id)}
                   />
                 </th>
               </tr>
-
-              {/*재료추가 인풋창 */}
-
-              {/*재료추가 인풋 끝 */}
               <tr className="border-b dark:border-neutral-500"></tr>
             </tbody>
           </table>

@@ -129,6 +129,7 @@ export const IdBox = ({ SetValue, error }: Props) => {
       cloneError.isIdEmpty = false;
     }
     setError(cloneError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
   const HandleId = (e: any) => {
     SetValue(e.target.value);
@@ -139,7 +140,7 @@ export const IdBox = ({ SetValue, error }: Props) => {
   };
 
   const CheckDuplicate = (e: any) => {
-    if (id == "") {
+    if (id === "") {
       return;
     }
 
@@ -205,7 +206,7 @@ export const PwBox = ({ SetValue, error }: Props) => {
 
   useEffect(() => {
     cloneError.isPwEmpty = false;
-    if (regPw == chkPw) {
+    if (regPw === chkPw) {
       setPwMessage("비밀번호가 일치합니다.");
       cloneError.isPwIncorrect = false;
     } else {
@@ -213,14 +214,15 @@ export const PwBox = ({ SetValue, error }: Props) => {
       cloneError.isPwIncorrect = true;
     }
 
-    if (regPw == "") {
+    if (regPw === "") {
       setPwMessage("비밀번호를 입력해주세요.");
       cloneError.isPwEmpty = true;
-    } else if (chkPw == "") {
+    } else if (chkPw === "") {
       setPwMessage("비밀번호 확인을 입력해주세요.");
       cloneError.isPwEmpty = true;
     }
     setError(cloneError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [regPw, chkPw]);
 
   return (
@@ -270,7 +272,7 @@ export const NameBox = ({ SetValue, error }: Props) => {
   const HandleName = (e: any) => {
     let name = e.target.value;
     SetValue(name);
-    if (name == "") {
+    if (name === "") {
       cloneError.isNameEmpty = true;
     } else {
       cloneError.isNameEmpty = false;
@@ -304,7 +306,7 @@ export const CalendarBox = ({ SetValue, error }: Props) => {
   const HandleCalendar = (e: any) => {
     let calendar = e.target.value;
     SetValue(calendar);
-    if (calendar == "") {
+    if (calendar === "") {
       cloneError.isCalendarEmpty = true;
     } else {
       cloneError.isCalendarEmpty = false;
@@ -347,7 +349,7 @@ export const EmailBox = ({ SetValue, error }: Props) => {
       setEmailMessage("이메일이 형식이 아닙니다.");
       cloneError.isEmailIncorrect = true;
     }
-    if (emailValue == "") {
+    if (emailValue === "") {
       cloneError.isEmailEmpty = true;
       setEmailMessage("이메일을 입력해 주세요.");
     } else {
@@ -355,6 +357,7 @@ export const EmailBox = ({ SetValue, error }: Props) => {
     }
     cloneError.isNeedchkEmailDuplicate = true;
     setError(cloneError);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailValue]);
 
   const HandleEmail = (e: any) => {
@@ -364,7 +367,7 @@ export const EmailBox = ({ SetValue, error }: Props) => {
   };
 
   const CheckDuplicate = (e: any) => {
-    if (emailValue == "") {
+    if (emailValue === "") {
       return;
     }
 

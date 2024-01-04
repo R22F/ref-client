@@ -17,7 +17,8 @@ export const TotalReview = () => {
   const [, setIsModalOpen] = useRecoilState(isLoginModalOpen);
 
   useEffect(() => {
-    fetchData(parseISODate(getKSTtime()))
+    fetchData(parseISODate(getKSTtime())).then()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -85,8 +86,7 @@ export const TotalReview = () => {
         startDate = parseISODate(new Date(2022-1-1));
         break;
     }
-    setText(id)
-    fetchData(startDate, endDate)
+    fetchData(startDate, endDate).then(()=>setText(id))
   };
   useEffect(() => {}, [text]);
   const handleDateChange = (event: any) => {

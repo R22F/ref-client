@@ -1,6 +1,6 @@
 import {FoodDto} from "../../interface/DataInterface";
-import {DBAtom, EditMode, isLoginModalOpen} from "../../recoil/DBAtom";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {DBAtom, isLoginModalOpen} from "../../recoil/DBAtom";
+import {useRecoilState} from "recoil";
 import {EditOff} from "./isEdit/editOff";
 import {useEffect} from "react";
 import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
@@ -16,7 +16,7 @@ export const DBBox = ({ setAdd }: { setAdd: Function }) => {
   const handleRemoveFood = async (id: number, name:string) => {
     try {
       if (!window.confirm(`${name}을(를) 삭제 하시겠습니까?`)) return
-      const response = await instance.delete(`food/${id}/recipes`);
+      await instance.delete(`food/${id}/recipes`);
       const newData = [...data];
       setData(newData.filter((item) => item.id !== id));
       alert("삭제되었습니다.");
