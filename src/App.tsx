@@ -8,11 +8,13 @@ import {Inventory} from './pages/Inventory';
 import {Header} from './components/header/Header';
 import {TotalReview} from './pages/TotalReview';
 import {Settlement} from './pages/Settlement';
+import {EnvObserver} from "./components/common";
 
 
 function App() {
   return (
     <BrowserRouter>
+      <EnvObserver/>
       <Header />
       <Routes>
         <Route path={RouteConst.HomePage} element={<Homepage />} />
