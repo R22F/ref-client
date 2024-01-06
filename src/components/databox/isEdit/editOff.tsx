@@ -40,7 +40,7 @@ export const EditOff: React.FC<EditOffProps> = ({handleRemoveFood}) => {
     <table className="min-w-full text-center text-sm font-light border-t-2 border-black">
       <thead className="whitespace-nowrap border-b bg-neutral-50 dark:border-neutral-500 dark:text-neutral-800">
       <tr>
-        <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
+        <th/>
         <th scope="col" className=" px-6 py-4 text-right">
           음식명
         </th>
@@ -56,10 +56,8 @@ export const EditOff: React.FC<EditOffProps> = ({handleRemoveFood}) => {
       {data.map((item: FoodDto, foodIdx: number) => {
         return (
           <tbody key={foodIdx}>
-          <tr
-            className="border-t dark:border-neutral-500 bg-gray-100 font-normal"
-          >
-            <th scope="col" className=" py-4">
+          <tr className="border-t dark:border-neutral-500 bg-gray-100 font-normal">
+            <th scope="col" className="py-4">
               <button className={buttonDesign()} onClick={() => handleEdit(item.id)}>
                 레시피 상세보기
               </button>

@@ -77,8 +77,9 @@ export const Inventory = () => {
   };
 
   return (
-    <div className="flex justify-center flex-col mt-28 items-left ml-[10rem] ">
-      <div className="w-full overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 mr-[10rem]">
+    <div className="flex justify-center flex-col mt-28 items-center">
+      <div
+          className="flex justify-center flex-col w-[60rem] sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4">
         {/* 재료 추가버튼 클릭시 뜨는 모달 컴포넌트 */}
         {add && <AddIngredient add={add} setAdd={setAdd} setInv={setInv} />}
         {mod && (
@@ -89,7 +90,7 @@ export const Inventory = () => {
             ingredient={ingredient}
           />
         )}
-        <div className="flex items-center ml-[1rem] mb-[1rem]">
+        <div className="flex items-center mb-[1rem]">
           <button
             id="재료추가"
             className={buttonDesign()}
@@ -103,7 +104,6 @@ export const Inventory = () => {
             <tr>
               <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
               <th scope="col" className=" px-6 py-4 text-right mr-4"></th>
-              <th scope="col" className="w-4 px-6 py-4"></th>
               <th scope="col" className=" px-6 py-4 text-right">
                 재료명
               </th>
@@ -114,16 +114,10 @@ export const Inventory = () => {
                 구매 날짜
               </th>
               <th scope="col" className=" px-6 py-4 text-right mr-4">
-                구매 예정 날짜
-              </th>
-              <th scope="col" className=" px-6 py-4 text-right mr-4">
                 재고 경고량
               </th>
               <th scope="col" className=" px-6 py-4 text-right mr-4">
                 구매 가격(원가)
-              </th>
-              <th scope="col" className=" px-6 py-4 text-right mr-4">
-                구매 묶음 양
               </th>
               <th scope="col" className=" px-6 py-4 text-right mr-4">
                 소비 기한
@@ -131,21 +125,11 @@ export const Inventory = () => {
               <th scope="col" className=" px-6 py-4 text-right mr-4">
                 이상적인 양
               </th>
-              <th scope="col" className=" px-6 py-4 text-right mr-4">
-                구매 링크
-              </th>
             </tr>
           </thead>
           <tbody>
             {Inv.map((item: IngredientDto, idx: number): any => {
-              const expiredDate: Date = new Date(item.expiredDate);
-              const buyDate: Date = new Date(item.buyDate);
-              // 날짜 차이 계산 (밀리초 단위)
-              const timeDiff: number =
-                expiredDate.getTime() - buyDate.getTime();
 
-              // 일 단위로 변환
-              const dayDiff: number = timeDiff / (1000 * 3600 * 24);
               return (
                 <tr
                   key={idx.toString()}
@@ -170,10 +154,9 @@ export const Inventory = () => {
                         SetIngredient(item);
                       }}
                     >
-                      수정
+                      보기
                     </button>
                   </td>
-                  <td>{idx + 1}</td>
                   <td className="whitespace-nowrap px-6 py-4 font-medium text-right">
                     {item.name}
                   </td>
@@ -184,26 +167,16 @@ export const Inventory = () => {
                     {item.buyDate}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {dayDiff}일 {/*expiredDate - buyDate*/}
-                  </td>
-                  <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.alertQuantity} {item.units.toString()}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {item.primePrice}
-                  </td>
-                  <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {/* buy quantity */}
-                    {"1회 구매 량"} {item.units.toString()}
+                    1{item.units.toString()}당 {item.primePrice}원
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.expiredDate}
                   </td>
                   <td className="whitespace-nowrap  px-6 py-4 text-right">
                     {item.relievedQuantity}
-                  </td>
-                  <td className="whitespace-nowrap  px-6 py-4 text-right">
-                    {item.url}
                   </td>
                 </tr>
               );

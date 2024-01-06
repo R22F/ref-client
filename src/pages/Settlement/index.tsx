@@ -44,7 +44,7 @@ export const Settlement = () => {
 
   return (
     <div className="flex justify-center">
-        <div className="flex flex-col justify-between mt-28 items-center">
+        <div className="flex flex-col justify-between mt-24 items-center">
           <div className="flex justify-between items-center ml-auto mb-4">
             <input
               type="date"

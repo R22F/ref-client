@@ -1,6 +1,6 @@
 
 .notification-list {
-    margin: 3rem;
+    margin: 2rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -27,8 +27,10 @@
 }
 
 .notification-icon img {
-    width: 2.5rem;
-    height: 2.5rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    max-width: 2rem;
+    max-height: 2rem;
 }
 
 .notification-title {

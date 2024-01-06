@@ -3,18 +3,18 @@ import "./index.css"
 export const Homepage = () => {
 
   const notifications = [
-    { title: '알림 제목', type: 'caution', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'warning', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'caution', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'caution', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'warning', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'warning', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'info', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'info', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'info', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'warning', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'warning', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
-    { title: '알림 제목', type: 'warning', content: '알림 내용입니다.', timestamp: '2023-01-01 01:01' },
+    { title: '주의 알림', type: 'caution', content: '긴급하지 않은 알림', timestamp: '2023-01-01 01:01' },
+    { title: '경고 알림', type: 'warning', content: '긴급한 알림', timestamp: '2023-01-01 01:01' },
+    { title: '주의 알림', type: 'caution', content: '긴급하지 않은 알림', timestamp: '2023-01-01 01:01' },
+    { title: '정보 알림', type: 'info', content: '일반적인 정보', timestamp: '2023-01-01 01:01' },
+    { title: '경고 알림', type: 'warning', content: '긴급한 알림', timestamp: '2023-01-01 01:01' },
+    { title: '경고 알림', type: 'warning', content: '긴급한 알림', timestamp: '2023-01-01 01:01' },
+    { title: '주의 알림', type: 'caution', content: '긴급하지 않은 알림', timestamp: '2023-01-01 01:01' },
+    { title: '정보 알림', type: 'info', content: '일반적인 정보', timestamp: '2023-01-01 01:01' },
+    { title: '정보 알림', type: 'info', content: '일반적인 정보', timestamp: '2023-01-01 01:01' },
+    { title: '경고 알림', type: 'warning', content: '긴급한 알림', timestamp: '2023-01-01 01:01' },
+    { title: '경고 알림', type: 'warning', content: '긴급한 알림', timestamp: '2023-01-01 01:01' },
+    { title: '경고 알림', type: 'warning', content: '긴급한 알림', timestamp: '2023-01-01 01:01' },
 
   ];
 
