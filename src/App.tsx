@@ -12,6 +12,7 @@ import {EnvObserver} from "./components/common";
 import {Footer} from "./components/footer/Footer";
 
 
+
 function App() {
   return (
     <BrowserRouter>
