@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "dish": "한우곱창세트",
+      "price": 30000,
+      "quantity": 3,
+      "count" : 0
+    },
+    { 
+        "id": 2, 
+        "dish": "삼겹살", 
+        "price": 8000, 
+        "quantity": 16,
+        "count" : 0 
+    },
+    { 
+        "id": 3, 
+        "dish": "오겹살", 
+        "price": 6000, 
+        "quantity": 20,
+        "count" : 0
+    },
+    { 
+        "id": 4, 
+        "dish": "항정살", 
+        "price": 12000, 
+        "quantity": 20,
+        "count" : 0 
+    },
+    { 
+        "id": 5, 
+        "dish": "껍데기", 
+        "price": 5000, 
+        "quantity": 7,
+        "count" : 0 
+    }
+    
+  ]
+}

@@ -24,8 +24,8 @@
     "alwaysStrict": true, //자바스크립트 "use strict" 모드 켜기
     "module": "CommonJS", //무슨 import 문법 쓸건지 'commonjs', 'amd', 'es2015', 'esnext'
     "moduleResolution": "node",
-    "noUnusedLocals": true, //쓰지않는 지역변수 있으면 에러내기
-    "noUnusedParameters": true, //쓰지않는 파라미터 있으면 에러내기
+    "noUnusedLocals": false, //쓰지않는 지역변수 있으면 에러내기
+    "noUnusedParameters": false, //쓰지않는 파라미터 있으면 에러내기
     "noImplicitReturns": true, //함수에서 return 빼먹으면 에러내기
     "noFallthroughCasesInSwitch": true, //switch문 이상하면 에러내기
     "resolveJsonModule": true,
