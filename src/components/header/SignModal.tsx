@@ -1,24 +1,91 @@
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import axios, {AxiosInstance} from "axios";
+import {hasToken} from "../auth/HasToken";
 
 export function SignModal(
     {
     isModalOpen,
     setIsModalOpen,
-    setId,
-    setPw,
-    signInHandler}:{
+    isMobileState,
+    }:{
     isModalOpen: boolean,
     setIsModalOpen: (valOrUpdater: (((currVal: boolean) => boolean) | boolean)) => void,
-    setId: (value: (((prevState: string) => string) | string)) => void,
-    setPw: (value: (((prevState: string) => string) | string)) => void,
-    signInHandler: (tempValue?: any) => Promise<void>}) {
+    isMobileState:boolean
+    }) {
 
-    const labelFont = () => {
-        return "block text-gray-700 mb-2 hover:text-red-400 font-semibold";
+    const [id, setId] = useState("");
+    const [pw, setPw] = useState("");
+    const [isLogin, setIsLogin] = useState(hasToken()); //리코일 DBAtom 페이지에 새 atom 생성 후 불러오기
+    const instance: AxiosInstance = axios.create({
+        baseURL: process.env.REACT_APP_SERVER_URL,
+        headers: {},
+    });
+
+    useEffect(() => {
+        setIsLogin(hasToken)
+    }, [isLogin, isModalOpen]);
+
+    const labelFont = () => {return "block text-gray-700 mb-2 hover:text-red-400 font-semibold";};
+    const inputCss = () => {return "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 mb-4 focus:border-2";};
+
+    const logInButtonColor = (isLogin: boolean, isMobile: boolean) => {
+        if (isMobile)
+            return isLogin
+                ? "bg-gray-400 hover:bg-white hover:border-gray-300 hover:text-gray-400 text-white font-semibold py-1 px-1 border border-gray-400 rounded shadow mr-auto"
+                : "bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-1 px-1 border border-red-400 rounded shadow ml-4 ml-auto";
+        else
+            return isLogin
+                ? "bg-gray-400 hover:bg-white hover:border-gray-300 hover:text-gray-400 text-white font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-auto"
+                : "bg-white hover:bg-red-400 hover:border-red-100 hover:text-red-100 text-red-400 font-semibold py-2 px-4 border border-red-400 rounded shadow ml-4 ml-auto";
     };
-    const inputCss = () => {
-        return "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 mb-4 focus:border-2";
+
+    const signInHandler = async () => {
+        interface SignInData {
+            username: string;
+            password: string;
+        }
+
+        const signInData: SignInData = {
+            username: "",
+            password: "",
+        };
+
+        signInData.username = id===""?"string":id;
+        signInData.password = pw===""?"string":pw;
+
+        await instance
+            .post("/signin", signInData)
+            .then((response) => {
+                setIsModalOpen(false);
+                const responseToken = response.headers.authorization;
+                const token = responseToken.split(" ")[1];
+
+                localStorage.setItem("Authorization", token);
+                localStorage.setItem("Username", signInData.username);
+                setIsLogin(true);
+            })
+            .catch((error) => {
+                console.error("에러:", error);
+                alert("로그인에 실패했습니다.");
+            });
     };
+
+    function LogInOrOutButton({isMobile}:{isMobile:boolean}) {
+        return <button
+            onClick={() => {
+                if (isLogin && window.confirm("로그아웃 하시겠습니까?")) {
+                    localStorage.clear();
+                    setIsLogin(hasToken());
+                } else if (!isLogin) {
+                    setIsModalOpen(true);
+                }
+            }}
+            className={logInButtonColor(isLogin, isMobile)}
+        >
+            {isLogin ? "LOG OUT" : "LOG IN"}
+        </button>;
+    }
 
     function LoginButton() {
         return <div className="flex items-center">
@@ -38,50 +105,15 @@ export function SignModal(
                 onClick={() => {
                     setIsModalOpen(false);
                 }}
-            >
-                ID/PW 찾기
+            >ID/PW 찾기
             </Link>
             <Link
                 to="/SignUp"
                 className={labelFont()}
-                onClick={() => {
-                    setIsModalOpen(false);
-                }}
-            >
-                회원가입
+                onClick={() => {setIsModalOpen(false);}}
+            >회원가입
             </Link>
         </div>;
-    }
-
-    function InputPassword() {
-        return <>
-            <label htmlFor="pw-input" className={labelFont()}>
-                Password
-            </label>
-            <input
-                type="password"
-                onChange={(e) => {
-                    setPw(e.target.value);
-                }}
-                id="pw-input"
-                className={inputCss()}
-            />
-        </>;
-    }
-
-    function InputId() {
-        return <>
-            <label htmlFor="id-input" className={labelFont()}>
-                ID
-            </label>
-            <input
-                onChange={(e) => {
-                    setId(e.target.value);
-                }}
-                id="id-input"
-                className={inputCss()}
-            />
-        </>;
     }
 
     function ModalHeader() {
@@ -109,26 +141,14 @@ export function SignModal(
                 </button>
             </div>
             <div className="flex justify-center items-center">
-                <h2 className="text-lg font-medium text-red-400 font-semibold">
-                    로그인
-                </h2>
-            </div>
-        </div>;
-    }
-
-    function ModalBody() {
-        return <div className="modal-body p-4">
-            <div className=" w-[15rem] h-[17rem]">
-                <InputId/>
-                <InputPassword/>
-                <SignExtendButton/>
-                <LoginButton/>
+                <h2 className="text-lg font-medium text-red-400 font-semibold">로그인</h2>
             </div>
         </div>;
     }
 
     return (
         <>
+            <LogInOrOutButton isMobile={isMobileState}/>
             {isModalOpen ?
                 <div
                     className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center "
@@ -136,7 +156,29 @@ export function SignModal(
                 >
                     <div className="absolute bg-white shadow-lg rounded-lg">
                         <ModalHeader/>
-                        <ModalBody/>
+                        <div className="modal-body p-4">
+                            <div className=" w-[15rem] h-[17rem]">
+                                <label htmlFor="id-input" className={labelFont()}>ID</label>
+                                <input
+                                    onChange={(e) => {
+                                        setId(e.target.value);
+                                    }}
+                                    id="id-input"
+                                    className={inputCss()}
+                                />
+                                <label htmlFor="pw-input" className={labelFont()}>Password</label>
+                                <input
+                                    type="password"
+                                    onChange={(e) => {
+                                        setPw(e.target.value);
+                                    }}
+                                    id="pw-input"
+                                    className={inputCss()}
+                                />
+                                <SignExtendButton/>
+                                <LoginButton/>
+                            </div>
+                        </div>;
                     </div>
                 </div>
             :
