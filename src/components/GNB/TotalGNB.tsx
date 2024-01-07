@@ -1,9 +1,12 @@
 import {Link, useLocation} from "react-router-dom";
 import {RouteConst} from "../../interface/RouteConst";
 import {hasToken} from "../auth/HasToken";
+import {useRecoilValue} from "recoil";
+import {isMobile} from "../../recoil/DBAtom";
 
 export const TotalGNB = () => {
     const location = useLocation();
+    const isMobileState = useRecoilValue(isMobile)
 
     const getLinkClass = (path: string) => {
         return location.pathname === path
@@ -31,27 +34,55 @@ export const TotalGNB = () => {
     }
 
     return (
-        <ul className="flex mt-2 ml-4">
-            <HeaderButton
-                route={RouteConst.HomePage}
-                name={"메인"}/>
-            {hasToken() ?
-                <>
+        <ul>
+            {isMobileState?
+                <div className="flex w-full justify-center">
                     <HeaderButton
-                        route={RouteConst.settlement}
-                        name={"정산페이지"}/>
-                    <HeaderButton
-                        route={RouteConst.TotalReview}
-                        name={"결산내역"}/>
-                    <HeaderButton
-                        route={RouteConst.Inventory}
-                        name={"냉장고 재고 현황"}/>
-                    <HeaderButton
-                        route={RouteConst.CookingDB}
-                        name={"요리 레시피"}/>
-                </>
+                        route={RouteConst.HomePage}
+                        name={"메인"}/>
+                    {hasToken() ?
+                        <>
+                            <HeaderButton
+                                route={RouteConst.settlement}
+                                name={"정산"}/>
+                            <HeaderButton
+                                route={RouteConst.TotalReview}
+                                name={"결산"}/>
+                            <HeaderButton
+                                route={RouteConst.Inventory}
+                                name={"냉장고"}/>
+                            <HeaderButton
+                                route={RouteConst.CookingDB}
+                                name={"요리 "}/>
+                        </>
+                        :
+                        <></>
+                    }
+                </div>
                 :
-                <></>
+                <div className="flex mt-2 ml-4">
+                    <HeaderButton
+                        route={RouteConst.HomePage}
+                        name={"메인"}/>
+                    {hasToken() ?
+                        <>
+                            <HeaderButton
+                                route={RouteConst.settlement}
+                                name={"정산페이지"}/>
+                            <HeaderButton
+                                route={RouteConst.TotalReview}
+                                name={"결산내역"}/>
+                            <HeaderButton
+                                route={RouteConst.Inventory}
+                                name={"냉장고 재고 현황"}/>
+                            <HeaderButton
+                                route={RouteConst.CookingDB}
+                                name={"요리 레시피"}/>
+                        </>
+                        :
+                        <></>
+                    }
+                </div>
             }
         </ul>
     );

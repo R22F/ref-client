@@ -1,6 +1,8 @@
 import {IngredientInfo} from "./IngredientInfo";
 import {useState} from "react";
 import {useAxiosInstance} from "../../Axios/api";
+import {useRecoilValue} from "recoil";
+import {isMobile} from "../../recoil/DBAtom";
 
 export const AddRecipe = ({
   add,
@@ -21,6 +23,7 @@ export const AddRecipe = ({
     },
   ]);
   const instance = useAxiosInstance()
+  const isMobileState = useRecoilValue(isMobile)
   const [name, setName] = useState("");
   const [fixed, setFixed] = useState(0);
 
@@ -30,7 +33,7 @@ export const AddRecipe = ({
       : "";
   };
   const inputCss = () => {
-    return " px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-red-300 focus:border-2 ";
+    return " px-4 py-2 w-[10rem] border border-gray-300 rounded focus:outline-none focus:border-red-300 focus:border-2 ";
   };
 
   const buttonDesign = () => {
@@ -91,60 +94,116 @@ export const AddRecipe = ({
   };
   return (
     <div className={modalBlur()}>
-      <div className="flex justify-center mt-[5rem] max-h-[40rem]">
-        <div className="w-[60rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 bg-white">
-          <table className="min-w-full text-center text-sm font-light border-t-2 border-black bg-white">
-            <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800 ">
-              <tr>
-                <th scope="col" className="whitespace-nowrap px-6 py-4">
-                  요리명
-                </th>
-                <th scope="col" className="px-2 py-4">
-                  요리 판매가
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th className="whitespace-nowrap  px-6 py-4 font-medium">
-                  <input
-                    type="text"
-                    id="name"
-                    className={inputCss()}
-                    onChange={(e) => handlePostData(e.target.value, e.target.id)}
-                  />
-                </th>
-                <th className="whitespace-nowrap  px-6 py-4 font-medium">
-                  <input
-                    type="text"
-                    id="fixedPrice"
-                    className={inputCss()}
-                    onChange={(e) => handlePostData(e.target.value, e.target.id)}
-                  />
-                </th>
-              </tr>
-              <tr className="border-b dark:border-neutral-500"></tr>
-            </tbody>
-          </table>
-          <IngredientInfo
-            ingredients={ingredients}
-            setIngredients={setIngredients}
-          />
-          <div className="flex items-center justify-end">
-            <button
-              className={eraseButtonDesign()}
-              onClick={() => {
-                setAdd(false);
-              }}
-            >
-              취소
-            </button>
-            <button className={buttonDesign()} onClick={postRecipe}>
-              저장
-            </button>
-          </div>
-        </div>
-      </div>
+      {isMobileState?
+          <>
+            <div className="flex justify-center mt-[5rem] max-h-[40rem]">
+              <div className="w-[20rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 bg-white">
+                <table className="min-w-full text-center text-sm font-light border-t-2 border-black bg-white">
+                  <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800 ">
+                  <tr>
+                    <th scope="col" className="px-2 py-4">요리명</th>
+                    <th className="whitespace-nowrap px-1 py-4 font-medium">
+                        <input
+                            type="text"
+                            id="name"
+                            className={inputCss()}
+                            onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                        />
+                    </th>
+                  </tr>
+                  <tr>
+                    <th scope="col" className="px-2 py-4">판매가</th>
+                      <th className="whitespace-nowrap  px-6 py-4 font-medium">
+                        <input
+                            type="text"
+                            id="fixedPrice"
+                            className={inputCss()}
+                            onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                        />
+                      </th>
+                  </tr>
+                  </thead>
+                </table>
+                <IngredientInfo
+                    ingredients={ingredients}
+                    setIngredients={setIngredients}
+                    isMobileState={isMobileState}
+                />
+                <div className="flex items-center justify-end">
+                  <button
+                      className={eraseButtonDesign()}
+                      onClick={() => {
+                        setAdd(false);
+                      }}
+                  >
+                    취소
+                  </button>
+                  <button className={buttonDesign()} onClick={postRecipe}>
+                    저장
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+          :
+          <>
+            <div className="flex justify-center mt-[5rem] max-h-[40rem]">
+              <div className="w-[60rem] overflow-x-auto sm:-mx-6 lg:-mx-8 border-4 rounded-md px-4 py-4 bg-white">
+                <table className="min-w-full text-center text-sm font-light border-t-2 border-black bg-white">
+                  <thead className="border-b bg-neutral-50 font-medium dark:border-neutral-500 dark:text-neutral-800 ">
+                  <tr>
+                    <th scope="col" className="whitespace-nowrap px-6 py-4">
+                      요리명
+                    </th>
+                    <th scope="col" className="px-2 py-4">
+                      요리 판매가
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th className="whitespace-nowrap  px-6 py-4 font-medium">
+                      <input
+                          type="text"
+                          id="name"
+                          className={inputCss()}
+                          onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                      />
+                    </th>
+                    <th className="whitespace-nowrap  px-6 py-4 font-medium">
+                      <input
+                          type="text"
+                          id="fixedPrice"
+                          className={inputCss()}
+                          onChange={(e) => handlePostData(e.target.value, e.target.id)}
+                      />
+                    </th>
+                  </tr>
+                  <tr className="border-b dark:border-neutral-500"></tr>
+                  </tbody>
+                </table>
+                <IngredientInfo
+                    ingredients={ingredients}
+                    setIngredients={setIngredients}
+                    isMobileState={isMobileState}
+                />
+                <div className="flex items-center justify-end">
+                  <button
+                      className={eraseButtonDesign()}
+                      onClick={() => {
+                        setAdd(false);
+                      }}
+                  >
+                    취소
+                  </button>
+                  <button className={buttonDesign()} onClick={postRecipe}>
+                    저장
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+      }
     </div>
   );
 };

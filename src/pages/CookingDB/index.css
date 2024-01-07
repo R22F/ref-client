@@ -5,7 +5,7 @@
 
 .recipe-info-table{
     width: 80rem;
-    min-height: 40rem;
+    min-height: 30rem;
     margin-top: 4rem;
 }
 
@@ -28,11 +28,22 @@
     text-align: center;
 }
 
+.ingredient-table-header-mobile{
+    white-space: nowrap;
+    padding: 0.5rem 0.5rem;
+    font-weight: 200;
+    text-align: center;
+}
+
 .ingredient-edit-table{
     border-top-width: 2px;
     border-top-style: solid;}
 
 .ingredient-info-column{
+    padding: 1rem 0.5rem;
+}
+
+.ingredient-info-column-mobile{
     padding: 1rem 0.5rem;
 }
 
@@ -73,6 +84,14 @@
 }
 
 .ingredient-info-input{
+    padding: 0.5rem 1rem;
+    border: 1px solid #d2d6dc;
+    border-radius: 0.25rem;
+    outline: none;
+}
+
+.ingredient-info-input-mobile{
+    width: 5rem;
     padding: 0.5rem 1rem;
     border: 1px solid #d2d6dc;
     border-radius: 0.25rem;

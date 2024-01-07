@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {checkTokenValidate, useAxiosInstance} from "../../Axios/api";
 import {IngredientInfo} from "./IngredientInfo";
-import {useRecoilState} from "recoil";
-import {isLoginModalOpen} from "../../recoil/DBAtom";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {isLoginModalOpen, isMobile} from "../../recoil/DBAtom";
 
 export const ModifyRecipe = ({ mod, setMod }: { mod: boolean; setMod: Function }) => {
   const [ingredients, setIngredients] = useState([
@@ -17,7 +17,7 @@ export const ModifyRecipe = ({ mod, setMod }: { mod: boolean; setMod: Function }
     },
   ]);
   const [, setIsLoginModalOpen] = useRecoilState(isLoginModalOpen)
-
+  const isMobileState = useRecoilValue(isMobile)
   const [name, setName] = useState('');
   const [fixed, setFixed] = useState(0);
   const instance = useAxiosInstance();
@@ -127,7 +127,7 @@ export const ModifyRecipe = ({ mod, setMod }: { mod: boolean; setMod: Function }
               <tr className="border-b dark:border-neutral-500"></tr>
             </tbody>
           </table>
-          <IngredientInfo ingredients={ingredients} setIngredients={setIngredients} />
+          <IngredientInfo ingredients={ingredients} setIngredients={setIngredients} isMobileState={isMobileState}/>
           <button
             className={eraseButtonDesign()}
             onClick={() => {

@@ -1,6 +1,5 @@
 
 .notification-list {
-    margin: 2rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -9,10 +8,12 @@
 .notification-box {
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin: auto;
     background-color: rgba(0, 0, 0, 0.02);
-    padding: 10px;
+    padding: 0.5rem;
     border-radius: 10px;
-    width: inherit;
+    max-width: 58rem;
 }
 
 .notification-header {

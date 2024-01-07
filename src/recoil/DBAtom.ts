@@ -42,7 +42,7 @@ export const Options = atom<Map<string, number>>({
   default: new Map<string, number>(),
 });
 
-export const isMobile = atom<Boolean>({
+export const isMobile = atom<boolean>({
   key: 'isMobile',
   default: false,
 });

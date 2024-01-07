@@ -9,6 +9,7 @@ import {Header} from './components/header/Header';
 import {TotalReview} from './pages/TotalReview';
 import {Settlement} from './pages/Settlement';
 import {EnvObserver} from "./components/common";
+import {Footer} from "./components/footer/Footer";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path={RouteConst.Inventory} element={<Inventory />} />
         <Route path={RouteConst.TotalReview} element={<TotalReview />} />
       </Routes>
+        <Footer />
     </BrowserRouter>
   );
 }

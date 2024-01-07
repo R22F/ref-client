@@ -2,7 +2,6 @@ import axios, {AxiosInstance} from "axios";
 
 export const useAxiosInstanceNoToken = (): AxiosInstance => {
   const url = process.env.REACT_APP_SERVER_URL;
-
   return axios.create({
     baseURL: url,
   });
@@ -27,6 +26,7 @@ export const checkTokenValidate = (res: any, setIsModalOpen:any):any=> {
       case 417:
         window.alert("로그인 정보가 만료되었습니다.")
         localStorage.removeItem("Authorization")
+
         setIsModalOpen(true)
         break;
       case 401:
